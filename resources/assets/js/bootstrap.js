@@ -16,6 +16,13 @@
 //  * using reactive data binding and reusable components. Vue's API is clean
 //  * and simple, leaving you to focus on building your next great project.
 //  */
+require('./libs/messenger.min');
+require('./libs/messenger-theme-flat');
+
+Messenger.options = {
+    extraClasses: 'messenger-fixed messenger-on-top messenger-on-right',
+    theme: 'flat'
+}
 
 window.Vue = require('vue');
 

@@ -26,9 +26,9 @@
     @include('layouts.partials.content.icons')
 </head>
 <body class="fixed-left">
+    <div id="alertConfirm"></div>
     <div id="app">
         @include('layouts.partials.modals')
-    <!-- Begin page -->
 
         <div id="wrapper">
             @include('layouts.partials.header')
@@ -38,7 +38,9 @@
             @include('layouts.partials.rigth-nav')
 
             <div class="content-page">
-                @yield('content')
+                <div class="content">
+                    @yield('content')
+                </div>
             </div>
 
         </div>
@@ -60,5 +62,15 @@
     @yield('footer')
 
     <script src="{{ asset(mix('js/app.js')) }}"></script>
+
+    @if(session('flash_message'))
+        <script>
+            Messenger().post({
+                message: '{{ session('flash_message') }}',
+                type: '{{ session('flash_status') }}',
+                showCloseButton: true
+            });
+        </script>
+    @endif
 </body>
 </html>

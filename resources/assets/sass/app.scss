@@ -2,21 +2,6 @@
 
 @import "./core";
 @import "./responsive";
+@import "./libs/libs";
 
-#main-logo h3 {
-  text-align: center;
-  margin-left: -20px;
-
-  a {
-    color: #ff8158;
-
-    &:hover {
-      color: #fff;
-    }
-  }
-
-  span {
-    font-weight: 600;
-    color: #fff;
-  }
-}
+@import "./style";
