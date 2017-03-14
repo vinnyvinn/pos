@@ -20,8 +20,12 @@
         "classmap": [
             "database"
         ],
+        "files": [
+            "SmoDav/Support/helpers.php"
+        ],
         "psr-4": {
-            "App\\": "app/"
+            "App\\": "app/",
+            "SmoDav\\": "SmoDav/"
         }
     },
     "autoload-dev": {
