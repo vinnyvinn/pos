@@ -12,7 +12,8 @@ class StockItem extends Model
 
     protected $fillable = [
         'unit_cost', 'buying_tax', 'selling_tax', 'credit_note_tax', 'code', 'barcode', 'name',
-        'description', 'is_active', 'stocking_uom', 'selling_uom', 'has_conversions'
+        'description', 'is_active', 'stocking_uom', 'selling_uom', 'has_conversions', 'is_serial_item',
+        'is_expiry_item'
     ];
 
     public function buyingTax()

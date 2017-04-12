@@ -27,6 +27,10 @@ class CreateStockItemsTable extends Migration
             $table->text('description')->nullable();
             $table->float('unit_cost');
             $table->boolean('is_active')->default(true);
+            $table->boolean('is_serial_item')->default(false);
+            $table->boolean('is_expiry_item')->default(false);
+            $table->boolean('has_inventory_control')->default(false);
+            $table->boolean('is_fifo')->default(false);
             $table->softDeletes();
             $table->timestamps();
 
