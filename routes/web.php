@@ -20,4 +20,7 @@ Auth::routes();
 Route::get('/home', 'HomeController@index');
 
 Route::resource('tax', 'TaxController');
-Route::resource('stock_item', 'StockItemController');
+Route::resource('unitOfMeasure', 'UnitOfMeasureController');
+Route::resource('unitConversion', 'UnitConversionController');
+Route::resource('price-list-name', 'PriceListNameController');
+Route::resource('stockItem', 'StockItemController');

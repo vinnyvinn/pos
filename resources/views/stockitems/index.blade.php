@@ -19,53 +19,63 @@
         <div class="col-md-12">
             <div class="widget">
                 <div class="widget-header">
-                    <h2><strong>Tax Types</strong></h2>
+                    <h2><strong>Stock Items</strong></h2>
 
                     <div class="additional-btn">
-                        <a href="{{ route('tax.create') }}" class="pull-right btn btn-primary btn-xs">
+                        <a href="{{ route('stockItem.create') }}" class="pull-right btn btn-primary btn-xs">
                             <span class="fa fa-plus"></span>
-                            New Tax Type
+                            New Stock Item
                         </a>
                     </div>
                 </div>
                 <div class="widget-content padding">
                     <br>
                     <div class="table-responsive">
-                        <table id='stock-table' class="table table-striped table-bordered" cellspacing="0" width="100%">
+                        <table id='main-table' class="table table-striped table-bordered" cellspacing="0" width="100%">
                             <thead>
                             <tr>
-                                <th>Tax Code</th>
-                                <th>Description</th>
-                                <th>Tax Rate</th>
-                                <th>Status</th>
+                                <th>Item Code</th>
+                                <th>Name</th>
+                                <th>Barcode</th>
+                                <th>Unit Cost</th>
+                                <th class="text-center">Conversions</th>
+                                <th class="text-center">Status</th>
                                 <th class="actions"></th>
                             </tr>
                             </thead>
 
                             <tfoot>
                             <tr>
-                                <th>Tax Code</th>
-                                <th>Description</th>
-                                <th>Tax Rate</th>
-                                <th>Status</th>
-                                <th></th>
+                                <th>Item Code</th>
+                                <th>Name</th>
+                                <th>Barcode</th>
+                                <th>Unit Cost</th>
+                                <th class="text-center">Conversions</th>
+                                <th class="text-center">Status</th>
+                                <th class="actions"></th>
                             </tr>
                             </tfoot>
 
                             <tbody>
-                            @foreach($taxes as $tax)
+                            @foreach($items as $item)
                                 <tr>
-                                    <td>{{ $tax->code }}</td>
-                                    <td>{{ $tax->description }}</td>
-                                    <td>{{ $tax->rate }}</td>
-                                    @if($tax->is_active)
-                                        <td><span class="btn btn-xs btn-success">Active</span></td>
+                                    <td>{{ $item->code }}</td>
+                                    <td>{{ $item->name }}</td>
+                                    <td>{{ $item->barcode }}</td>
+                                    <td class="text-right">{{ number_format($item->unit_cost, 2) }}</td>
+                                    @if($item->has_conversions)
+                                        <td class="text-center"><span class="btn btn-xs btn-success">YES</span></td>
                                     @else
-                                        <td><span class="btn btn-xs btn-danger">Inactive</span></td>
+                                        <td class="text-center"><span class="btn btn-xs btn-danger">NO</span></td>
                                     @endif
-                                    <td>
-                                        <a href="{{ route('tax.edit', $tax->id) }}" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></a>
-                                        <a href="{{ route('tax.destroy', $tax->id) }}"
+                                    @if($item->is_active)
+                                        <td class="text-center"><span class="btn btn-xs btn-success">Active</span></td>
+                                    @else
+                                        <td class="text-center"><span class="btn btn-xs btn-danger">Inactive</span></td>
+                                    @endif
+                                    <td class="text-center">
+                                        <a href="{{ route('tax.edit', $item->id) }}" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></a>
+                                        <a href="{{ route('tax.destroy', $item->id) }}"
                                            class="btn btn-danger btn-xs" data-method="DELETE"
                                            rel="nofollow"
                                            data-confirm="Are you sure you want to delete this?"
@@ -89,7 +99,7 @@
     <script src="{{ asset('assets/libs/jquery-datatables/extensions/TableTools/js/dataTables.tableTools.min.js') }}"></script>
     <script>
         (function () {
-            $('#stock-table').DataTable({
+            $('#main-table').DataTable({
 //                dom: 'T<"clear">lfrtip',
 //                tableTools: {
 //                    "sSwfPath": "./assets/libs/jquery-datatables/extensions/TableTools/swf/copy_csv_xls_pdf.swf"

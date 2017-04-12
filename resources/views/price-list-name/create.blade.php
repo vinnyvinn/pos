@@ -3,26 +3,26 @@
 @section('content')
     @component('components.page-header')
         @slot('icon')
-            fa-shopping-cart
+            fa-usd
         @endslot
         @slot('header')
-            Stock Items
+            Price Lists
         @endslot
-        Manage the items that can be bought and sold within the system.
+        Manage price lists that can be used in the system.
     @endcomponent
+
     <div class="row">
         <div class="col-md-12">
             <div class="widget">
                 <div class="widget-header">
-                    <h2><strong>Stock Item Details</strong></h2>
+                    <h2><strong>Price Lists</strong></h2>
                 </div>
                 <div class="widget-content padding">
                     <br>
                     <div class="row">
                         <div class="col-sm-12">
-                            <form action="{{ route('stockItem.update', $item->id) }}" method="post">
-                                {{ method_field('PUT') }}
-                                @include('stockitems.form')
+                            <form action="{{ route('price-list-name.store') }}" method="post">
+                                @include('price-list-name.form')
                             </form>
                         </div>
                     </div>

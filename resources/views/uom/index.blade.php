@@ -8,23 +8,23 @@
 @section('content')
     @component('components.page-header')
         @slot('icon')
-            fa-usd
+            fa-inbox
         @endslot
         @slot('header')
-            Tax Types
+            Units of Measure
         @endslot
-        Manage the tax types and rates that will be used on all transactions.
+        Manage the units of measure to be used in the system.
     @endcomponent
     <div class="row">
         <div class="col-md-12">
             <div class="widget">
                 <div class="widget-header">
-                    <h2><strong>Tax Types</strong></h2>
+                    <h2><strong>Units of Measure</strong></h2>
 
                     <div class="additional-btn">
-                        <a href="{{ route('tax.create') }}" class="pull-right btn btn-primary btn-xs">
+                        <a href="{{ route('unitOfMeasure.create') }}" class="pull-right btn btn-primary btn-xs">
                             <span class="fa fa-plus"></span>
-                            New Tax Type
+                            Add New
                         </a>
                     </div>
                 </div>
@@ -34,9 +34,8 @@
                         <table id='main-table' class="table table-striped table-bordered" cellspacing="0" width="100%">
                             <thead>
                             <tr>
-                                <th class="text-center">Tax Code</th>
+                                <th class="text-center">Unit</th>
                                 <th class="text-center">Description</th>
-                                <th class="text-center">Tax Rate</th>
                                 <th class="text-center">Status</th>
                                 <th class="actions"></th>
                             </tr>
@@ -44,32 +43,32 @@
 
                             <tfoot>
                             <tr>
-                                <th class="text-center">Tax Code</th>
+                                <th class="text-center">Unit</th>
                                 <th class="text-center">Description</th>
-                                <th class="text-center">Tax Rate</th>
                                 <th class="text-center">Status</th>
                                 <th></th>
                             </tr>
                             </tfoot>
 
                             <tbody>
-                            @foreach($taxes as $tax)
+                            @foreach($units as $unit)
                                 <tr>
-                                    <td>{{ $tax->code }}</td>
-                                    <td>{{ $tax->description }}</td>
-                                    <td class="text-right">{{ $tax->rate }}%</td>
-                                    @if($tax->is_active)
+                                    <td>{{ $unit->name }}</td>
+                                    <td>{{ $unit->description }}</td>
+                                    @if($unit->is_active)
                                         <td class="text-center"><span class="btn btn-xs btn-success">Active</span></td>
                                     @else
                                         <td class="text-center"><span class="btn btn-xs btn-danger">Inactive</span></td>
                                     @endif
                                     <td>
-                                        <a href="{{ route('tax.edit', $tax->id) }}" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></a>
-                                        <a href="{{ route('tax.destroy', $tax->id) }}"
-                                           class="btn btn-danger btn-xs" data-method="DELETE"
-                                           rel="nofollow"
-                                           data-confirm="Are you sure you want to delete this?"
-                                           data-token="{{ csrf_token() }}"><i class="fa fa-trash"></i></a>
+                                        @if(! $unit->system_install)
+                                            <a href="{{ route('unitOfMeasure.edit', $unit->id) }}" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></a>
+                                            <a href="{{ route('unitOfMeasure.destroy', $unit->id) }}"
+                                               class="btn btn-danger btn-xs" data-method="DELETE"
+                                               rel="nofollow"
+                                               data-confirm="Are you sure you want to delete this?"
+                                               data-token="{{ csrf_token() }}"><i class="fa fa-trash"></i></a>
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach

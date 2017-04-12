@@ -45,10 +45,14 @@
 }
 
 td.actions, th.actions {
-  width: 70px !important;
+  width: 100px !important;
   text-align: center;
 }
 
 ul.messenger.messenger-fixed.messenger-on-top {
   top: 70px;
+}
+
+.radio label, .checkbox label {
+  padding-left: 0 !important;
 }
