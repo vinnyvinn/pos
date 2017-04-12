@@ -54,7 +54,17 @@
                         <li><a href='{{ route('stockItem.index', ['status' => '0']) }}'><span>View Inactive</span></a></li>
                     </ul>
                 </li>
-
+                <li class="has_sub">
+                    <a href='javascript:void(0);'>
+                        <i class='icon-home-2'></i>
+                        <span>Stall</span>
+                        <span class="pull-right"><i class="fa fa-angle-down"></i></span>
+                    </a>
+                    <ul>
+                        <a href='{{ route('stall.index') }}'><i class='icon-home-2'></i> View All</a>
+                        <a href='{{ route('stall.create') }}'><i class='icon-home-2'></i> Create</a>
+                    </ul>
+                </li>
             </ul>
             <div class="clearfix"></div>
         </div>

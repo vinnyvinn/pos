@@ -1,7 +1,7 @@
 <?php
 /**
  * A helper file for Laravel 5, to provide autocomplete information to your IDE
- * Generated for Laravel 5.4.18 on 2017-04-12.
+ * Generated for Laravel 5.4.16 on 2017-04-12.
  *
  * @author Barry vd. Heuvel <barryvdh@gmail.com>
  * @see https://github.com/barryvdh/laravel-ide-helper
@@ -101,61 +101,56 @@ namespace Illuminate\Support\Facades {
         /**
          * Get the path to the application "app" directory.
          *
-         * @param string $path Optionally, a path to append to the app path
          * @return string 
          * @static 
          */
-        public static function path($path = '')
+        public static function path()
         {
-            return \Illuminate\Foundation\Application::path($path);
+            return \Illuminate\Foundation\Application::path();
         }
         
         /**
          * Get the base path of the Laravel installation.
          *
-         * @param string $path Optionally, a path to append to the base path
          * @return string 
          * @static 
          */
-        public static function basePath($path = '')
+        public static function basePath()
         {
-            return \Illuminate\Foundation\Application::basePath($path);
+            return \Illuminate\Foundation\Application::basePath();
         }
         
         /**
          * Get the path to the bootstrap directory.
          *
-         * @param string $path Optionally, a path to append to the bootstrap path
          * @return string 
          * @static 
          */
-        public static function bootstrapPath($path = '')
+        public static function bootstrapPath()
         {
-            return \Illuminate\Foundation\Application::bootstrapPath($path);
+            return \Illuminate\Foundation\Application::bootstrapPath();
         }
         
         /**
          * Get the path to the application configuration files.
          *
-         * @param string $path Optionally, a path to append to the config path
          * @return string 
          * @static 
          */
-        public static function configPath($path = '')
+        public static function configPath()
         {
-            return \Illuminate\Foundation\Application::configPath($path);
+            return \Illuminate\Foundation\Application::configPath();
         }
         
         /**
          * Get the path to the database directory.
          *
-         * @param string $path Optionally, a path to append to the database path
          * @return string 
          * @static 
          */
-        public static function databasePath($path = '')
+        public static function databasePath()
         {
-            return \Illuminate\Foundation\Application::databasePath($path);
+            return \Illuminate\Foundation\Application::databasePath();
         }
         
         /**
@@ -218,13 +213,12 @@ namespace Illuminate\Support\Facades {
         /**
          * Get the path to the resources directory.
          *
-         * @param string $path
          * @return string 
          * @static 
          */
-        public static function resourcePath($path = '')
+        public static function resourcePath()
         {
-            return \Illuminate\Foundation\Application::resourcePath($path);
+            return \Illuminate\Foundation\Application::resourcePath();
         }
         
         /**
@@ -2981,86 +2975,6 @@ namespace Illuminate\Support\Facades {
         public static function getQueuedCookies()
         {
             return \Illuminate\Cookie\CookieJar::getQueuedCookies();
-        }
-        
-    }         
-
-    class Crypt {
-        
-        /**
-         * Determine if the given key and cipher combination is valid.
-         *
-         * @param string $key
-         * @param string $cipher
-         * @return bool 
-         * @static 
-         */
-        public static function supported($key, $cipher)
-        {
-            return \Illuminate\Encryption\Encrypter::supported($key, $cipher);
-        }
-        
-        /**
-         * Encrypt the given value.
-         *
-         * @param mixed $value
-         * @param bool $serialize
-         * @return string 
-         * @throws \Illuminate\Contracts\Encryption\EncryptException
-         * @static 
-         */
-        public static function encrypt($value, $serialize = true)
-        {
-            return \Illuminate\Encryption\Encrypter::encrypt($value, $serialize);
-        }
-        
-        /**
-         * Encrypt a string without serialization.
-         *
-         * @param string $value
-         * @return string 
-         * @static 
-         */
-        public static function encryptString($value)
-        {
-            return \Illuminate\Encryption\Encrypter::encryptString($value);
-        }
-        
-        /**
-         * Decrypt the given value.
-         *
-         * @param mixed $payload
-         * @param bool $unserialize
-         * @return string 
-         * @throws \Illuminate\Contracts\Encryption\DecryptException
-         * @static 
-         */
-        public static function decrypt($payload, $unserialize = true)
-        {
-            return \Illuminate\Encryption\Encrypter::decrypt($payload, $unserialize);
-        }
-        
-        /**
-         * Decrypt the given string without unserialization.
-         *
-         * @param string $payload
-         * @return string 
-         * @static 
-         */
-        public static function decryptString($payload)
-        {
-            return \Illuminate\Encryption\Encrypter::decryptString($payload);
-        }
-        
-        /**
-         * Get the encryption key.
-         *
-         * @return string 
-         * @static 
-         */
-        public static function getKey()
-        {
-            return \Illuminate\Encryption\Encrypter::getKey();
         }
         
     }         
@@ -9294,7 +9208,7 @@ namespace Illuminate\Support\Facades {
         }
         
         /**
-         * Checks if a key is present and not null.
+         * Checks if an a key is present and not null.
          *
          * @param string|array $key
          * @return bool 
@@ -10590,20 +10504,6 @@ namespace Illuminate\Support\Facades {
         }
         
         /**
-         * Register a custom implicit validator extension.
-         *
-         * @param string $rule
-         * @param \Closure|string $extension
-         * @param string $message
-         * @return void 
-         * @static 
-         */
-        public static function extendDependent($rule, $extension, $message = null)
-        {
-            \Illuminate\Validation\Factory::extendDependent($rule, $extension, $message);
-        }
-        
-        /**
          * Register a custom implicit validator message replacer.
          *
          * @param string $rule
@@ -11276,7 +11176,7 @@ namespace Illuminate\Support\Facades {
         /**
          * Get an instance of the last loop in the stack.
          *
-         * @return \stdClass|null 
+         * @return \StdClass|null 
          * @static 
          */
         public static function getLastLoop()
@@ -11948,8 +11848,6 @@ namespace {
     
     class Cookie extends \Illuminate\Support\Facades\Cookie {}
     
-    class Crypt extends \Illuminate\Support\Facades\Crypt {}
-    
     class DB extends \Illuminate\Support\Facades\DB {}
     
     class Event extends \Illuminate\Support\Facades\Event {}
@@ -12112,7 +12010,7 @@ namespace {
          *
          * @param mixed $id
          * @param array $columns
-         * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Collection|static[]|static|null 
+         * @return mixed 
          * @static 
          */
         public static function find($id, $columns = array())

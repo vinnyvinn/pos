@@ -24,3 +24,4 @@ Route::resource('unitOfMeasure', 'UnitOfMeasureController');
 Route::resource('unitConversion', 'UnitConversionController');
 Route::resource('price-list-name', 'PriceListNameController');
 Route::resource('stockItem', 'StockItemController');
+Route::resource('stall', 'StallController');
