@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('header')
+@section('content')
     @component('components.page-header')
         @slot('icon')
             fa fa-building
@@ -9,8 +9,6 @@
         @endslot
         Manage the stalls.
     @endcomponent
-@endsection
-@section('content')
     <div class="row">
         <div class="col-sm-12">
             <div class="panel panel-default">
