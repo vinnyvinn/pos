@@ -244,14 +244,14 @@ $('.datepicker-input').datepicker();
 
 
 //ICHECK
-$('input:not(.ios-switch)').iCheck({
+$('input:not(.ios-switch, .clean)').iCheck({
   checkboxClass: 'icheckbox_square-aero',
   radioClass: 'iradio_square-aero',
   increaseArea: '20%' // optional
 });
 
 // IOS7 SWITCH
-$(".ios-switch").each(function(){
+$(".ios-switch:not(.clean)").each(function(){
     mySwitch = new Switch(this);
 });
 

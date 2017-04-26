@@ -1,9 +1,9 @@
 <?php
 
-use App\Setting;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use SmoDav\Models\Setting;
 
 class CreateSettingsTable extends Migration
 {

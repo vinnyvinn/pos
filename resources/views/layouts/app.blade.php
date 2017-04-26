@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<html>
 <html lang="{{ config('app.locale') }}">
 <head>
     <meta charset="utf-8">
@@ -28,6 +27,7 @@
 <body class="fixed-left">
     <div id="alertConfirm"></div>
     <div id="app">
+        <loader v-if="isLoading"></loader>
         @include('layouts.partials.modals')
 
         <div id="wrapper">
