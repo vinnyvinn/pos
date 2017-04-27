@@ -65,6 +65,17 @@
                         <a href='{{ route('stall.create') }}'><i class='icon-home-2'></i> Create</a>
                     </ul>
                 </li>
+                <li class="has_sub">
+                    <a href="javascript:void(0);">
+                        <i class="icon-user"></i>
+                        <span>Customer</span>
+                        <span class="pull-right"><i class="fa fa-angle-down"></i></span>
+                    </a>
+                    <ul>
+                        <a href="{{ route('customer.index') }}">View All</a>
+                        <a href="{{ route('customer.create') }}">Create</a>
+                    </ul>
+                </li>
             </ul>
             <div class="clearfix"></div>
         </div>
