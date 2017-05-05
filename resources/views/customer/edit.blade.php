@@ -41,7 +41,7 @@
                         </div>
                         <div class="form-group">
                             <label for="account_balance">Account Balance</label>
-                            <input type="text" class="form-control" name="account_balance" id="account_balance"
+                            <input type="text" class="form-control" name="account_balance" id="account_balance" value="{{ number_format($customer->account_balance, 2) }}"
                                    readonly>
                         </div>
                         <div class="form-group">

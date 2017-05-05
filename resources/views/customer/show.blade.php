@@ -35,7 +35,7 @@
                         </div>
                         <div class="form-group">
                             <label for="account_balance">Account Balance</label>
-                            <div>{{ $customer->account_balance }}</div>
+                            <div>{{ number_format($customer->account_balance, 2) }}</div>
                         </div>
                         <div class="form-group">
                             <label for="address">Address</label>
