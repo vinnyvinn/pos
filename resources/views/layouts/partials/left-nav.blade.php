@@ -41,6 +41,30 @@
                     </ul>
                 </li>
 
+                <li class="has_sub">
+                    <a href='javascript:void(0);'>
+                        <i class='icon-home-2'></i>
+                        <span>Stalls</span>
+                        <span class="pull-right"><i class="fa fa-angle-down"></i></span>
+                    </a>
+                    <ul>
+                        <li><a href='{{ route('stall.index') }}'><i class='icon-home-2'></i> View All</a></li>
+                        <li><a href='{{ route('stall.create') }}'><i class='icon-home-2'></i> Create</a></li>
+                    </ul>
+                </li>
+
+                <li class="has_sub">
+                    <a href="javascript:void(0);">
+                        <i class="icon-user"></i>
+                        <span>Customer</span>
+                        <span class="pull-right"><i class="fa fa-angle-down"></i></span>
+                    </a>
+                    <ul>
+                        <li><a href="{{ route('customer.index') }}">View All</a></li>
+                        <li><a href="{{ route('customer.create') }}">Create</a></li>
+                    </ul>
+                </li>
+
                 <li class='has_sub'>
                     <a href='javascript:void(0);'>
                         <i class='icon-bag'></i>
@@ -52,28 +76,6 @@
                         <li><a href='{{ route('stockItem.index') }}'><span>View All</span></a></li>
                         <li><a href='{{ route('stockItem.index', ['status' => '1']) }}'><span>View Active</span></a></li>
                         <li><a href='{{ route('stockItem.index', ['status' => '0']) }}'><span>View Inactive</span></a></li>
-                    </ul>
-                </li>
-                <li class="has_sub">
-                    <a href='javascript:void(0);'>
-                        <i class='icon-home-2'></i>
-                        <span>Stalls</span>
-                        <span class="pull-right"><i class="fa fa-angle-down"></i></span>
-                    </a>
-                    <ul>
-                        <a href='{{ route('stall.index') }}'><i class='icon-home-2'></i> View All</a>
-                        <a href='{{ route('stall.create') }}'><i class='icon-home-2'></i> Create</a>
-                    </ul>
-                </li>
-                <li class="has_sub">
-                    <a href="javascript:void(0);">
-                        <i class="icon-user"></i>
-                        <span>Customer</span>
-                        <span class="pull-right"><i class="fa fa-angle-down"></i></span>
-                    </a>
-                    <ul>
-                        <a href="{{ route('customer.index') }}">View All</a>
-                        <a href="{{ route('customer.create') }}">Create</a>
                     </ul>
                 </li>
                 <li class="has_sub">

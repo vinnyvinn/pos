@@ -24,17 +24,17 @@
 
                         <div class="form-group">
                             <label for="phone_number">Phone Number</label>
-                            <h4>{{ $customer->phone_number }}</h4>
+                            <h4>{{ $customer->phone_number ?: 'No Phone Number' }}</h4>
                         </div>
 
                         <div class="form-group">
                             <label for="email">Email</label>
-                            <h4>{{ $customer->email }}</h4>
+                            <h4>{{ $customer->email ?: 'No Email' }}</h4>
                         </div>
 
                         <div class="form-group">
                             <label for="address">Address</label>
-                            <h4>{{ $customer->address }}</h4>
+                            <h4>{{ $customer->address ?: 'No Address' }}</h4>
                         </div>
                     </div>
                     <div class="col-sm-6">
@@ -46,6 +46,11 @@
                         <div class="form-group">
                             <label for="account_balance">Account Balance</label>
                             <h4>{{ number_format($customer->account_balance, 2) }}</h4>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="credit_limit">Credit Limit</label>
+                            <h4>{{ number_format($customer->credit_limit, 2) }}</h4>
                         </div>
 
                         <div class="form-group">

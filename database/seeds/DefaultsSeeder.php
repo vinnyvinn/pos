@@ -4,6 +4,7 @@ use Illuminate\Database\Seeder;
 use SmoDav\Models\Customer;
 use SmoDav\Models\PriceList;
 use SmoDav\Models\PriceListName;
+use SmoDav\Models\Stall;
 use SmoDav\Models\Tax;
 
 class DefaultsSeeder extends Seeder
@@ -20,6 +21,8 @@ class DefaultsSeeder extends Seeder
         $this->setupPriceLists();
 
         $this->setupCustomer();
+
+        $this->setupStall();
     }
 
     private function setupTax()
@@ -64,6 +67,14 @@ class DefaultsSeeder extends Seeder
             'credit_limit' => 0,
             'address' => 'Wise & Agile Solutions Limited',
             'is_system' => true,
+        ]);
+    }
+
+    private function setupStall()
+    {
+        Stall::create([
+            'name' => 'Head Office',
+            'location' => '',
         ]);
     }
 }

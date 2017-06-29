@@ -17,30 +17,48 @@
            <h2><strong>Customers</strong></h2>
        </div>
        <div class="widget-content padding">
-            <table class="table table-responsive table-striped" id="customerTable">
-                <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Account Number</th>
-                    <th>Phone Number</th>
-                    <th>Email</th>
-                    <th>Actions</th>
-                </tr>
-                </thead>
-                <tbody>
-                @foreach($customers as $customer)
-                <tr>
-                    <td><a href="{{ route('customer.show', $customer->id) }}">{{ $customer->name }}</a></td>
-                    <td>{{ $customer->account_number }}</td>
-                    <td>{{ $customer->phone_number }}</td>
-                    <td>{{ $customer->email }}</td>
-                    <td>
-                        <a href="{{ route('customer.edit', $customer->id) }}" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></a>
-                    </td>
-                </tr>
-                    @endforeach
-                </tbody>
-            </table>
+           <div class="table-responsive">
+               <table class="table table-striped table-bordered" cellspacing="0" width="100%" id="customerTable">
+                   <thead>
+                   <tr>
+                       <th>Account Number</th>
+                       <th>Name</th>
+                       <th>Phone Number</th>
+                       <th>Email</th>
+                       <th>Type</th>
+                       <th class="text-right">Balance</th>
+                       <th class="text-right">Credit Limit</th>
+                       <th class="text-center">Actions</th>
+                   </tr>
+                   </thead>
+                   <tbody>
+                   @foreach($customers as $customer)
+                       <tr>
+                           <td><a href="{{ route('customer.show', $customer->id) }}">{{ $customer->account_number }}</a></td>
+                           <td>{{ $customer->name }}</td>
+                           <td>{{ $customer->phone_number }}</td>
+                           <td>{{ $customer->email }}</td>
+                           <td>{{ $customer->is_credit ? 'Credit' : 'Cash' }} Customer</td>
+                           <td class="text-right">{{ number_format($customer->account_balance, 2) }}</td>
+                           <td class="text-right">{{ number_format($customer->credit_limit, 2) }}</td>
+                           <td class="text-center">
+                               <a href="{{ route('customer.edit', $customer->id) }}" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></a>
+                               @if(! $customer->is_system)
+                                   <a href="{{ route('customer.destroy', $customer->id) }}"
+                                      class="btn btn-danger btn-xs" data-method="DELETE"
+                                      rel="nofollow"
+                                      data-confirm="Are you sure you want to delete this?"
+                                      data-token="{{ csrf_token() }}"
+                                   >
+                                       <i class="fa fa-trash"></i>
+                                   </a>
+                               @endif
+                           </td>
+                       </tr>
+                   @endforeach
+                   </tbody>
+               </table>
+           </div>
         </div>
     </div>
     @endsection
