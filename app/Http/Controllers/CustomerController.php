@@ -84,7 +84,8 @@ class CustomerController extends Controller
 
         $customer->update($data);
 
-        flash('Successfully edited the customer');
+        flash('Successfully edited the customer.');
+
         return redirect()->route('customer.index');
     }
 
@@ -96,6 +97,10 @@ class CustomerController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Customer::where('id', $id)->delete();
+
+        flash('Successfully deleted the customer.');
+
+        return redirect()->route('customer.index');
     }
 }
