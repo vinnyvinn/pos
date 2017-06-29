@@ -15,7 +15,7 @@ class CreateStocksTable extends Migration
     {
         Schema::create('stocks', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('external_order')->nullable();
+//            $table->string('external_order')->nullable();
             $table->integer('stall_id')->unsigned()->index();
             $table->integer('item_id')->unsigned();
             $table->integer('quantity_on_hand');

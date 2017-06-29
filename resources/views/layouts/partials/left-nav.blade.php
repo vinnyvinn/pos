@@ -76,6 +76,20 @@
                         <a href="{{ route('customer.create') }}">Create</a>
                     </ul>
                 </li>
+                <li class="has_sub">
+                    <a href="javascript:void(0);">
+                        <i class="icon-anchor"></i>
+                        <span>Stock</span>
+                        <span class="pull-right"><i class="fa fa-angle-down"></i></span>
+                    </a>
+                    <ul>
+                        <li>
+                            <a href="{{ route('stock.index') }}">View All</a>
+                            <a href="{{ route('stock.create') }}">Receive</a>
+                        </li>
+                    </ul>
+
+                </li>
             </ul>
             <div class="clearfix"></div>
         </div>
