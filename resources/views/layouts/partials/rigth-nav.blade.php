@@ -6,7 +6,7 @@
     <div class="tab-content">
         <div class="tab-pane active" id="settings">
             <div class="tab-inner slimscroller">
-                <settings></settings>
+                {{--<settings></settings>--}}
             </div>
         </div>
     </div>

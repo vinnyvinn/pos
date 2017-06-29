@@ -20,4 +20,18 @@ class Customer extends Model
             $model->save();
         });
     }
+
+    public function increaseBalance($amount)
+    {
+        $this->account_balance = $this->account_balance + $amount;
+
+        return $this;
+    }
+
+    public function decreaseBalance($amount)
+    {
+        $this->account_balance = $this->account_balance -  $amount;
+
+        return $this;
+    }
 }
