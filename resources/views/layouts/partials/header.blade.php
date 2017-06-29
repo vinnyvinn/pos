@@ -147,7 +147,7 @@
                         </ul>
                     </li>
                     <li class="right-opener">
-                        <a href="javascript:;" class="open-right"><i class="fa fa-angle-double-left"></i><i class="fa fa-angle-double-right"></i></a>
+                        <a href="javascript:;" class="open-right"><i class="fa fa-cogs"></i></a>
                     </li>
                 </ul>
             </div>

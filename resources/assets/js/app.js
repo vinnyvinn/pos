@@ -13,10 +13,15 @@ require('./bootstrap');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+Vue.component('loader', require('./components/core/loader.vue'));
 Vue.component('stock-item', require('./components/StockItem.vue'));
+Vue.component('settings', require('./components/Settings.vue'));
 
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+    data: {
+        isLoading: false
+    }
 });
 
 require('./helpers');

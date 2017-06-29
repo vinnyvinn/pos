@@ -2,25 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use App\Setting;
 use Illuminate\Http\Request;
+use Response;
+use SmoDav\Models\Setting;
 
 class SettingController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
-        //
+        return Response::json([
+            'settings' => Setting::current()
+        ]);
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
     public function create()
     {
@@ -31,11 +34,18 @@ class SettingController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
-        //
+        Setting::first()->update($request->all());
+
+        Setting::reCache();
+
+        return Response::json([
+            'status' => 'success'
+        ]);
     }
 
     /**

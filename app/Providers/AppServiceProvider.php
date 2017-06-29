@@ -3,6 +3,10 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Schema;
+use SmoDav\Models\Customer;
+use SmoDav\Models\Setting;
+use View;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,7 +17,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        \Schema::defaultStringLength(191);
+        Schema::defaultStringLength(191);
     }
 
     /**
