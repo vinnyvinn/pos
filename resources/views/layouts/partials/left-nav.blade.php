@@ -57,7 +57,7 @@
                 <li class="has_sub">
                     <a href='javascript:void(0);'>
                         <i class='icon-home-2'></i>
-                        <span>Stall</span>
+                        <span>Stalls</span>
                         <span class="pull-right"><i class="fa fa-angle-down"></i></span>
                     </a>
                     <ul>

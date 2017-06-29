@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use SmoDav\Models\Customer;
 use SmoDav\Models\PriceList;
 use SmoDav\Models\PriceListName;
 use SmoDav\Models\Tax;
@@ -17,6 +18,8 @@ class DefaultsSeeder extends Seeder
         $this->setupTax();
 
         $this->setupPriceLists();
+
+        $this->setupCustomer();
     }
 
     private function setupTax()
@@ -47,6 +50,20 @@ class DefaultsSeeder extends Seeder
             'name'        => 'Main Price List',
             'is_active'   => true,
             'description' => 'Main Price List'
+        ]);
+    }
+
+    private function setupCustomer()
+    {
+        Customer::create([
+            'name' => 'Cash Customer',
+            'phone_number' => '+254711408108',
+            'email' => 'info@wizag.biz',
+            'account_balance' => 0,
+            'is_credit' => false,
+            'credit_limit' => 0,
+            'address' => 'Wise & Agile Solutions Limited',
+            'is_system' => true,
         ]);
     }
 }

@@ -9,45 +9,55 @@
         @endslot
         Manage Customers
     @endcomponent
-    <div class="panel panel-default">
-        <div class="panel-body">
-            <div class="col-sm-12">
+    <div class="widget">
+            <div class="widget-header">
+                <h2><strong>Customer Details</strong></h2>
+            </div>
+            <div class="widget-content padding">
                 <form action="" method="post">
                     {{ csrf_field() }}
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="name">Name</label>
-                            <div>{{ $customer->name }}</div>
+                            <h4>{{ $customer->name }}</h4>
                         </div>
+
                         <div class="form-group">
                             <label for="phone_number">Phone Number</label>
-                            <div>{{ $customer->phone_number }}</div>
+                            <h4>{{ $customer->phone_number }}</h4>
                         </div>
+
                         <div class="form-group">
                             <label for="email">Email</label>
-                            <div>{{ $customer->email }}</div>
+                            <h4>{{ $customer->email }}</h4>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="address">Address</label>
+                            <h4>{{ $customer->address }}</h4>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="account_number">Account Number</label>
-                            <div>{{ $customer->account_number }}</div>
+                            <h4>{{ $customer->account_number }}</h4>
                         </div>
+
                         <div class="form-group">
                             <label for="account_balance">Account Balance</label>
-                            <div>{{ number_format($customer->account_balance, 2) }}</div>
+                            <h4>{{ number_format($customer->account_balance, 2) }}</h4>
                         </div>
+
                         <div class="form-group">
-                            <label for="address">Address</label>
-                            <div>{{ $customer->address }}</div>
+                            <label for="is_credit" class="control-label">Customer Type</label>
+                            <h4>{{ $customer->is_credit ? 'Credit Customer' : 'Cash Customer' }}</h4>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <input type="submit" class="btn btn-success" value="Save">
-                        <a href="{{ route('customer.index') }}" class="btn btn-danger">Back</a>
+
+                        <div class="form-group">
+                            <a href="{{ route('customer.index') }}" class="btn btn-danger">Back</a>
+                        </div>
                     </div>
                 </form>
             </div>
         </div>
-    </div>
 @endsection

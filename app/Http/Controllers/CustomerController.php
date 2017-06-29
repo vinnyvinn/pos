@@ -35,7 +35,10 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-        Customer::create($request->all());
+        $data = $request->all();
+        $data['is_active'] = $request->has('is_active');
+
+        Customer::create($data);
 
         flash('successfully created a new employee');
 
@@ -76,6 +79,7 @@ class CustomerController extends Controller
     public function update(Request $request, $id)
     {
         $data = $request->all();
+        $data['is_active'] = $request->has('is_active');
         $customer = Customer::findOrFail($id);
 
         $customer->update($data);
