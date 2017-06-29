@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Schema;
+use SmoDav\Models\Customer;
 use SmoDav\Models\Setting;
 use View;
 
