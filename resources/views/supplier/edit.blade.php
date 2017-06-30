@@ -32,19 +32,36 @@
                             <input class="form-control" type="email" name="email" id="email" value="{{ $supplier->email }}" required>
                         </div>
                         <div class="form-group">
-                            <label for="account_number">Account Number</label>
-                            <input class="form-control" type="text" name="account_number" id="account_number" value="{{ $supplier->account_number }}">
+                            <label for="address">Address</label>
+                            <input class="form-control" type="text" name="address" id="address" value="{{ $supplier->address }}">
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label for="address">Address</label>
-                            <input class="form-control" type="text" name="address" id="address" value="{{ $supplier->address }}">
+                            <label for="account_number">Account Number</label>
+                            <input class="form-control" type="text" name="account_number" id="account_number" value="{{ $supplier->account_number }}">
                         </div>
-                        <div class="form-group">
-                            <label for="account_balance">Account Balance</label>
-                            <input class="form-control" type="text" name="account_balance" id="account_balance" value="{{ $supplier->account_balance }}">
+                        @if($supplier->is_system)
+                            <div class="form-group">
+                                <label for="is_credit" class="control-label">Customer Type</label>
+                                <h4>{{ $supplier->is_credit ? 'Credit Customer' : 'Cash Customer' }}</h4>
+                            </div>
+                        @else
+                            <div class="form-group">
+                                <label for="is_credit" class="control-label">Customer Type</label>
+
+                                <select name="is_credit" id="is_credit" class="form-control">
+                                    <option value="0"{{ $supplier->is_credit ? ' selected' : '' }}>Cash Customer</option>
+                                    <option value="1"{{ $supplier->is_credit ? ' selected' : '' }}>Credit Customer</option>
+                                </select>
+                            </div>
+                        @endif
+                        @if($supplier->is_credit)
+                        <div class="form-group" style="display: none;">
+                            <label for="credit_limit">Credit Limit</label>
+                            <input type="number" class="form-control" name="credit_limit" id="credit_limit" value="{{ $supplier->credit_limit }}">
                         </div>
+                        @endif
                         <div class="form-group">
                             <label for="is_active">Is Active?
                                 <input class="form-control" type="checkbox" name="is_active"{{ $supplier->is_active ? 'checked' : '' }} id="is_active">
@@ -59,4 +76,20 @@
             </div>
         </div>
     </div>
+@endsection
+@section('footer')
+    <script>
+        var credit = $('#credit_limit');
+        credit.on('focus', function () {
+            this.select();
+        });
+        $('#is_credit').on('change', function (e) {
+            if (e.target.value == 0) {
+                credit.val(0);
+                credit.parent().attr('style', 'display:none');
+            } else {
+                credit.parent().removeAttr('style');
+            }
+        });
+    </script>
 @endsection

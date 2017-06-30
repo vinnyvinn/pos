@@ -32,19 +32,28 @@
                             <div>{{ $supplier->email }}</div>
                         </div>
                         <div class="form-group">
+                            <label for="address">Address</label>
+                            <div>{{ $supplier->address }}</div>
+                        </div>
+                        <div class="form-group">
                             <label for="account_number">Account Number</label>
                             <div>{{ $supplier->account_number }}</div>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label for="address">Address</label>
-                            <div>{{ $supplier->address }}</div>
-                        </div>
-                        <div class="form-group">
                             <label for="account_balance">Account Balance</label>
                             <div>{{ $supplier->account_balance }}</div>
                         </div>
+                        <div class="form-group">
+                            <label for="is_credit" class="control-label">Customer Type</label>
+                            <div>{{ $supplier->is_credit ? 'Credit Customer' : 'Cash Customer' }}</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="credit_limit">Credit Limit</label>
+                            <div>{{ $supplier->credit_limit }}</div>
+                        </div>
+
                         <div class="form-group">
                             <label for="is_active">Is Active?
                                 <input class="form-control" type="checkbox" name="is_active"{{ $supplier->is_active ? 'checked' : '' }} id="is_active">

@@ -35,7 +35,10 @@ class SupplierController extends Controller
      */
     public function store(Request $request)
     {
-        Supplier::create($request->all());
+        $data = $request->all();
+
+        $data['is_active'] = $request->has('is_active');
+        Supplier::create($data);
 
         flash('Successfully created a new supplier');
         return redirect()->route('supplier.index');
@@ -91,6 +94,9 @@ class SupplierController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Supplier::findOrFail($id)->delete();
+
+        flash('Successfully deleted supplier');
+        return redirect()->route('supplier.index');
     }
 }
