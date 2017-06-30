@@ -11,9 +11,6 @@ class Supplier extends Model
         'is_credit','is_system'
     ];
 
-    /**
-     *
-     */
     protected static function boot()
     {
         self::created( function ($model) {
