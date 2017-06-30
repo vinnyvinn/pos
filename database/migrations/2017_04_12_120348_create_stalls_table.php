@@ -18,6 +18,7 @@ class CreateStallsTable extends Migration
             $table->string('name');
             $table->string('location');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

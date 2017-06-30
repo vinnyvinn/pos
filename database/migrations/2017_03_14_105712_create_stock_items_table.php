@@ -22,7 +22,7 @@ class CreateStockItemsTable extends Migration
             $table->integer('stocking_uom')->unsigned()->nullable()->index();
             $table->integer('selling_uom')->unsigned()->nullable()->index();
             $table->string('code')->unique();
-            $table->string('barcode')->unique()->nullable();
+            $table->string('barcode')->nullable();
             $table->string('name');
             $table->text('description')->nullable();
             $table->float('unit_cost');

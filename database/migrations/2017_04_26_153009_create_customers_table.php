@@ -26,6 +26,7 @@ class CreateCustomersTable extends Migration
             $table->boolean('is_active')->default(true);
             $table->boolean('is_system')->default(false);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

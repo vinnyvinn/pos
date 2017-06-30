@@ -56,7 +56,7 @@
                 <li class="has_sub">
                     <a href="javascript:void(0);">
                         <i class="icon-user"></i>
-                        <span>Customer</span>
+                        <span>Customers</span>
                         <span class="pull-right"><i class="fa fa-angle-down"></i></span>
                     </a>
                     <ul>
@@ -68,7 +68,7 @@
                 <li class="has_sub">
                     <a href="javascript:void(0);">
                         <i class="icon-users"></i>
-                        <span>Supplier</span>
+                        <span>Suppliers</span>
                         <span class="pull-right"><i class="fa fa-angle-down"></i></span>
                     </a>
                     <ul>
@@ -94,7 +94,7 @@
                 <li class="has_sub">
                     <a href="javascript:void(0);">
                         <i class="icon-anchor"></i>
-                        <span>Stock</span>
+                        <span>Inventory</span>
                         <span class="pull-right"><i class="fa fa-angle-down"></i></span>
                     </a>
                     <ul>
