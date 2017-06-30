@@ -73,7 +73,13 @@ class SupplierController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = $request->all();
+        $data['is_active'] = $request->has('is_active');
+        $supplier = Supplier::findOrFail($id);
+
+        $supplier->update($data);
+        flash('Successfully updated supplier deatils');
+        return redirect()->route('supplier.index');
     }
 
     /**
