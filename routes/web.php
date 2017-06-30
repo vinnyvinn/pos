@@ -26,6 +26,7 @@ Route::resource('price-list-name', 'PriceListNameController');
 Route::resource('stockItem', 'StockItemController');
 Route::resource('customer', 'CustomerController');
 Route::resource('stock', 'StockController');
+Route::resource('supplier', 'SupplierController');
 
 Route::resource('stall', 'StallController');
 Route::resource('setting', 'SettingController', [

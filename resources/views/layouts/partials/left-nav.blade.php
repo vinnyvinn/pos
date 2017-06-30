@@ -65,6 +65,19 @@
                     </ul>
                 </li>
 
+                <li class="has_sub">
+                    <a href="javascript:void(0);">
+                        <i class="icon-users"></i>
+                        <span>Supplier</span>
+                        <span class="pull-right"><i class="fa fa-angle-down"></i></span>
+                    </a>
+                    <ul>
+                        <li><a href="{{ route('supplier.index') }}">View All</a></li>
+                        <li><a href="{{ route('supplier.create') }}">Create</a></li>
+                    </ul>
+
+                </li>
+
                 <li class='has_sub'>
                     <a href='javascript:void(0);'>
                         <i class='icon-bag'></i>
