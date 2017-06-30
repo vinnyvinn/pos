@@ -45,11 +45,12 @@ class SupplierController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function show($id)
     {
-        //
+        return view('supplier.show')->with('supplier', Supplier::findOrFail($id));
     }
 
     /**

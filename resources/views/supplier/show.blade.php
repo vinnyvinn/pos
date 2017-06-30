@@ -21,29 +21,29 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="name">Name</label>
-                            <input class="form-control" type="text" name="name" id="name" value="{{ $supplier->name }}" required>
+                            <div>{{ $supplier->name }}</div>
                         </div>
                         <div class="form-group">
                             <label for="phone_number">Phone Number</label>
-                            <input class="form-control" type="text" name="phone_number" id="phone_number" value="{{ $supplier->phone_number }}" required>
+                            <div>{{ $supplier->phone_number }}</div>
                         </div>
                         <div class="form-group">
                             <label for="email">Email</label>
-                            <input class="form-control" type="email" name="email" id="email" value="{{ $supplier->email }}" required>
+                            <div>{{ $supplier->email }}</div>
                         </div>
                         <div class="form-group">
                             <label for="account_number">Account Number</label>
-                            <input class="form-control" type="text" name="account_number" id="account_number" value="{{ $supplier->account_number }}">
+                            <div>{{ $supplier->account_number }}</div>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="address">Address</label>
-                            <input class="form-control" type="text" name="address" id="address" value="{{ $supplier->address }}">
+                            <div>{{ $supplier->address }}</div>
                         </div>
                         <div class="form-group">
                             <label for="account_balance">Account Balance</label>
-                            <input class="form-control" type="text" name="account_balance" id="account_balance" value="{{ $supplier->account_balance }}">
+                            <div>{{ $supplier->account_balance }}</div>
                         </div>
                         <div class="form-group">
                             <label for="is_active">Is Active?
@@ -51,7 +51,7 @@
                             </label>
                         </div>
                         <div class="form-group">
-                            <input type="submit" class="btn btn-success" value="Save">
+                            <a href="{{ route('supplier.edit', $supplier->id) }}" class="btn btn-success">Edit</a>
                             <a href="{{ route('supplier.index') }}" class="btn btn-danger">Back</a>
                         </div>
                     </div>
