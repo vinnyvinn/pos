@@ -12719,6 +12719,21 @@ window.axios.defaults.headers.common = {
 
     laravel.initialize();
 })();
+
+$('.button-menu-mobile.open-left').on('click', function () {
+    "use strict";
+
+    if ($('body').hasClass('fixed-left')) {
+        localStorage.setItem('closed', 1);
+        return;
+    }
+    localStorage.setItem('closed', 0);
+});
+
+if (localStorage.getItem('closed') == 1) {
+    $('body').attr('class', 'widescreen fixed-left-void');
+    $('#wrapper').attr('class', 'forced enlarged');
+}
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
