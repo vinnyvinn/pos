@@ -31,23 +31,28 @@
                                 <input class="form-control" type="email" name="email" id="email" required>
                             </div>
                             <div class="form-group">
-                                <label for="account_number">Account Number</label>
-                                <input class="form-control" type="text" name="account_number" id="account_number">
+                                <label for="address">Address</label>
+                                <input class="form-control" type="text" name="address" id="address">
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label for="address">Address</label>
-                                <input class="form-control" type="text" name="address" id="address">
+                                <label for="is_credit">Supplier Type</label>
+                                <select class="form-control" name="is_credit" id="is_credit">
+                                    <option value="0">Cash Customer</option>
+                                    <option value="1">Credit Customer</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="display: none;">
+                                <label for="credit_limit">Credit Limit</label>
+                                <input class="form-control" type="text" name="credit_limit" id="credit_limit" value="0">
                             </div>
                             <div class="form-group">
-                                <label for="account_balance">Account Balance</label>
-                                <input class="form-control" type="text" name="account_balance" id="account_balance">
-                            </div>
-                            <div class="form-group">
-                                <label for="is_active">Is Active?
-                                    <input class="form-control" type="checkbox" name="is_active" id="is_active">
-                                </label>
+                                <div class="checkbox">
+                                    <label for="is_active">Is Active?
+                                         <input class="form-control" type="checkbox" name="is_active" id="is_active">
+                                    </label>
+                                </div>
                             </div>
                         <div class="form-group">
                             <input type="submit" class="btn btn-success" value="Save">
@@ -58,4 +63,20 @@
                     </div>
                 </div>
         </div>
+    @endsection
+@section('footer')
+    <script>
+        var credit = $('#credit_limit');
+        credit.on('focus', function () {
+            this.select();
+        });
+        $('#is_credit').on('change', function (e) {
+            if (e.target.value == 0) {
+                credit.val(0);
+                credit.parent().attr('style', 'display:none');
+            } else {
+                credit.parent().removeAttr('style');
+            }
+        });
+    </script>
     @endsection

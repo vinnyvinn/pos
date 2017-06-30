@@ -97,13 +97,19 @@
         credit.on('focus', function () {
             this.select();
         });
-        $('#is_credit').on('change', function (e) {
-            if (e.target.value == 0) {
+        $('#is_credit').on('change', function () {
+            updateUI();
+        });
+
+        function updateUI() {
+            if ($('#is_credit').val() == 0) {
                 credit.val(0);
                 credit.parent().attr('style', 'display:none');
             } else {
                 credit.parent().removeAttr('style');
             }
-        });
+        }
+
+        updateUI();
     </script>
 @endsection
