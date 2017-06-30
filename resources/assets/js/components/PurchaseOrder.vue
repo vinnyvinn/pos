@@ -1,6 +1,7 @@
 <template>
     <div class="row">
         <div class="col-sm-12">
+            <div class="container">
             <div class="widget">
                 <div class="widget-header">
                     <h2><strong>Purchase Order</strong></h2>
@@ -104,8 +105,13 @@
                         <tbody>
                         <tr>
                             <td>
-                                <select class="form-control" name="" id="">
-                                    <option value=""></option>
+                                <select class="form-control" name="stockItem" id="stockItem">
+                                    <option value="stockItem">stockItem</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="form-control" name="stockItem" id="stockItem">
+                                    <option value="stockItem">stockItem</option>
                                 </select>
                             </td>
                             <td>
@@ -123,52 +129,16 @@
                             <td>
                                 <input class="form-control "type="text" name="" id="">
                             </td>
-                            <td>
-                                <input class="form-control "type="text" name="" id="">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="1"><select class="form-control" name="" id="">
-                                <option value=""></option>
-                            </select></td>
-                            <td colspan="1"><select class="form-control" name="" id="">
-                                <option value=""></option>
-                            </select></td>
-                            <td colspan="1"><input class="form-control "type="text" name="" id=""></td>
-                            <td colspan="1"><input class="form-control "type="text" name="" id=""></td>
-                            <td colspan="1"><input class="form-control "type="text" name="" id=""></td>
-                            <td colspan="1"><input class="form-control "type="text" name="" id=""></td>
-                            <td colspan="1"><input class="form-control "type="text" name="" id=""></td>
-                        </tr>
-                        <tr>
-                            <td colspan="1"><select class="form-control" name="" id="">
-                                <option value=""></option>
-                            </select></td>
-                            <td colspan="1"><select class="form-control" name="" id="">
-                                <option value=""></option>
-                            </select></td>
-                            <td colspan="1"><input class="form-control "type="text" name="" id=""></td>
-                            <td colspan="1"><input class="form-control "type="text" name="" id=""></td>
-                            <td colspan="1"><input class="form-control "type="text" name="" id=""></td>
-                            <td colspan="1"><input class="form-control "type="text" name="" id=""></td>
-                            <td colspan="1"><input class="form-control "type="text" name="" id=""></td>
-                        </tr>
-                        <tr>
-                        <td colspan="1"><select class="form-control" name="" id="">
-                                <option value=""></option>
-                            </select></td>
-                            <td colspan="1"><select class="form-control" name="" id="">
-                                <option value=""></option>
-                            </select></td>
-                            <td colspan="1"><input class="form-control "type="text" name="" id=""></td>
-                            <td colspan="1"><input class="form-control "type="text" name="" id=""></td>
-                            <td colspan="1"><input class="form-control "type="text" name="" id=""></td>
-                            <td colspan="1"><input class="form-control "type="text" name="" id=""></td>
-                            <td colspan="1"><input class="form-control "type="text" name="" id=""></td>
                         </tr>
                         </tbody>
                     </table>
+                    <br>
+                    <div class="pull-right" style="padding-bottom: 10px;">
+                        <a href="" class="btn btn-success">Place Order</a>
+                        <a href="" class="btn btn-danger">Back</a>
+                    </div>
                 </div>
+            </div>
             </div>
         </div>
     </div>

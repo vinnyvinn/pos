@@ -14397,6 +14397,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('div', {
     staticClass: "col-sm-12"
   }, [_c('div', {
+    staticClass: "container"
+  }, [_c('div', {
     staticClass: "widget"
   }, [_c('div', {
     staticClass: "widget-header"
@@ -14575,14 +14577,24 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('thead', [_c('tr', [_c('th', [_vm._v("Stock Item")]), _vm._v(" "), _c('th', [_vm._v("UOM")]), _vm._v(" "), _c('th', [_vm._v("Quantity")]), _vm._v(" "), _c('th', [_vm._v("Unit Price")]), _vm._v(" "), _c('th', [_vm._v("Total Exclusive")]), _vm._v(" "), _c('th', [_vm._v("Total Tax")]), _vm._v(" "), _c('th', [_vm._v("Total Inclusive")])])]), _vm._v(" "), _c('tbody', [_c('tr', [_c('td', [_c('select', {
     staticClass: "form-control",
     attrs: {
-      "name": "",
-      "id": ""
+      "name": "stockItem",
+      "id": "stockItem"
     }
   }, [_c('option', {
     attrs: {
-      "value": ""
+      "value": "stockItem"
     }
-  })])]), _vm._v(" "), _c('td', [_c('input', {
+  }, [_vm._v("stockItem")])])]), _vm._v(" "), _c('td', [_c('select', {
+    staticClass: "form-control",
+    attrs: {
+      "name": "stockItem",
+      "id": "stockItem"
+    }
+  }, [_c('option', {
+    attrs: {
+      "value": "stockItem"
+    }
+  }, [_vm._v("stockItem")])])]), _vm._v(" "), _c('td', [_c('input', {
     staticClass: "form-control ",
     attrs: {
       "type": "text",
@@ -14617,263 +14629,22 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "name": "",
       "id": ""
     }
-  })]), _vm._v(" "), _c('td', [_c('input', {
-    staticClass: "form-control ",
-    attrs: {
-      "type": "text",
-      "name": "",
-      "id": ""
+  })])])])]), _vm._v(" "), _c('br'), _vm._v(" "), _c('div', {
+    staticClass: "pull-right",
+    staticStyle: {
+      "padding-bottom": "10px"
     }
-  })])]), _vm._v(" "), _c('tr', [_c('td', {
+  }, [_c('a', {
+    staticClass: "btn btn-success",
     attrs: {
-      "colspan": "1"
+      "href": ""
     }
-  }, [_c('select', {
-    staticClass: "form-control",
+  }, [_vm._v("Place Order")]), _vm._v(" "), _c('a', {
+    staticClass: "btn btn-danger",
     attrs: {
-      "name": "",
-      "id": ""
+      "href": ""
     }
-  }, [_c('option', {
-    attrs: {
-      "value": ""
-    }
-  })])]), _vm._v(" "), _c('td', {
-    attrs: {
-      "colspan": "1"
-    }
-  }, [_c('select', {
-    staticClass: "form-control",
-    attrs: {
-      "name": "",
-      "id": ""
-    }
-  }, [_c('option', {
-    attrs: {
-      "value": ""
-    }
-  })])]), _vm._v(" "), _c('td', {
-    attrs: {
-      "colspan": "1"
-    }
-  }, [_c('input', {
-    staticClass: "form-control ",
-    attrs: {
-      "type": "text",
-      "name": "",
-      "id": ""
-    }
-  })]), _vm._v(" "), _c('td', {
-    attrs: {
-      "colspan": "1"
-    }
-  }, [_c('input', {
-    staticClass: "form-control ",
-    attrs: {
-      "type": "text",
-      "name": "",
-      "id": ""
-    }
-  })]), _vm._v(" "), _c('td', {
-    attrs: {
-      "colspan": "1"
-    }
-  }, [_c('input', {
-    staticClass: "form-control ",
-    attrs: {
-      "type": "text",
-      "name": "",
-      "id": ""
-    }
-  })]), _vm._v(" "), _c('td', {
-    attrs: {
-      "colspan": "1"
-    }
-  }, [_c('input', {
-    staticClass: "form-control ",
-    attrs: {
-      "type": "text",
-      "name": "",
-      "id": ""
-    }
-  })]), _vm._v(" "), _c('td', {
-    attrs: {
-      "colspan": "1"
-    }
-  }, [_c('input', {
-    staticClass: "form-control ",
-    attrs: {
-      "type": "text",
-      "name": "",
-      "id": ""
-    }
-  })])]), _vm._v(" "), _c('tr', [_c('td', {
-    attrs: {
-      "colspan": "1"
-    }
-  }, [_c('select', {
-    staticClass: "form-control",
-    attrs: {
-      "name": "",
-      "id": ""
-    }
-  }, [_c('option', {
-    attrs: {
-      "value": ""
-    }
-  })])]), _vm._v(" "), _c('td', {
-    attrs: {
-      "colspan": "1"
-    }
-  }, [_c('select', {
-    staticClass: "form-control",
-    attrs: {
-      "name": "",
-      "id": ""
-    }
-  }, [_c('option', {
-    attrs: {
-      "value": ""
-    }
-  })])]), _vm._v(" "), _c('td', {
-    attrs: {
-      "colspan": "1"
-    }
-  }, [_c('input', {
-    staticClass: "form-control ",
-    attrs: {
-      "type": "text",
-      "name": "",
-      "id": ""
-    }
-  })]), _vm._v(" "), _c('td', {
-    attrs: {
-      "colspan": "1"
-    }
-  }, [_c('input', {
-    staticClass: "form-control ",
-    attrs: {
-      "type": "text",
-      "name": "",
-      "id": ""
-    }
-  })]), _vm._v(" "), _c('td', {
-    attrs: {
-      "colspan": "1"
-    }
-  }, [_c('input', {
-    staticClass: "form-control ",
-    attrs: {
-      "type": "text",
-      "name": "",
-      "id": ""
-    }
-  })]), _vm._v(" "), _c('td', {
-    attrs: {
-      "colspan": "1"
-    }
-  }, [_c('input', {
-    staticClass: "form-control ",
-    attrs: {
-      "type": "text",
-      "name": "",
-      "id": ""
-    }
-  })]), _vm._v(" "), _c('td', {
-    attrs: {
-      "colspan": "1"
-    }
-  }, [_c('input', {
-    staticClass: "form-control ",
-    attrs: {
-      "type": "text",
-      "name": "",
-      "id": ""
-    }
-  })])]), _vm._v(" "), _c('tr', [_c('td', {
-    attrs: {
-      "colspan": "1"
-    }
-  }, [_c('select', {
-    staticClass: "form-control",
-    attrs: {
-      "name": "",
-      "id": ""
-    }
-  }, [_c('option', {
-    attrs: {
-      "value": ""
-    }
-  })])]), _vm._v(" "), _c('td', {
-    attrs: {
-      "colspan": "1"
-    }
-  }, [_c('select', {
-    staticClass: "form-control",
-    attrs: {
-      "name": "",
-      "id": ""
-    }
-  }, [_c('option', {
-    attrs: {
-      "value": ""
-    }
-  })])]), _vm._v(" "), _c('td', {
-    attrs: {
-      "colspan": "1"
-    }
-  }, [_c('input', {
-    staticClass: "form-control ",
-    attrs: {
-      "type": "text",
-      "name": "",
-      "id": ""
-    }
-  })]), _vm._v(" "), _c('td', {
-    attrs: {
-      "colspan": "1"
-    }
-  }, [_c('input', {
-    staticClass: "form-control ",
-    attrs: {
-      "type": "text",
-      "name": "",
-      "id": ""
-    }
-  })]), _vm._v(" "), _c('td', {
-    attrs: {
-      "colspan": "1"
-    }
-  }, [_c('input', {
-    staticClass: "form-control ",
-    attrs: {
-      "type": "text",
-      "name": "",
-      "id": ""
-    }
-  })]), _vm._v(" "), _c('td', {
-    attrs: {
-      "colspan": "1"
-    }
-  }, [_c('input', {
-    staticClass: "form-control ",
-    attrs: {
-      "type": "text",
-      "name": "",
-      "id": ""
-    }
-  })]), _vm._v(" "), _c('td', {
-    attrs: {
-      "colspan": "1"
-    }
-  }, [_c('input', {
-    staticClass: "form-control ",
-    attrs: {
-      "type": "text",
-      "name": "",
-      "id": ""
-    }
-  })])])])])])])])])
+  }, [_vm._v("Back")])])])])])])])
 }]}
 module.exports.render._withStripped = true
 if (false) {
