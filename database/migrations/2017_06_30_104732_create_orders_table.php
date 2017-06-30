@@ -18,7 +18,6 @@ class CreateOrdersTable extends Migration
             $table->integer('account_id')->index()->unsigned();
             $table->integer('user_id')->index()->unsigned()->nullable();
             $table->integer('stall_id')->index()->unsigned()->nullable();
-            $table->integer('supplier_id')->index()->unsigned()->nullable();
             $table->tinyInteger('document_type');
             $table->tinyInteger('document_status');
             $table->string('document_number')->nullable();
@@ -36,7 +35,6 @@ class CreateOrdersTable extends Migration
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
             $table->foreign('stall_id')->references('id')->on('stalls')->onDelete('set null');
-            $table->foreign('supplier_id')->references('id')->on('suppliers')->onDelete('set null');
         });
     }
 

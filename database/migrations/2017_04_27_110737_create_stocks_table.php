@@ -21,7 +21,8 @@ class CreateStocksTable extends Migration
             $table->double('quantity_reserved');
             $table->timestamps();
 
-            $table->foreign('stall_id')->references('id')->on('stalls');
+            $table->foreign('stall_id')->references('id')->on('stalls')->onDelete('cascade');
+            $table->foreign('item_id')->references('id')->on('stock_items')->onDelete('cascade');
         });
     }
 
