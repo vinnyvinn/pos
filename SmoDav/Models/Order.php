@@ -17,4 +17,9 @@ class Order extends Model
     const STATUS_PARTIALLY_PROCESSED = 1;
     const STATUS_PROCESSED = 2;
     const STATUS_ARCHIVED = 3;
+
+    public function stall()
+    {
+        return $this->
+    }
 }
