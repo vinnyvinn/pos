@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Response;
 use SmoDav\Models\Order;
+use SmoDav\Models\StockItem;
+use SmoDav\Models\Supplier;
+use SmoDav\Models\UnitOfMeasure;
 
 class PurchaseOrderController extends Controller
 {
@@ -20,10 +24,18 @@ class PurchaseOrderController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\JsonResponse|\Illuminate\View\View
      */
     public function create()
     {
+        if (request()->ajax()) {
+            return Response::json([
+                'items' => StockItem::with(['conversions'])->get(['name', 'id', 'code', 'stocking_uom']),
+                'uoms' => UnitOfMeasure::active()->get(['id', 'name']),
+                'suppliers' => Supplier::active()->get(['id', 'name', 'account_number'])
+            ]);
+        }
+
         return view('purchase-order.create')->with('orders', Order::all());
     }
 
