@@ -10,37 +10,37 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="supplier_id">Supplier</label>
-                            <select class="form-control" name="supplier_id" id="supplier_id">
+                            <select class="form-control input-sm" name="supplier_id" id="supplier_id">
                                 <option value=""></option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="stall_id">Stall</label>
-                            <select class="form-control" name="stall_id" id="stall_id">
+                            <select class="form-control input-sm" name="stall_id" id="stall_id">
                                 <option value="stall_id"></option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="description">Description</label>
-                            <textarea class="form-control" name="description" id="description" cols="30" rows="5"></textarea>
+                            <textarea class="form-control input-sm" name="description" id="description" cols="30" rows="5"></textarea>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="order_date">Order Date</label>
-                            <input class="form-control" type="text" name="order_date" id="order_date">
+                            <input class="form-control input-sm" type="text" name="order_date" id="order_date">
                         </div>
                         <div class="form-group">
                             <label for="due_date">Due Date</label>
-                            <input class="form-control" type="text" name="due_date" id="due_date">
+                            <input class="form-control input-sm" type="text" name="due_date" id="due_date">
                         </div>
                         <div class="form-group">
                             <label for="order_number">Order Number</label>
-                            <input class="form-control" type="text" name="order_number" id="order_number" readonly>
+                            <input class="form-control input-sm" type="text" name="order_number" id="order_number" readonly>
                         </div>
                         <div class="form-group">
                             <label for="external_order_number">External Order Number</label>
-                            <input class="form-control" type="text" name="external_order_number" id="external_order_number" readonly>
+                            <input class="form-control input-sm" type="text" name="external_order_number" id="external_order_number" readonly>
                         </div>
                     </div>
                     <br>
@@ -60,28 +60,28 @@
                         <tbody>
                         <tr>
                             <td>
-                                <select class="form-control" name="stock_item_id" id="stock_item_id">
+                                <select class="form-control input-sm" name="stock_item_id" id="stock_item_id">
                                 <option value="">Stock Item</option>
                             </select></td>
                             <td>
-                                <select class="form-control" name="uom" id="uom">
+                                <select class="form-control input-sm" name="uom" id="uom">
                                     <option value=""></option>
                                 </select>
                             </td>
                             <td>
-                                <input class="form-control" type="text" name="order_quantity" id="order_quantity">
+                                <input class="form-control input-sm" type="text" name="order_quantity" id="order_quantity">
                             </td>
                             <td>
-                                <input class="form-control" type="text" name="" id="">
+                                <input class="form-control input-sm" type="text" name="" id="">
                             </td>
                             <td>
-                                <input class="form-control" type="text" name="total_exclusive" id="total_exclusive">
+                                <input class="form-control input-sm" type="text" name="total_exclusive" id="total_exclusive">
                             </td>
                             <td>
-                                <input class="form-control" type="text" name="" id="">
+                                <input class="form-control input-sm" type="text" name="" id="">
                             </td>
                             <td>
-                                <input class="form-control" type="text" name="total_inclusive" id="total_inclusive">
+                                <input class="form-control input-sm" type="text" name="total_inclusive" id="total_inclusive">
                             </td>
                             <td>
                                 <a href="" class="btn btn-success"><i class="fa fa-plus"></i></a>
@@ -144,7 +144,27 @@
     </div>
 </template>
 <script>
-    export default{
-
+    export default {
+        data() {
+            return {
+                items: [],
+                suppliers: [],
+                uoms: [],
+            };
+        },
+        created() {
+          this.fetchData();
+        },
+        methods: {
+            fetchData() {
+                axios.get('/purchaseOrder/create')
+                    .then(response => response.data)
+                    .then(({ items, suppliers, uoms }) => {
+                        this.items = items;
+                        this.suppliers = suppliers;
+                        this.uoms = uoms;
+                    });
+            },
+        }
     }
 </script>

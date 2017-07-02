@@ -54,7 +54,7 @@
                         <div class="form-group">
                             <div class="checkbox">
                                 <label>
-                                    <input type="checkbox" name="is_active"> Is Active?
+                                    <input type="checkbox" name="is_active" checked> Is Active?
                                 </label>
                             </div>
                         </div>
