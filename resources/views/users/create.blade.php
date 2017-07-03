@@ -40,7 +40,7 @@
                                 </div>
 
                                 <div class="form-group{{ $errors->has('password') ? ' has-error': '' }}">
-                                    <label for="password">Username</label>
+                                    <label for="password">Password</label>
                                     <input class="form-control" type="password" name="password" id="password" required>
                                     @if($errors->has('password'))
                                         <span class="help-block">
@@ -50,7 +50,7 @@
                                 </div>
 
                                 <div class="form-group{{ $errors->has('password_confirmation') ? ' has-error': '' }}">
-                                    <label for="password_confirmation">Username</label>
+                                    <label for="password_confirmation">Confirm Password</label>
                                     <input class="form-control" type="password" name="password_confirmation" id="password_confirmation" required>
                                     @if($errors->has('password_confirmation'))
                                         <span class="help-block">
@@ -66,7 +66,7 @@
 
                             </div>
 
-                            <div class="col sm 12">
+                            <div class="col-sm-12">
                                 <div class="form-group">
                                     <input type="submit" class="btn btn-success" value="Create">
                                     <a href="{{ route('stock.index') }}" class="btn btn-danger">Cancel</a>
