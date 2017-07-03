@@ -102,6 +102,19 @@
                         </li>
                     </ul>
                 </li>
+                <li class="has_sub">
+                    <a href="javascript:void(0);">
+                        <i class="icon-users-1"></i>
+                        <span>Users</span>
+                        <span class="pull-right"><i class="fa fa-angle-down"></i></span>
+                    </a>
+                    <ul>
+                        <li>
+                            <a href="{{ route('users.index') }}">View All</a>
+                            <a href="{{ route('users.create') }}">Create</a>
+                        </li>
+                    </ul>
+                </li>
             </ul>
             <div class="clearfix"></div>
         </div>
