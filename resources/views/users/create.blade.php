@@ -39,6 +39,16 @@
                                     @endif
                                 </div>
 
+                                <div class="form-group{{ $errors->has('email') ? ' has-error': '' }}">
+                                    <label for="email">Email</label>
+                                    <input class="form-control" type="email" name="email" value="{{ old('email') }}" id="email" required>
+                                    @if($errors->has('email'))
+                                        <span class="help-block">
+                                            {{ $errors->first('email') }}
+                                        </span>
+                                    @endif
+                                </div>
+
                                 <div class="form-group{{ $errors->has('password') ? ' has-error': '' }}">
                                     <label for="password">Password</label>
                                     <input class="form-control" type="password" name="password" id="password" required>
@@ -63,13 +73,13 @@
 
 
                             <div class="col-sm-6">
-
+                                <h4><strong>Permissions</strong></h4>
                             </div>
 
                             <div class="col-sm-12">
                                 <div class="form-group">
                                     <input type="submit" class="btn btn-success" value="Create">
-                                    <a href="{{ route('stock.index') }}" class="btn btn-danger">Cancel</a>
+                                    <a href="{{ route('users.index') }}" class="btn btn-danger">Cancel</a>
                                 </div>
                             </div>
                         </div>
