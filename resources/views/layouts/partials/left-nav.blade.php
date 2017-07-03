@@ -115,6 +115,7 @@
                         </li>
                     </ul>
                 </li>
+                <li><a href="{{route('sale.index')}}"> <i class="fa fa-dollar"></i>Sale</a></li>
             </ul>
             <div class="clearfix"></div>
         </div>
