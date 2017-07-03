@@ -97,7 +97,7 @@
                     </a>
                     <ul>
                         <li>
-                            <a href="">View All</a>
+                            <a href="{{ route('purchaseOrder.index') }}">View All</a>
                             <a href="{{ route('purchaseOrder.create') }}">Create</a>
                         </li>
                     </ul>

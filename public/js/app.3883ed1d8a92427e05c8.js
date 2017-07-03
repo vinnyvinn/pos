@@ -12122,190 +12122,7 @@ module.exports = function spread(callback) {
 
 
 /***/ }),
-/* 30 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        return {
-            items: [],
-            suppliers: [],
-            uoms: []
-        };
-    },
-    created: function created() {
-        this.fetchData();
-    },
-
-    methods: {
-        fetchData: function fetchData() {
-            var _this = this;
-
-            axios.get('/purchaseOrder/create').then(function (response) {
-                return response.data;
-            }).then(function (_ref) {
-                var items = _ref.items,
-                    suppliers = _ref.suppliers,
-                    uoms = _ref.uoms;
-
-                _this.items = items;
-                _this.suppliers = suppliers;
-                _this.uoms = uoms;
-            });
-        }
-    }
-});
-
-/***/ }),
+/* 30 */,
 /* 31 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -12904,21 +12721,6 @@ window.axios.defaults.headers.common = {
 
     laravel.initialize();
 })();
-
-$('.button-menu-mobile.open-left').on('click', function () {
-    "use strict";
-
-    if ($('body').hasClass('fixed-left')) {
-        localStorage.setItem('closed', 1);
-        return;
-    }
-    localStorage.setItem('closed', 0);
-});
-
-if (localStorage.getItem('closed') == 1) {
-    $('body').attr('class', 'widescreen fixed-left-void');
-    $('#wrapper').attr('class', 'forced enlarged');
-}
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
@@ -13425,7 +13227,7 @@ module.exports = function() {
 
 var Component = __webpack_require__(2)(
   /* script */
-  __webpack_require__(30),
+  null,
   /* template */
   __webpack_require__(46),
   /* scopeId */
@@ -14612,7 +14414,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "for": "supplier_id"
     }
   }, [_vm._v("Supplier")]), _vm._v(" "), _c('select', {
-    staticClass: "form-control input-sm",
+    staticClass: "form-control",
     attrs: {
       "name": "supplier_id",
       "id": "supplier_id"
@@ -14628,7 +14430,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "for": "stall_id"
     }
   }, [_vm._v("Stall")]), _vm._v(" "), _c('select', {
-    staticClass: "form-control input-sm",
+    staticClass: "form-control",
     attrs: {
       "name": "stall_id",
       "id": "stall_id"
@@ -14644,7 +14446,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "for": "description"
     }
   }, [_vm._v("Description")]), _vm._v(" "), _c('textarea', {
-    staticClass: "form-control input-sm",
+    staticClass: "form-control",
     attrs: {
       "name": "description",
       "id": "description",
@@ -14660,7 +14462,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "for": "order_date"
     }
   }, [_vm._v("Order Date")]), _vm._v(" "), _c('input', {
-    staticClass: "form-control input-sm",
+    staticClass: "form-control",
     attrs: {
       "type": "text",
       "name": "order_date",
@@ -14673,7 +14475,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "for": "due_date"
     }
   }, [_vm._v("Due Date")]), _vm._v(" "), _c('input', {
-    staticClass: "form-control input-sm",
+    staticClass: "form-control",
     attrs: {
       "type": "text",
       "name": "due_date",
@@ -14686,7 +14488,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "for": "order_number"
     }
   }, [_vm._v("Order Number")]), _vm._v(" "), _c('input', {
-    staticClass: "form-control input-sm",
+    staticClass: "form-control",
     attrs: {
       "type": "text",
       "name": "order_number",
@@ -14700,7 +14502,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "for": "external_order_number"
     }
   }, [_vm._v("External Order Number")]), _vm._v(" "), _c('input', {
-    staticClass: "form-control input-sm",
+    staticClass: "form-control",
     attrs: {
       "type": "text",
       "name": "external_order_number",
@@ -14710,7 +14512,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   })])]), _vm._v(" "), _c('br'), _vm._v(" "), _c('table', {
     staticClass: "table table-responsive"
   }, [_c('thead', [_c('tr', [_c('th', [_vm._v("Stock Item")]), _vm._v(" "), _c('th', [_vm._v("UOM")]), _vm._v(" "), _c('th', [_vm._v("Quantity")]), _vm._v(" "), _c('th', [_vm._v("Unit Price")]), _vm._v(" "), _c('th', [_vm._v("Total Excluded")]), _vm._v(" "), _c('th', [_vm._v("Total Tax")]), _vm._v(" "), _c('th', [_vm._v("Total Inclusive")]), _vm._v(" "), _c('th')])]), _vm._v(" "), _c('tbody', [_c('tr', [_c('td', [_c('select', {
-    staticClass: "form-control input-sm",
+    staticClass: "form-control",
     attrs: {
       "name": "stock_item_id",
       "id": "stock_item_id"
@@ -14720,7 +14522,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "value": ""
     }
   }, [_vm._v("Stock Item")])])]), _vm._v(" "), _c('td', [_c('select', {
-    staticClass: "form-control input-sm",
+    staticClass: "form-control",
     attrs: {
       "name": "uom",
       "id": "uom"
@@ -14730,35 +14532,35 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "value": ""
     }
   })])]), _vm._v(" "), _c('td', [_c('input', {
-    staticClass: "form-control input-sm",
+    staticClass: "form-control",
     attrs: {
       "type": "text",
       "name": "order_quantity",
       "id": "order_quantity"
     }
   })]), _vm._v(" "), _c('td', [_c('input', {
-    staticClass: "form-control input-sm",
+    staticClass: "form-control",
     attrs: {
       "type": "text",
       "name": "",
       "id": ""
     }
   })]), _vm._v(" "), _c('td', [_c('input', {
-    staticClass: "form-control input-sm",
+    staticClass: "form-control",
     attrs: {
       "type": "text",
       "name": "total_exclusive",
       "id": "total_exclusive"
     }
   })]), _vm._v(" "), _c('td', [_c('input', {
-    staticClass: "form-control input-sm",
+    staticClass: "form-control",
     attrs: {
       "type": "text",
       "name": "",
       "id": ""
     }
   })]), _vm._v(" "), _c('td', [_c('input', {
-    staticClass: "form-control input-sm",
+    staticClass: "form-control",
     attrs: {
       "type": "text",
       "name": "total_inclusive",

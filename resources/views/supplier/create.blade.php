@@ -24,11 +24,11 @@
                             </div>
                             <div class="form-group">
                                 <label for="phone_number">Phone Number</label>
-                                <input class="form-control" type="text" name="phone_number" id="phone_number" required>
+                                <input class="form-control" type="text" name="phone_number" id="phone_number">
                             </div>
                             <div class="form-group">
                                 <label for="email">Email</label>
-                                <input class="form-control" type="email" name="email" id="email" required>
+                                <input class="form-control" type="email" name="email" id="email">
                             </div>
                             <div class="form-group">
                                 <label for="address">Address</label>
@@ -39,8 +39,8 @@
                             <div class="form-group">
                                 <label for="is_credit">Supplier Type</label>
                                 <select class="form-control" name="is_credit" id="is_credit">
-                                    <option value="0">Cash Customer</option>
-                                    <option value="1">Credit Customer</option>
+                                    <option value="0">Cash Supplier</option>
+                                    <option value="1">Credit Supplier</option>
                                 </select>
                             </div>
                             <div class="form-group" style="display: none;">
@@ -50,7 +50,7 @@
                             <div class="form-group">
                                 <div class="checkbox">
                                     <label for="is_active">Is Active?
-                                         <input class="form-control" type="checkbox" name="is_active" id="is_active">
+                                         <input class="form-control" type="checkbox" name="is_active" id="is_active" checked>
                                     </label>
                                 </div>
                             </div>

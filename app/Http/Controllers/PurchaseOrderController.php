@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Response;
 use SmoDav\Models\Order;
+
+use SmoDav\Models\OrderLine;
+use SmoDav\Models\Stall;
 use SmoDav\Models\StockItem;
 use SmoDav\Models\Supplier;
 use SmoDav\Models\UnitOfMeasure;
@@ -14,11 +17,13 @@ class PurchaseOrderController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function index()
     {
-
+//        $order = Order::with()
+        return view('purchase-order.index')->with('suppliers', Supplier::all())
+        ->with('stalls', Stall::all())->with('orders', Order::all());
     }
 
     /**
@@ -29,14 +34,20 @@ class PurchaseOrderController extends Controller
     public function create()
     {
         if (request()->ajax()) {
+            $items = StockItem::with(['conversions', 'buyingTax' => function ($builder) {
+                return $builder->select(['id', 'rate']);
+            }])
+                ->get(['name', 'id', 'code', 'stocking_uom', 'buying_tax']);
+
             return Response::json([
-                'items' => StockItem::with(['conversions'])->get(['name', 'id', 'code', 'stocking_uom']),
-                'uoms' => UnitOfMeasure::active()->get(['id', 'name']),
+                'items' => $items,
+                'uoms' => UnitOfMeasure::active()->get(['id', 'name'])->keyBy('id'),
                 'suppliers' => Supplier::active()->get(['id', 'name', 'account_number'])
             ]);
         }
 
-        return view('purchase-order.create')->with('orders', Order::all());
+        return view('purchase-order.create')->with('orders', Order::all())
+            ->with('orderLines', OrderLine::all());
     }
 
     /**
