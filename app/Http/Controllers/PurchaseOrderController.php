@@ -21,7 +21,7 @@ class PurchaseOrderController extends Controller
      */
     public function index()
     {
-//        $order = Order::with()
+
         return view('purchase-order.index')->with('suppliers', Supplier::all())
         ->with('stalls', Stall::all())->with('orders', Order::all());
     }
@@ -37,7 +37,7 @@ class PurchaseOrderController extends Controller
             return Response::json([
                 'items' => StockItem::with(['conversions'])->get(['name', 'id', 'code', 'stocking_uom']),
                 'uoms' => UnitOfMeasure::active()->get(['id', 'name']),
-                'suppliers' => Supplier::active()->get(['id', 'name', 'account_number'])
+                'suppliers' => Supplier::active()->get(['id', 'name', 'account_number']),
             ]);
         }
 

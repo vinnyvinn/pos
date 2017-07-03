@@ -36,7 +36,7 @@
                         </div>
                         <div class="form-group">
                             <label for="order_number">Order Number</label>
-                            <input class="form-control input-sm" type="text" name="order_number" id="order_number" readonly>
+                            <input class="form-control input-sm" type="text" name="order_number" id="order_number">
                         </div>
                         <div class="form-group">
                             <label for="external_order_number">External Order Number</label>
@@ -58,7 +58,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
+                        <tr >
                             <td>
                                 <select class="form-control" name="stockItem" id="stockItem">
                                     <option value="stockItem">stockItem</option>
@@ -70,19 +70,19 @@
                                 </select>
                             </td>
                             <td>
-                                <input class="form-control "type="text" name="" id="">
+                                <input class="form-control" type="text" name="" id="">
                             </td>
                             <td>
-                                <input class="form-control "type="text" name="" id="">
+                                <input class="form-control" type="text" name="" id="">
                             </td>
                             <td>
-                                <input class="form-control "type="text" name="" id="">
+                                <input class="form-control" type="text" name="" id="">
                             </td>
                             <td>
-                                <input class="form-control "type="text" name="" id="">
+                                <input class="form-control" type="text" name="" id="">
                             </td>
                             <td>
-                                <input class="form-control "type="text" name="" id="">
+                                <input class="form-control" type="text" name="" id="">
                             </td>
                             <td>
                                 <a href="" class="btn btn-success"><i class="fa fa-plus"></i></a>
@@ -106,19 +106,12 @@
                         <tbody>
                         <tr v-for="orderLine in orderLines">
                             <td>
-                                <!--<select class="form-control input-sm" name="stock_item_id" id="stock_item_id">-->
-                                <!--<option value="">Stock Item</option>-->
-                                <!--</select>-->
                                 {{ orderLine.stock_item_id }}
                             </td>
                             <td>
-                                <!--<select class="form-control input-sm" name="uom" id="uom">-->
-                                <!--<option value=""></option>-->
-                                <!--</select>-->
                                 {{ orderLine.uom }}
                             </td>
                             <td>
-                                <!--<input class="form-control input-sm" type="text" name="order_quantity" id="order_quantity">-->
                                 {{ orderLine.order_quantity }}
                             </td>
                             <td>

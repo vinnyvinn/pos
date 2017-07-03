@@ -12270,13 +12270,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -14709,8 +14702,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "type": "text",
       "name": "order_number",
-      "id": "order_number",
-      "readonly": ""
+      "id": "order_number"
     }
   })]), _vm._v(" "), _c('div', {
     staticClass: "form-group"
@@ -14751,35 +14743,35 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "value": "stockItem"
     }
   }, [_vm._v("stockItem")])])]), _vm._v(" "), _c('td', [_c('input', {
-    staticClass: "form-control ",
+    staticClass: "form-control",
     attrs: {
       "type": "text",
       "name": "",
       "id": ""
     }
   })]), _vm._v(" "), _c('td', [_c('input', {
-    staticClass: "form-control ",
+    staticClass: "form-control",
     attrs: {
       "type": "text",
       "name": "",
       "id": ""
     }
   })]), _vm._v(" "), _c('td', [_c('input', {
-    staticClass: "form-control ",
+    staticClass: "form-control",
     attrs: {
       "type": "text",
       "name": "",
       "id": ""
     }
   })]), _vm._v(" "), _c('td', [_c('input', {
-    staticClass: "form-control ",
+    staticClass: "form-control",
     attrs: {
       "type": "text",
       "name": "",
       "id": ""
     }
   })]), _vm._v(" "), _c('td', [_c('input', {
-    staticClass: "form-control ",
+    staticClass: "form-control",
     attrs: {
       "type": "text",
       "name": "",
