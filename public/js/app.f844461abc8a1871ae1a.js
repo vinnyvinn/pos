@@ -12282,7 +12282,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             items: [],
             suppliers: [],
             uoms: [],
-            orderLines: []
+            orderLines: [],
+            stalls: []
         };
     },
     created: function created() {
@@ -12378,11 +12379,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }).then(function (_ref) {
                 var items = _ref.items,
                     suppliers = _ref.suppliers,
-                    uoms = _ref.uoms;
+                    uoms = _ref.uoms,
+                    stalls = _ref.stalls;
 
                 _this3.items = items;
                 _this3.suppliers = suppliers;
                 _this3.uoms = uoms;
+                _this3.stalls = stalls;
             });
         },
         addToOrder: function addToOrder() {
@@ -14714,7 +14717,45 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "widget"
   }, [_vm._m(0), _vm._v(" "), _c('div', {
     staticClass: "widget-content padding"
-  }, [_vm._m(1), _vm._v(" "), _vm._m(2), _vm._v(" "), _c('br'), _vm._v(" "), _c('table', {
+  }, [_c('div', {
+    staticClass: "col-sm-6"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "supplier_id"
+    }
+  }, [_vm._v("Supplier")]), _vm._v(" "), _c('select', {
+    staticClass: "form-control input-sm",
+    attrs: {
+      "name": "supplier_id",
+      "id": "supplier_id"
+    }
+  }, _vm._l((_vm.suppliers), function(supplier) {
+    return _c('option', {
+      domProps: {
+        "value": supplier.id
+      }
+    }, [_vm._v(_vm._s(supplier.name))])
+  }))]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "stall_id"
+    }
+  }, [_vm._v("Stall")]), _vm._v(" "), _c('select', {
+    staticClass: "form-control input-sm",
+    attrs: {
+      "name": "stall_id",
+      "id": "stall_id"
+    }
+  }, _vm._l((_vm.stalls), function(stall) {
+    return _c('option', {
+      domProps: {
+        "value": stall.id
+      }
+    }, [_vm._v(_vm._s(stall.name))])
+  }))]), _vm._v(" "), _vm._m(1)]), _vm._v(" "), _vm._m(2), _vm._v(" "), _c('br'), _vm._v(" "), _c('table', {
     staticClass: "table table-responsive"
   }, [_vm._m(3), _vm._v(" "), _c('tbody', [_c('tr', [_c('td', [_c('select', {
     directives: [{
@@ -14927,40 +14968,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('h2', [_c('strong', [_vm._v("Purchase Order")])])])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
-    staticClass: "col-sm-6"
-  }, [_c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "supplier_id"
-    }
-  }, [_vm._v("Supplier")]), _vm._v(" "), _c('select', {
-    staticClass: "form-control input-sm",
-    attrs: {
-      "name": "supplier_id",
-      "id": "supplier_id"
-    }
-  }, [_c('option', {
-    attrs: {
-      "value": ""
-    }
-  })])]), _vm._v(" "), _c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "stall_id"
-    }
-  }, [_vm._v("Stall")]), _vm._v(" "), _c('select', {
-    staticClass: "form-control input-sm",
-    attrs: {
-      "name": "stall_id",
-      "id": "stall_id"
-    }
-  }, [_c('option', {
-    attrs: {
-      "value": "stall_id"
-    }
-  })])]), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('label', {
     attrs: {
@@ -14974,7 +14981,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "cols": "30",
       "rows": "5"
     }
-  })])])
+  })])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "col-sm-6"

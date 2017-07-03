@@ -42,11 +42,13 @@ class PurchaseOrderController extends Controller
             return Response::json([
                 'items' => $items,
                 'uoms' => UnitOfMeasure::active()->get(['id', 'name'])->keyBy('id'),
-                'suppliers' => Supplier::active()->get(['id', 'name', 'account_number'])
+                'suppliers' => Supplier::active()->get(['id', 'name', 'account_number']),
+                'orders' => Order::all(),
+                'stalls' => Stall::all()
             ]);
         }
 
-        return view('purchase-order.create')->with('orders', Order::all())
+        return view('purchase-order.create')
             ->with('orderLines', OrderLine::all());
     }
 

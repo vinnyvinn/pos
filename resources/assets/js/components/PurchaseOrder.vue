@@ -11,13 +11,13 @@
                         <div class="form-group">
                             <label for="supplier_id">Supplier</label>
                             <select class="form-control input-sm" name="supplier_id" id="supplier_id">
-                                <option value=""></option>
+                                <option v-for="supplier in suppliers" :value="supplier.id">{{supplier.name}}</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="stall_id">Stall</label>
                             <select class="form-control input-sm" name="stall_id" id="stall_id">
-                                <option value="stall_id"></option>
+                                <option v-for="stall in stalls" :value="stall.id">{{stall.name}}</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -154,6 +154,7 @@
                 suppliers: [],
                 uoms: [],
                 orderLines: [],
+                stalls: []
             };
         },
         created() {
@@ -237,10 +238,11 @@
             fetchData() {
                 axios.get('/purchaseOrder/create')
                     .then(response => response.data)
-                    .then(({ items, suppliers, uoms }) => {
+                    .then(({ items, suppliers, uoms, stalls }) => {
                         this.items = items;
                         this.suppliers = suppliers;
                         this.uoms = uoms;
+                        this.stalls = stalls;
                     });
             },
             addToOrder() {
