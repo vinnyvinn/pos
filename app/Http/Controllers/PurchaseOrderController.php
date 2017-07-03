@@ -34,10 +34,15 @@ class PurchaseOrderController extends Controller
     public function create()
     {
         if (request()->ajax()) {
+            $items = StockItem::with(['conversions', 'buyingTax' => function ($builder) {
+                return $builder->select(['id', 'rate']);
+            }])
+                ->get(['name', 'id', 'code', 'stocking_uom', 'buying_tax']);
+
             return Response::json([
-                'items' => StockItem::with(['conversions'])->get(['name', 'id', 'code', 'stocking_uom']),
-                'uoms' => UnitOfMeasure::active()->get(['id', 'name']),
-                'suppliers' => Supplier::active()->get(['id', 'name', 'account_number']),
+                'items' => $items,
+                'uoms' => UnitOfMeasure::active()->get(['id', 'name'])->keyBy('id'),
+                'suppliers' => Supplier::active()->get(['id', 'name', 'account_number'])
             ]);
         }
 
