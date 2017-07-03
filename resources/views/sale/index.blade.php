@@ -1,5 +1,15 @@
 @extends('layouts.app')
+
 @section('content')
+    @component('components.page-header')
+    @slot('icon')
+        fa fa-building
+    @endslot
+    @slot('header')
+        Stalls
+    @endslot
+    Manage the stalls.
+    @endcomponent
 
  <div class="panel panel-default">
      <div class="panel-heading">
