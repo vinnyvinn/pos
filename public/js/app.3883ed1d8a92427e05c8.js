@@ -12122,194 +12122,7 @@ module.exports = function spread(callback) {
 
 
 /***/ }),
-/* 30 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        return {
-            items: [],
-            suppliers: [],
-            uoms: []
-        };
-    },
-    created: function created() {
-        this.fetchData();
-    },
-
-    methods: {
-        fetchData: function fetchData() {
-            var _this = this;
-
-            axios.get('/purchaseOrder/create').then(function (response) {
-                return response.data;
-            }).then(function (_ref) {
-                var items = _ref.items,
-                    suppliers = _ref.suppliers,
-                    uoms = _ref.uoms;
-
-                _this.items = items;
-                _this.suppliers = suppliers;
-                _this.uoms = uoms;
-            });
-        }
-    }
-});
-
-/***/ }),
+/* 30 */,
 /* 31 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -12908,21 +12721,6 @@ window.axios.defaults.headers.common = {
 
     laravel.initialize();
 })();
-
-$('.button-menu-mobile.open-left').on('click', function () {
-    "use strict";
-
-    if ($('body').hasClass('fixed-left')) {
-        localStorage.setItem('closed', 1);
-        return;
-    }
-    localStorage.setItem('closed', 0);
-});
-
-if (localStorage.getItem('closed') == 1) {
-    $('body').attr('class', 'widescreen fixed-left-void');
-    $('#wrapper').attr('class', 'forced enlarged');
-}
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
@@ -13429,7 +13227,7 @@ module.exports = function() {
 
 var Component = __webpack_require__(2)(
   /* script */
-  __webpack_require__(30),
+  null,
   /* template */
   __webpack_require__(46),
   /* scopeId */
@@ -13437,7 +13235,7 @@ var Component = __webpack_require__(2)(
   /* cssModules */
   null
 )
-Component.options.__file = "/home/kui/dev/office/standalone-pos/resources/assets/js/components/PurchaseOrder.vue"
+Component.options.__file = "/home/smodav/code/office/standalone-pos/resources/assets/js/components/PurchaseOrder.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] PurchaseOrder.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -13471,7 +13269,7 @@ var Component = __webpack_require__(2)(
   /* cssModules */
   null
 )
-Component.options.__file = "/home/kui/dev/office/standalone-pos/resources/assets/js/components/Settings.vue"
+Component.options.__file = "/home/smodav/code/office/standalone-pos/resources/assets/js/components/Settings.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Settings.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -13505,7 +13303,7 @@ var Component = __webpack_require__(2)(
   /* cssModules */
   null
 )
-Component.options.__file = "/home/kui/dev/office/standalone-pos/resources/assets/js/components/StockItem.vue"
+Component.options.__file = "/home/smodav/code/office/standalone-pos/resources/assets/js/components/StockItem.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] StockItem.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -13543,7 +13341,7 @@ var Component = __webpack_require__(2)(
   /* cssModules */
   null
 )
-Component.options.__file = "/home/kui/dev/office/standalone-pos/resources/assets/js/components/core/loader.vue"
+Component.options.__file = "/home/smodav/code/office/standalone-pos/resources/assets/js/components/core/loader.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] loader.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -14593,6 +14391,8 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _vm._m(0)
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "row"
   }, [_c('div', {
@@ -14601,26 +14401,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "container"
   }, [_c('div', {
     staticClass: "widget"
-  }, [_vm._m(0), _vm._v(" "), _c('div', {
-    staticClass: "widget-content padding"
-  }, [_vm._m(1), _vm._v(" "), _vm._m(2), _vm._v(" "), _c('br'), _vm._v(" "), _vm._m(3), _vm._v(" "), _c('br'), _vm._v(" "), _c('table', {
-    staticClass: "table table-responsive"
-  }, [_vm._m(4), _vm._v(" "), _c('tbody', _vm._l((_vm.orderLines), function(orderLine) {
-    return _c('tr', [_c('td', [_vm._v("\n                            " + _vm._s(orderLine.stock_item_id) + "\n                        ")]), _vm._v(" "), _c('td', [_vm._v("\n                            " + _vm._s(orderLine.uom) + "\n                        ")]), _vm._v(" "), _c('td', [_vm._v("\n                            " + _vm._s(orderLine.order_quantity) + "\n                        ")]), _vm._v(" "), _c('td', [_vm._v("\n                            " + _vm._s(orderLine.order_quantity) + "\n                        ")]), _vm._v(" "), _c('td', [_vm._v("\n                            " + _vm._s(orderLine.total_exclusive) + "\n                        ")]), _vm._v(" "), _c('td', [_vm._v("\n                            " + _vm._s(orderLine.order.total_tax) + "\n                        ")]), _vm._v(" "), _c('td', [_c('input', {
-      staticClass: "form-control input-sm",
-      attrs: {
-        "type": "text",
-        "name": "total_inclusive",
-        "id": "total_inclusive"
-      }
-    }), _vm._v("\n                            " + _vm._s(orderLine.order.total_tax) + "\n                        ")])])
-  }))]), _vm._v(" "), _c('br'), _vm._v(" "), _vm._m(5)])])])])])
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
+  }, [_c('div', {
     staticClass: "widget-header"
-  }, [_c('h2', [_c('strong', [_vm._v("Purchase Order")])])])
-},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
+  }, [_c('h2', [_c('strong', [_vm._v("Purchase Order")])])]), _vm._v(" "), _c('div', {
+    staticClass: "widget-content padding"
+  }, [_c('div', {
     staticClass: "col-sm-6"
   }, [_c('div', {
     staticClass: "form-group"
@@ -14629,7 +14414,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "for": "supplier_id"
     }
   }, [_vm._v("Supplier")]), _vm._v(" "), _c('select', {
-    staticClass: "form-control input-sm",
+    staticClass: "form-control",
     attrs: {
       "name": "supplier_id",
       "id": "supplier_id"
@@ -14645,7 +14430,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "for": "stall_id"
     }
   }, [_vm._v("Stall")]), _vm._v(" "), _c('select', {
-    staticClass: "form-control input-sm",
+    staticClass: "form-control",
     attrs: {
       "name": "stall_id",
       "id": "stall_id"
@@ -14661,16 +14446,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "for": "description"
     }
   }, [_vm._v("Description")]), _vm._v(" "), _c('textarea', {
-    staticClass: "form-control input-sm",
+    staticClass: "form-control",
     attrs: {
       "name": "description",
       "id": "description",
       "cols": "30",
       "rows": "5"
     }
-  })])])
-},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
+  })])]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-6"
   }, [_c('div', {
     staticClass: "form-group"
@@ -14679,7 +14462,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "for": "order_date"
     }
   }, [_vm._v("Order Date")]), _vm._v(" "), _c('input', {
-    staticClass: "form-control input-sm",
+    staticClass: "form-control",
     attrs: {
       "type": "text",
       "name": "order_date",
@@ -14692,7 +14475,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "for": "due_date"
     }
   }, [_vm._v("Due Date")]), _vm._v(" "), _c('input', {
-    staticClass: "form-control input-sm",
+    staticClass: "form-control",
     attrs: {
       "type": "text",
       "name": "due_date",
@@ -14705,7 +14488,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "for": "order_number"
     }
   }, [_vm._v("Order Number")]), _vm._v(" "), _c('input', {
-    staticClass: "form-control input-sm",
+    staticClass: "form-control",
     attrs: {
       "type": "text",
       "name": "order_number",
@@ -14719,18 +14502,80 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "for": "external_order_number"
     }
   }, [_vm._v("External Order Number")]), _vm._v(" "), _c('input', {
-    staticClass: "form-control input-sm",
+    staticClass: "form-control",
     attrs: {
       "type": "text",
       "name": "external_order_number",
       "id": "external_order_number",
       "readonly": ""
     }
-  })])])
-},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('table', {
+  })])]), _vm._v(" "), _c('br'), _vm._v(" "), _c('table', {
     staticClass: "table table-responsive"
   }, [_c('thead', [_c('tr', [_c('th', [_vm._v("Stock Item")]), _vm._v(" "), _c('th', [_vm._v("UOM")]), _vm._v(" "), _c('th', [_vm._v("Quantity")]), _vm._v(" "), _c('th', [_vm._v("Unit Price")]), _vm._v(" "), _c('th', [_vm._v("Total Excluded")]), _vm._v(" "), _c('th', [_vm._v("Total Tax")]), _vm._v(" "), _c('th', [_vm._v("Total Inclusive")]), _vm._v(" "), _c('th')])]), _vm._v(" "), _c('tbody', [_c('tr', [_c('td', [_c('select', {
+    staticClass: "form-control",
+    attrs: {
+      "name": "stock_item_id",
+      "id": "stock_item_id"
+    }
+  }, [_c('option', {
+    attrs: {
+      "value": ""
+    }
+  }, [_vm._v("Stock Item")])])]), _vm._v(" "), _c('td', [_c('select', {
+    staticClass: "form-control",
+    attrs: {
+      "name": "uom",
+      "id": "uom"
+    }
+  }, [_c('option', {
+    attrs: {
+      "value": ""
+    }
+  })])]), _vm._v(" "), _c('td', [_c('input', {
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "name": "order_quantity",
+      "id": "order_quantity"
+    }
+  })]), _vm._v(" "), _c('td', [_c('input', {
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "name": "",
+      "id": ""
+    }
+  })]), _vm._v(" "), _c('td', [_c('input', {
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "name": "total_exclusive",
+      "id": "total_exclusive"
+    }
+  })]), _vm._v(" "), _c('td', [_c('input', {
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "name": "",
+      "id": ""
+    }
+  })]), _vm._v(" "), _c('td', [_c('input', {
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "name": "total_inclusive",
+      "id": "total_inclusive"
+    }
+  })]), _vm._v(" "), _c('td', [_c('a', {
+    staticClass: "btn btn-success",
+    attrs: {
+      "href": ""
+    }
+  }, [_c('i', {
+    staticClass: "fa fa-plus"
+  })])])])])]), _vm._v(" "), _c('br'), _vm._v(" "), _c('table', {
+    staticClass: "table table-responsive"
+  }, [_c('thead', [_c('tr', [_c('th', [_vm._v("Stock Item")]), _vm._v(" "), _c('th', [_vm._v("UOM")]), _vm._v(" "), _c('th', [_vm._v("Quantity")]), _vm._v(" "), _c('th', [_vm._v("Unit Price")]), _vm._v(" "), _c('th', [_vm._v("Total Exclusive")]), _vm._v(" "), _c('th', [_vm._v("Total Tax")]), _vm._v(" "), _c('th', [_vm._v("Total Inclusive")])])]), _vm._v(" "), _c('tbody', [_c('tr', [_c('td', [_c('select', {
     staticClass: "form-control",
     attrs: {
       "name": "stockItem",
@@ -14785,18 +14630,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "name": "",
       "id": ""
     }
-  })]), _vm._v(" "), _c('td', [_c('a', {
-    staticClass: "btn btn-success",
-    attrs: {
-      "href": ""
-    }
-  }, [_c('i', {
-    staticClass: "fa fa-plus"
-  })])])])])])
-},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('thead', [_c('tr', [_c('th', [_vm._v("Stock Item")]), _vm._v(" "), _c('th', [_vm._v("UOM")]), _vm._v(" "), _c('th', [_vm._v("Quantity")]), _vm._v(" "), _c('th', [_vm._v("Unit Price")]), _vm._v(" "), _c('th', [_vm._v("Total Exclusive")]), _vm._v(" "), _c('th', [_vm._v("Total Tax")]), _vm._v(" "), _c('th', [_vm._v("Total Inclusive")])])])
-},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
+  })])])])]), _vm._v(" "), _c('br'), _vm._v(" "), _c('div', {
     staticClass: "pull-right",
     staticStyle: {
       "padding-bottom": "10px"
@@ -14811,7 +14645,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "href": ""
     }
-  }, [_vm._v("Back")])])
+  }, [_vm._v("Back")])])])])])])])
 }]}
 module.exports.render._withStripped = true
 if (false) {
