@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Order extends Model
 {
+    protected $fillable = [
+        'stall_id', 'document_type',''
+    ];
     use SoftDeletes;
 
     const PURCHASE_ORDER = 0;
@@ -20,6 +23,6 @@ class Order extends Model
 
     public function stall()
     {
-        return $this->
+        return $this->hasMany(Stall::class);
     }
 }

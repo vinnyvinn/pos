@@ -58,30 +58,34 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
+                        <tr v-for="orderLine in orderLines">
                             <td>
-                                <select class="form-control input-sm" name="stock_item_id" id="stock_item_id">
-                                <option value="">Stock Item</option>
-                            </select></td>
-                            <td>
-                                <select class="form-control input-sm" name="uom" id="uom">
-                                    <option value=""></option>
-                                </select>
+                                <!--<select class="form-control input-sm" name="stock_item_id" id="stock_item_id">-->
+                                <!--<option value="">Stock Item</option>-->
+                            <!--</select>-->
+                                {{ orderLine.stock_item_id }}
                             </td>
                             <td>
-                                <input class="form-control input-sm" type="text" name="order_quantity" id="order_quantity">
+                                <!--<select class="form-control input-sm" name="uom" id="uom">-->
+                                    <!--<option value=""></option>-->
+                                <!--</select>-->
+                                {{ orderLine.uom }}
                             </td>
                             <td>
-                                <input class="form-control input-sm" type="text" name="" id="">
+                                <!--<input class="form-control input-sm" type="text" name="order_quantity" id="order_quantity">-->
+                                {{ orderLine.order_quantity }}
                             </td>
                             <td>
-                                <input class="form-control input-sm" type="text" name="total_exclusive" id="total_exclusive">
+                                {{ orderLine.order_quantity }}
                             </td>
                             <td>
-                                <input class="form-control input-sm" type="text" name="" id="">
+                                {{ orderLine.total_exclusive }}
                             </td>
                             <td>
-                                <input class="form-control input-sm" type="text" name="total_inclusive" id="total_inclusive">
+                                {{ orderLine.order.total_tax }}
+                            </td>
+                            <td>
+                                {{ orderLine.total_inclusive }}
                             </td>
                             <td>
                                 <a href="" class="btn btn-success"><i class="fa fa-plus"></i></a>
@@ -103,31 +107,34 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
+                        <tr v-for="orderLine in orderLines">
                             <td>
-                                <select class="form-control" name="stockItem" id="stockItem">
-                                    <option value="stockItem">stockItem</option>
-                                </select>
+                                <!--<select class="form-control input-sm" name="stock_item_id" id="stock_item_id">-->
+                                <!--<option value="">Stock Item</option>-->
+                                <!--</select>-->
+                                {{ orderLine.stock_item_id }}
                             </td>
                             <td>
-                                <select class="form-control" name="stockItem" id="stockItem">
-                                    <option value="stockItem">stockItem</option>
-                                </select>
+                                <!--<select class="form-control input-sm" name="uom" id="uom">-->
+                                <!--<option value=""></option>-->
+                                <!--</select>-->
+                                {{ orderLine.uom }}
                             </td>
                             <td>
-                                <input class="form-control "type="text" name="" id="">
+                                <!--<input class="form-control input-sm" type="text" name="order_quantity" id="order_quantity">-->
+                                {{ orderLine.order_quantity }}
                             </td>
                             <td>
-                                <input class="form-control "type="text" name="" id="">
+                                {{ orderLine.order_quantity }}
                             </td>
                             <td>
-                                <input class="form-control "type="text" name="" id="">
+                                {{ orderLine.total_exclusive }}
                             </td>
                             <td>
-                                <input class="form-control "type="text" name="" id="">
+                                {{ orderLine.order.total_tax }}
                             </td>
                             <td>
-                                <input class="form-control "type="text" name="" id="">
+                                {{ orderLine.total_inclusive }}
                             </td>
                         </tr>
                         </tbody>

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Response;
 use SmoDav\Models\Order;
 
+use SmoDav\Models\OrderLine;
 use SmoDav\Models\Stall;
 use SmoDav\Models\StockItem;
 use SmoDav\Models\Supplier;
@@ -20,7 +21,7 @@ class PurchaseOrderController extends Controller
      */
     public function index()
     {
-        $order = Order::with()
+//        $order = Order::with()
         return view('purchase-order.index')->with('suppliers', Supplier::all())
         ->with('stalls', Stall::all())->with('orders', Order::all());
     }
@@ -40,7 +41,8 @@ class PurchaseOrderController extends Controller
             ]);
         }
 
-        return view('purchase-order.create')->with('orders', Order::all());
+        return view('purchase-order.create')->with('orders', Order::all())
+            ->with('orderLines', OrderLine::all());
     }
 
     /**
