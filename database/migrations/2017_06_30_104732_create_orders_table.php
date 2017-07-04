@@ -26,7 +26,7 @@ class CreateOrdersTable extends Migration
             $table->text('description')->nullable();
             $table->date('order_date')->nullable();
             $table->date('due_date')->nullable();
-            $table->double('total_discount');
+            $table->double('total_discount')->default(0);
             $table->double('total_exclusive');
             $table->double('total_inclusive');
             $table->double('total_tax');

@@ -22,29 +22,36 @@
                 <h2><strong>Purchase Order</strong></h2>
             </div>
             <div class="widget-content padding">
-                <table class="table table-responsive table-striped" id="purchaseOrder_table" cellspacing="0">
+                <div class="table-responsive">
+                    <table class="table table-striped nowrap" id="purchaseOrder_table" cellspacing="0">
                     <thead>
                     <tr>
                         <th>Supplier</th>
                         <th>Stall</th>
                         <th>Order Date</th>
                         <th>Due Date</th>
-                        <th>Order Number</th>
-                        <th>External Order Number</th>
+                        <th class="text-right">Total Exclusive</th>
+                        <th class="text-right">Total Inclusive</th>
+                        <th>Actions</th>
                     </tr>
                     </thead>
                     <tbody>
                     @foreach($orders as $order)
-                    <tr>
-                        <td></td>
-                        <td>{{ $order->stall->name }}</td>
-                        <td>{{ $order->order_date }}</td>
-                        <td>{{ $order->order_number }}</td>
-                        <td>{{ $order->external_order_number }}</td>
-                    </tr>
-                        @endforeach
+                        <tr>
+                            <td>{{ $order->supplier->name }}</td>
+                            <td>{{ $order->stall->name }}</td>
+                            <td>{{ $order->order_date }}</td>
+                            <td>{{ $order->due_date }}</td>
+                            <td class="text-right">{{ number_format($order->total_exclusive, 2) }}</td>
+                            <td class="text-right">{{ number_format($order->total_inclusive, 2) }}</td>
+                            <td>
+                                <a href="{{ route('purchaseOrder.edit', $order->id) }}" class="btn btn-success btn-xs">Receive</a>
+                            </td>
+                        </tr>
+                    @endforeach
                     </tbody>
                 </table>
+                </div>
             </div>
         </div>
         </div>

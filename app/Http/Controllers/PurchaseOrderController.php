@@ -23,9 +23,16 @@ class PurchaseOrderController extends Controller
      */
     public function index()
     {
+        $orders = Order::purchase()
+            ->with(['supplier', 'stall'])
+            ->get();
 
-        return view('purchase-order.index')->with('suppliers', Supplier::all())
-        ->with('stalls', Stall::all())->with('orders', Order::all());
+//        $partial = Order::purchase()->partial()->with()->get();
+//        $partial = Order::purchase()->archived()->with()->get();
+//        $partial = Order::purchase()->unprocessed()->with()->get();
+
+        return view('purchase-order.index')
+            ->with('orders', $orders);
     }
 
     /**
@@ -61,22 +68,57 @@ class PurchaseOrderController extends Controller
      */
     public function store(Request $request)
     {
-
         $data = $request->all();
         $data['lines'] = json_decode($data['lines']);
         $data['account_id'] = $request->get('supplier_id');
-        $data['user_id'] = Auth::user()->id;
+        $data['user_id'] = Auth::id();
         $data['document_type'] = Order::PURCHASE_ORDER;
         $data['document_status'] = Order::STATUS_UNPROCESSED;
-
-        dd($data);
-
-        if ($data['due_date'] == null) {
+        $data['total_exclusive'] = 0;
+        $data['total_inclusive'] = 0;
+        $data['total_tax'] = 0;
+        if (!$data['due_date']) {
             $data['due_date'] = Carbon::parse($request->get('order_date'));
         }
-         OrderLine::create($data)->with('order');
+
+        foreach ($data['lines'] as $line) {
+            $data['total_exclusive'] += $line->totalExcl;
+            $data['total_inclusive'] += $line->totalIncl;
+            $data['total_tax'] += $line->totalTax;
+        }
+
+        \DB::transaction(function () use ($data) {
+            $order = Order::create($data);
+            $data['lines'] = array_map(function ($line) use ($order, $data) {
+                $line = (array) $line;
+                $line['order_id'] = $order->id;
+                $line['stall_id'] = $data['stall_id'];
+                $line['stock_item_id'] = $line['itemId'];
+                $line['uom'] = $line['conversionId'];
+                $line['order_quantity'] = $line['quantity'];
+                $line['processed_quantity'] = 0;
+                $line['discount'] = 0;
+                $line['tax_id'] = $line['taxId'];
+                $line['tax_rate'] = $line['taxRate'];
+                $line['unit_exclusive'] = $line['unitExclPrice'];
+                $line['unit_inclusive'] = $line['unitInclPrice'];
+                $line['unit_tax'] = $line['unit_inclusive'] - $line['unit_exclusive'];
+                $line['total_exclusive'] = $line['order_quantity'] * $line['unit_exclusive'];
+                $line['total_inclusive'] = $line['order_quantity'] * $line['unit_inclusive'];
+
+                unset(
+                    $line['itemId'], $line['conversionId'], $line['quantity'], $line['taxId'], $line['taxRate'],
+                    $line['unitExclPrice'], $line['unitInclPrice'], $line['totalExcl'], $line['totalIncl'],
+                    $line['totalTax']
+                );
+
+                return $line;
+            }, $data['lines']);
+            OrderLine::insert($data['lines']);
+        });
 
         flash('Successfully created a new purchase order');
+
         return redirect()->route('purchaseOrder.index');
     }
 
@@ -95,11 +137,13 @@ class PurchaseOrderController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function edit($id)
     {
-        //
+        return view('purchase-order.edit')
+            ->with('order', Order::findOrFail($id));
     }
 
     /**

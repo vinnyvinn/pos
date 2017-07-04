@@ -13,14 +13,13 @@
                                 <div class="form-group">
                                     <label for="supplier_id">Supplier</label>
                                     <select class="form-control input-sm" name="supplier_id" id="supplier_id" required>
-                                        <option value="null" disabled>Select a supplier</option>
+                                        <option value="disabled">Select Supplier</option>
                                         <option v-for="supplier in suppliers" :value="supplier.id">{{supplier.name}}</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label for="stall_id">Stall</label>
                                     <select class="form-control input-sm" name="stall_id" id="stall_id" required>
-                                        <option value="null" disabled>Select a stall</option>
                                         <option v-for="stall in stalls" :value="stall.id">{{stall.name}}</option>
                                     </select>
                                 </div>
@@ -145,10 +144,12 @@
         </div>
     </div>
 </template>
+
 <script>
     export default {
         data() {
             return {
+                fromback: '',
                 unitExclPrice: 0,
                 unitInclPrice: 0,
                 itemId: null,
@@ -165,7 +166,7 @@
             };
         },
         created() {
-          this.fetchData();
+            this.fetchData();
         },
         computed: {
             stockItem() {
@@ -245,12 +246,16 @@
                 this.unitExclPrice = (Math.round((price/rate) * 100))/100;
             },
         },
+        props: ['id'],
         methods: {
             entry(value) {
                 this.currentEntry = value;
             },
             fetchData() {
-                axios.get('/purchaseOrder/create')
+                axios.get('/purchaseOrder/'+ this.id +'/edit')
+                    .then(response => {
+                        this.fromback = response.order;
+                    })
                     .then(response => response.data)
                     .then(({ items, suppliers, uoms, stalls }) => {
                         this.items = items;
