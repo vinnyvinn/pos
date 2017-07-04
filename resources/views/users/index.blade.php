@@ -20,6 +20,12 @@
         <div class="widget">
             <div class="widget-header">
                 <h2><strong>Users</strong></h2>
+                <div class="additional-btn">
+                    <a href="{{ route('users.create') }}" class="pull-right btn btn-primary btn-xs">
+                        <span class="fa fa-plus"></span>
+                        Add New
+                    </a>
+                </div>
             </div>
             <div class="widget-content padding">
                 <div class="table-responsive">
@@ -38,7 +44,14 @@
                                 <td>{{ $user->full_name }}</td>
                                 <td>{{ $user->username }}</td>
                                 <td>{{ $user->email }}</td>
-                                <td></td>
+                                <td>
+                                    <a href="{{ route('users.edit', $user->id) }}" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></a>
+                                    <a href="{{ route('users.destroy', $user->id) }}"
+                                       class="btn btn-danger btn-xs" data-method="DELETE"
+                                       rel="nofollow"
+                                       data-confirm="Are you sure you want to delete this?"
+                                       data-token="{{ csrf_token() }}"><i class="fa fa-trash"></i></a>
+                                </td>
                             </tr>
                         @endforeach
                         </tbody>

@@ -74,8 +74,8 @@
                                         <td class="text-center"><span class="btn btn-xs btn-danger">Inactive</span></td>
                                     @endif
                                     <td class="text-center">
-                                        <a href="{{ route('tax.edit', $item->id) }}" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></a>
-                                        <a href="{{ route('tax.destroy', $item->id) }}"
+                                        <a href="{{ route('stockItem.edit', $item->id) }}" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></a>
+                                        <a href="{{ route('stockItem.destroy', $item->id) }}"
                                            class="btn btn-danger btn-xs" data-method="DELETE"
                                            rel="nofollow"
                                            data-confirm="Are you sure you want to delete this?"

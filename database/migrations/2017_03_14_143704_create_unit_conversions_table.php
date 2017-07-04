@@ -14,7 +14,6 @@ class CreateUnitConversionsTable extends Migration
     public function up()
     {
         Schema::create('unit_conversions', function (Blueprint $table) {
-            $table->increments('id');
             $table->integer('stock_item_id')->index()->unsigned();
             $table->integer('stocking_unit_id')->index()->unsigned();
             $table->integer('converted_unit_id')->index()->unsigned();

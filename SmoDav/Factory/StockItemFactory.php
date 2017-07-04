@@ -29,7 +29,7 @@ class StockItemFactory
                 }
             }
 
-            $prices = self::preparePrices($request->get('prices'));
+            $prices = self::preparePrices($request, $stockItem);
 
             foreach ($prices as $price) {
                 $stockItem->prices()->create((array) $price);
@@ -37,25 +37,55 @@ class StockItemFactory
         }, 3);
     }
 
-     /**
-     * @param $requestPrices
-     *
-     * @return array
-     */
-    public static function preparePrices($requestPrices)
+    public static function update(StockItem $stockItem, Request $request)
     {
-        $prices = (array) json_decode($requestPrices);
-        $prices = array_map(function ($price) {
-            $unmapped = [];
-            foreach ((array) $price as $item) {
-                $unmapped[] = $item;
+        return DB::transaction(function () use ($request, $stockItem) {
+            $data = $request->all();
+            $data['is_active'] = $request->has('is_active');
+
+            $stockItem->update($data);
+            $conversions = json_decode($request->get('conversions'));
+            $stockItem->conversions()->delete();
+
+            if ($stockItem->has_conversions) {
+                foreach ($conversions as $conversion) {
+                    $stockItem->conversions()->create([
+                        'stock_item_id' => $stockItem->id,
+                        'stocking_unit_id' => $request->get('stocking_uom'),
+                        'converted_unit_id' => $conversion->unit_b_id,
+                        'converted_ratio' => $conversion->unit_b_quantity,
+                        'stocking_ratio' => $conversion->unit_a_quantity
+                    ]);
+                }
             }
 
-            return $unmapped;
-        }, $prices);
+            $prices = self::preparePrices($request, $stockItem);
+            $stockItem->prices()->delete();
 
-        $prices = array_flatten($prices);
+            foreach ($prices as $price) {
+                $stockItem->prices()->create((array) $price);
+            }
+        }, 3);
+    }
 
-        return $prices;
+    public static function preparePrices($request, $stockItem)
+    {
+        $mapped = [];
+        foreach ($request->get('prices') as $key => $values) {
+            $priceList = substr($key, 6);
+            foreach ($values as $conversion => $price) {
+                $unit = substr($conversion, 5);
+                $mapped[] = [
+                    'price_list_name_id' => $priceList,
+                    'stock_item_id' => $stockItem->id,
+                    'unit_conversion_id' => $unit,
+                    'inclusive_price' => $price,
+                    'exclusive_price' => 0,
+                    'tax' => 0
+                ];
+            }
+        }
+
+        return $mapped;
     }
 }
