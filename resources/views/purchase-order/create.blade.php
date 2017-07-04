@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('header')
-    <link href="assets/libs/bootstrap-datepicker/css/datepicker.css" rel="stylesheet" />
+    <link href="{{ asset('assets/libs/bootstrap-datepicker/css/datepicker.css') }}" rel="stylesheet" />
 @endsection
 
 @section('content')
@@ -21,11 +21,12 @@
 @endsection
 
 @section('footer')
-    <script src="assets/libs/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script src="{{ asset('assets/libs/bootstrap-datepicker/js/bootstrap-datepicker.js') }}"></script>
     <script>
         $(document).ready(() => {
             $('.datepicker').datepicker({
-                format: 'yyyy-mm-dd'
+                format: 'yyyy-mm-dd',
+                autoclose: true,
             });
         });
     </script>

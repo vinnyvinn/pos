@@ -12268,6 +12268,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -12283,7 +12287,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             suppliers: [],
             uoms: [],
             orderLines: [],
-            stalls: []
+            stalls: [],
+            csrf: window.Laravel.csrfToken
         };
     },
     created: function created() {
@@ -12339,8 +12344,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         totalTax: function totalTax() {
             return this.totalIncl - this.totalExcl;
-        }
+        },
+        total_exclusive: function total_exclusive() {}
     },
+
+    mounted: function mounted() {
+        setTimeout(function () {}, 1000);
+    },
+
     watch: {
         unitExclPrice: function unitExclPrice(price) {
             if (this.currentEntry != 'unitExclPrice') return;
@@ -12388,11 +12399,33 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this3.stalls = stalls;
             });
         },
+        validateForm: function validateForm(e) {
+            if (!this.orderLines.length) {
+                e.preventDefault();
+
+                Messenger().post({
+                    message: 'Please add at least one order item.',
+                    type: 'error',
+                    showCloseButton: true
+                });
+            }
+        },
         addToOrder: function addToOrder() {
             //TODO: make sure itemId and conversionId != 'null'
+            if (this.itemId == 'null' || !this.itemId) {
+                Messenger().post({
+                    message: 'Please select an item',
+                    type: 'error',
+                    showCloseButton: true
+                });
+                return;
+            }
             this.orderLines.push({
-                item: this.stockItem.code + ' - ' + this.stockItem.name,
+                code: this.stockItem.code,
+                name: this.stockItem.name,
                 itemId: this.itemId,
+                taxId: this.stockItem.buying_tax.id,
+                taxRate: this.stockItem.buying_tax.rate,
                 uom: this.selectedUOM.name,
                 conversionId: this.conversionId,
                 quantity: this.quantity,
@@ -14717,7 +14750,23 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "widget"
   }, [_vm._m(0), _vm._v(" "), _c('div', {
     staticClass: "widget-content padding"
-  }, [_c('div', {
+  }, [_c('form', {
+    attrs: {
+      "action": "/purchaseOrder",
+      "method": "POST"
+    },
+    on: {
+      "submit": _vm.validateForm
+    }
+  }, [_c('input', {
+    attrs: {
+      "type": "hidden",
+      "name": "_token"
+    },
+    domProps: {
+      "value": _vm.csrf
+    }
+  }), _vm._v(" "), _c('div', {
     staticClass: "col-sm-6"
   }, [_c('div', {
     staticClass: "form-group"
@@ -14729,7 +14778,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "form-control input-sm",
     attrs: {
       "name": "supplier_id",
-      "id": "supplier_id"
+      "id": "supplier_id",
+      "required": ""
     }
   }, _vm._l((_vm.suppliers), function(supplier) {
     return _c('option', {
@@ -14747,7 +14797,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "form-control input-sm",
     attrs: {
       "name": "stall_id",
-      "id": "stall_id"
+      "id": "stall_id",
+      "required": ""
     }
   }, _vm._l((_vm.stalls), function(stall) {
     return _c('option', {
@@ -14766,7 +14817,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }],
     staticClass: "form-control input-sm",
     attrs: {
-      "name": "stockItem"
+      "name": "stockItem",
+      "required": ""
     },
     on: {
       "change": function($event) {
@@ -14799,7 +14851,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }],
     staticClass: "form-control input-sm",
     attrs: {
-      "name": "conversion_id"
+      "name": "conversion_id",
+      "required": ""
     },
     on: {
       "change": function($event) {
@@ -14835,7 +14888,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "min": "1",
       "onfocus": "this.select()",
       "type": "number",
-      "name": "quantity"
+      "name": "quantity",
+      "required": ""
     },
     domProps: {
       "value": (_vm.quantity)
@@ -14911,11 +14965,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   })]), _vm._v(" "), _c('td', {
     staticClass: "text-right"
-  }, [_vm._v("\n                            " + _vm._s(_vm.totalExcl.toLocaleString('en-GB')) + "\n                        ")]), _vm._v(" "), _c('td', {
+  }, [_vm._v("\n                                    " + _vm._s(_vm.totalExcl.toLocaleString('en-GB')) + "\n                                ")]), _vm._v(" "), _c('td', {
     staticClass: "text-right"
-  }, [_vm._v("\n                            " + _vm._s(_vm.totalTax.toLocaleString('en-GB')) + "\n                        ")]), _vm._v(" "), _c('td', {
+  }, [_vm._v("\n                                    " + _vm._s(_vm.totalTax.toLocaleString('en-GB')) + "\n                                ")]), _vm._v(" "), _c('td', {
     staticClass: "text-right"
-  }, [_vm._v("\n                            " + _vm._s(_vm.totalIncl.toLocaleString('en-GB')) + "\n                        ")]), _vm._v(" "), _c('td', [_c('button', {
+  }, [_vm._v("\n                                    " + _vm._s(_vm.totalIncl.toLocaleString('en-GB')) + "\n                                ")]), _vm._v(" "), _c('td', [_c('button', {
     staticClass: "btn btn-success btn-xs",
     on: {
       "click": function($event) {
@@ -14928,7 +14982,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   })])])])])]), _vm._v(" "), _c('br'), _vm._v(" "), _c('table', {
     staticClass: "table table-responsive"
   }, [_vm._m(4), _vm._v(" "), _c('tbody', _vm._l((_vm.orderLines), function(orderLine) {
-    return _c('tr', [_c('td', [_vm._v(_vm._s(orderLine.item))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(orderLine.uom))]), _vm._v(" "), _c('td', {
+    return _c('tr', [_c('td', [_vm._v(_vm._s(orderLine.code) + " - " + _vm._s(orderLine.name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(orderLine.uom))]), _vm._v(" "), _c('td', {
       staticClass: "text-right"
     }, [_vm._v(_vm._s(parseFloat(orderLine.quantity).toLocaleString('en-GB')))]), _vm._v(" "), _c('td', {
       staticClass: "text-right"
@@ -14961,7 +15015,15 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, [_c('i', {
       staticClass: "fa fa-trash"
     })])])])
-  }))]), _vm._v(" "), _c('br'), _vm._v(" "), _vm._m(5)])])])])])
+  }))]), _vm._v(" "), _c('input', {
+    attrs: {
+      "type": "hidden",
+      "name": "lines"
+    },
+    domProps: {
+      "value": JSON.stringify(_vm.orderLines)
+    }
+  }), _vm._v(" "), _c('br'), _vm._v(" "), _vm._m(5)])])])])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "widget-header"
@@ -14992,11 +15054,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "for": "order_date"
     }
   }, [_vm._v("Order Date")]), _vm._v(" "), _c('input', {
-    staticClass: "form-control input-sm",
+    staticClass: "form-control input-sm datepicker",
     attrs: {
       "type": "text",
       "name": "order_date",
-      "id": "order_date"
+      "id": "order_date",
+      "required": ""
     }
   })]), _vm._v(" "), _c('div', {
     staticClass: "form-group"
@@ -15005,7 +15068,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "for": "due_date"
     }
   }, [_vm._v("Due Date")]), _vm._v(" "), _c('input', {
-    staticClass: "form-control input-sm",
+    staticClass: "form-control input-sm datepicker",
     attrs: {
       "type": "text",
       "name": "due_date",
@@ -15098,15 +15161,15 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticStyle: {
       "padding-bottom": "10px"
     }
-  }, [_c('a', {
+  }, [_c('button', {
     staticClass: "btn btn-success",
     attrs: {
-      "href": ""
+      "type": "submit"
     }
   }, [_vm._v("Place Order")]), _vm._v(" "), _c('a', {
     staticClass: "btn btn-danger",
     attrs: {
-      "href": ""
+      "href": "/purchaseOrder/"
     }
   }, [_vm._v("Back")])])
 }]}
