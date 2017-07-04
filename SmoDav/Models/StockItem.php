@@ -44,7 +44,6 @@ class StockItem extends Model
         Stock::insert($items);
     }
 
-
     public function buyingTax()
     {
         return $this->belongsTo(Tax::class, 'buying_tax');

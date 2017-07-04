@@ -15,7 +15,8 @@
                     <h2><strong>User Details</strong></h2>
                 </div>
                 <div class="widget-content padding">
-                    <form action="{{ route('users.store') }}" method="post">
+                    <form action="{{ route('users.update', $user->id) }}" method="post">
+                        {{ method_field('PUT') }}
                         @include('users.form')
                     </form>
                 </div>

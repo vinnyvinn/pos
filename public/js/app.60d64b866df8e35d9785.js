@@ -12760,17 +12760,57 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     mounted: function mounted() {
         this.initializeVariables();
     },
+
+    props: ['id'],
     data: function data() {
         return {
+            currentConversion: {
+                unit_a_quantity: 1,
+                unit_b_quantity: 1,
+                unit_b_id: 0
+            },
             uoms: [],
             taxes: [],
             priceLists: [],
             conversions: [],
+            convertedPriceLists: {},
             item: {
                 name: '',
                 code: '',
@@ -12789,7 +12829,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
     },
 
-
     computed: {
         stockingUnit: function stockingUnit() {
             var _this = this;
@@ -12804,35 +12843,51 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             return units;
         },
-        convertedPriceLists: function convertedPriceLists() {
-            var conversions = {};
+        stringConversions: function stringConversions() {
+            return JSON.stringify(this.conversions);
+        }
+    },
+    watch: {
+        conversions: function conversions() {
+            this.updatePLs();
+        },
+        priceLists: function priceLists() {
+            this.updatePLs();
+        }
+    },
 
-            for (var j = 0; j < this.priceLists.length; j++) {
-                conversions['price_' + this.priceLists[j].id] = {};
-                conversions['price_' + this.priceLists[j].id]['unit_' + this.item.stocking_uom] = {
-                    'price_list_name_id': this.priceLists[j].id,
-                    'unit_conversion_id': this.item.stocking_uom,
-                    'inclusive_price': 0,
-                    'exclusive_price': 0,
-                    'tax': 0
-                };
+    methods: {
+        updatePLs: function updatePLs() {
+            var _this2 = this;
 
-                for (var i = 0; i < this.conversions.length; i++) {
-                    conversions['price_' + this.priceLists[j].id]['unit_' + this.conversions[i].unit_b_id] = {
-                        'price_list_name_id': this.priceLists[j].id,
-                        'unit_conversion_id': this.conversions[i].unit_b_id,
+            this.priceLists.forEach(function (price) {
+                if (!_this2.convertedPriceLists['price_' + price.id]) {
+                    _this2.convertedPriceLists['price_' + price.id] = {};
+                }
+
+                if (!_this2.convertedPriceLists['price_' + price.id]['unit_' + _this2.item.stocking_uom]) {
+                    _this2.convertedPriceLists['price_' + price.id]['unit_' + _this2.item.stocking_uom] = {
+                        'price_list_name_id': price.id,
+                        'unit_conversion_id': _this2.item.stocking_uom,
                         'inclusive_price': 0,
                         'exclusive_price': 0,
                         'tax': 0
                     };
                 }
-            }
 
-            return conversions;
-        }
-    },
-
-    methods: {
+                _this2.conversions.forEach(function (conversion) {
+                    if (!_this2.convertedPriceLists['price_' + price.id]['unit_' + conversion.unit_b_id]) {
+                        _this2.convertedPriceLists['price_' + price.id]['unit_' + conversion.unit_b_id] = {
+                            'price_list_name_id': price.id,
+                            'unit_conversion_id': conversion.unit_b_id,
+                            'inclusive_price': 0,
+                            'exclusive_price': 0,
+                            'tax': 0
+                        };
+                    }
+                });
+            });
+        },
         validateConversions: function validateConversions() {
             if (this.item.has_conversions == 0) {
                 this.conversions = [];
@@ -12842,14 +12897,27 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.conversions.splice(this.conversions.indexOf(conversion), 1);
         },
         addConversion: function addConversion() {
-            this.conversions.push({
+            if (!this.currentConversion.unit_b_id) {
+                Messenger().post({
+                    message: 'Please select the unit to convert to.',
+                    type: 'error',
+                    showCloseButton: true
+                });
+                return;
+            }
+            this.conversions.push(this.currentConversion);
+            this.currentConversion = {
                 unit_a_quantity: 1,
                 unit_b_quantity: 1,
                 unit_b_id: 0
-            });
+            };
         },
         initializeVariables: function initializeVariables() {
-            var _this2 = this;
+            var _this3 = this;
+
+            if (this.id) {
+                return this.initializeEdit();
+            }
 
             axios.get('/stockItem/create').then(function (response) {
                 if (response.status == 200) {
@@ -12861,11 +12929,57 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 var defaultUOM = response.uoms.filter(function (item) {
                     return item.system_install;
                 })[0];
-                _this2.uoms = response.uoms;
-                _this2.item.stocking_uom = defaultUOM.id;
-                _this2.item.selling_uom = defaultUOM.id;
-                _this2.taxes = response.taxes;
-                _this2.priceLists = response.priceLists;
+                _this3.uoms = response.uoms;
+                _this3.item.stocking_uom = defaultUOM.id;
+                _this3.item.selling_uom = defaultUOM.id;
+                _this3.taxes = response.taxes;
+                _this3.priceLists = response.priceLists;
+            });
+        },
+        initializeEdit: function initializeEdit() {
+            var _this4 = this;
+
+            axios.get('/stockItem/' + this.id + '/edit').then(function (response) {
+                if (response.status == 200) {
+                    return response.data;
+                }
+
+                throw new Error('unable to complete request');
+            }).then(function (response) {
+                var defaultUOM = response.uoms.filter(function (item) {
+                    return item.system_install;
+                })[0];
+                _this4.uoms = response.uoms;
+                _this4.item.stocking_uom = defaultUOM.id;
+                _this4.item.selling_uom = defaultUOM.id;
+                _this4.taxes = response.taxes;
+                _this4.priceLists = response.priceLists;
+
+                _this4.item = response.item;
+
+                _this4.priceLists.forEach(function (price) {
+                    if (!_this4.convertedPriceLists['price_' + price.id]) {
+                        _this4.convertedPriceLists['price_' + price.id] = {};
+                    }
+                });
+
+                _this4.item.prices.forEach(function (price) {
+                    var conversion = {};
+                    conversion.price_list_name_id = price.price_list_name_id;
+                    conversion.unit_conversion_id = price.unit_conversion_id;
+                    conversion.inclusive_price = price.inclusive_price;
+                    conversion.exclusive_price = price.exclusive_price;
+                    conversion.tax = price.tax;
+                    _this4.convertedPriceLists['price_' + price.price_list_name_id]['unit_' + price.unit_conversion_id] = conversion;
+                });
+
+                _this4.item.conversions.forEach(function (conversion) {
+                    _this4.conversions.push({
+                        unit_a_quantity: conversion.stocking_ratio,
+                        unit_b_id: conversion.converted_unit_id,
+                        unit_b_quantity: conversion.converted_ratio
+                    });
+                });
             });
         }
     }
@@ -14370,22 +14484,154 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "value": uom.id
       }
     }, [_vm._v(_vm._s(uom.name))])
-  }))]) : _vm._e(), _vm._v(" "), (_vm.item.has_conversions == '1') ? _c('a', {
-    staticClass: "btn btn-primary",
+  }))]) : _vm._e(), _vm._v(" "), (_vm.item.has_conversions == '1') ? _c('div', {
+    staticClass: "row"
+  }, [_vm._m(0), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-2"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
     attrs: {
-      "href": "#"
+      "for": "unit_a_quantity"
+    }
+  }, [_vm._v("Stocking Quantity")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.currentConversion.unit_a_quantity),
+      expression: "currentConversion.unit_a_quantity"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "min": "1",
+      "id": "unit_a_quantity",
+      "onclick": "this.select()",
+      "type": "number"
     },
+    domProps: {
+      "value": (_vm.currentConversion.unit_a_quantity)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.currentConversion.unit_a_quantity = $event.target.value
+      },
+      "blur": function($event) {
+        _vm.$forceUpdate()
+      }
+    }
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-3"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "stocking_unit"
+    }
+  }, [_vm._v("Stocking Unit")]), _vm._v(" "), _c('input', {
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "id": "stocking_unit",
+      "readonly": ""
+    },
+    domProps: {
+      "value": _vm.stockingUnit ? _vm.stockingUnit.name : ''
+    }
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-2"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "unit_b_quantity"
+    }
+  }, [_vm._v("Other Unit Qty.")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.currentConversion.unit_b_quantity),
+      expression: "currentConversion.unit_b_quantity"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "id": "unit_b_quantity",
+      "required": "",
+      "min": "1",
+      "onclick": "this.select()",
+      "type": "number"
+    },
+    domProps: {
+      "value": (_vm.currentConversion.unit_b_quantity)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.currentConversion.unit_b_quantity = $event.target.value
+      },
+      "blur": function($event) {
+        _vm.$forceUpdate()
+      }
+    }
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-3"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "unit_b_id"
+    }
+  }, [_vm._v("Other Unit")]), _vm._v(" "), _c('select', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.currentConversion.unit_b_id),
+      expression: "currentConversion.unit_b_id"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "id": "unit_b_id"
+    },
+    on: {
+      "change": function($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
+          return o.selected
+        }).map(function(o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val
+        });
+        _vm.currentConversion.unit_b_id = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+      }
+    }
+  }, _vm._l((_vm.conversionUOMs), function(uom) {
+    return _c('option', {
+      domProps: {
+        "value": uom.id
+      }
+    }, [_vm._v(_vm._s(uom.name))])
+  }))])]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-2"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "unit_b_id"
+    }
+  }, [_vm._v("Add Conversion")]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-success btn-block",
     on: {
       "click": function($event) {
         $event.preventDefault();
-        _vm.addConversion($event)
+        _vm.addConversion()
       }
     }
-  }, [_vm._v("Add Row")]) : _vm._e(), _vm._v(" "), (_vm.item.has_conversions == '1') ? _c('div', {
+  }, [_c('i', {
+    staticClass: "fa fa-plus"
+  })])])])]) : _vm._e(), _vm._v(" "), (_vm.item.has_conversions == '1') ? _c('div', {
     staticClass: "table-responsive"
   }, [_c('table', {
     staticClass: "table"
-  }, [_vm._m(0), _vm._v(" "), _c('tbody', _vm._l((_vm.conversions), function(conversion, index) {
+  }, [_vm._m(1), _vm._v(" "), _c('tbody', _vm._l((_vm.conversions), function(conversion, index) {
     return _c('tr', [_c('td', [_c('input', {
       directives: [{
         name: "model",
@@ -14422,7 +14668,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       domProps: {
         "value": _vm.stockingUnit ? _vm.stockingUnit.name : ''
       }
-    })]), _vm._v(" "), _vm._m(1, true), _vm._v(" "), _c('td', [_c('input', {
+    })]), _vm._v(" "), _vm._m(2, true), _vm._v(" "), _c('td', [_c('input', {
       directives: [{
         name: "model",
         rawName: "v-model",
@@ -14494,7 +14740,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "name": "conversions"
     },
     domProps: {
-      "value": JSON.stringify(_vm.conversions)
+      "value": _vm.stringConversions
     }
   })])])]), _vm._v(" "), _c('section', {
     staticClass: "step",
@@ -14521,8 +14767,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }],
     staticClass: "form-control",
     attrs: {
-      "type": "text",
-      "placeholder": "125",
+      "type": "number",
+      "step": "0.01",
       "title": "Numeric with optional decimal",
       "pattern": "[0-9\\.]+$",
       "id": "unit_cost",
@@ -14536,6 +14782,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "input": function($event) {
         if ($event.target.composing) { return; }
         _vm.item.unit_cost = $event.target.value
+      },
+      "blur": function($event) {
+        _vm.$forceUpdate()
       }
     }
   })])])]), _vm._v(" "), _c('div', {
@@ -14622,6 +14871,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticClass: "form-control input-sm",
       attrs: {
         "type": "text",
+        "name": 'prices[price_' + list.id + '][unit_' + _vm.item.stocking_uom + ']',
         "placeholder": "125",
         "title": "Numeric with optional decimal",
         "pattern": "[0-9\\.]+$",
@@ -14648,6 +14898,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         staticClass: "form-control input-sm",
         attrs: {
           "type": "text",
+          "name": 'prices[price_' + list.id + '][unit_' + conversion.unit_b_id + ']',
           "placeholder": "125",
           "title": "Numeric with optional decimal",
           "pattern": "[0-9\\.]+$",
@@ -14665,16 +14916,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         }
       })])
     })], 2)
-  }))])]), _vm._v(" "), _c('input', {
-    attrs: {
-      "type": "hidden",
-      "name": "prices"
-    },
-    domProps: {
-      "value": JSON.stringify(_vm.convertedPriceLists)
-    }
-  })])])])])
+  }))])])])])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "col-sm-12"
+  }, [_c('h3', [_c('strong', [_vm._v("Conversions")])])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('thead', [_c('tr', [_c('th', {
     staticClass: "text-center"
   }, [_vm._v("Quantity A of")]), _vm._v(" "), _c('th', {

@@ -74,12 +74,22 @@ class StockItemController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \SmoDav\Models\StockItem  $stockItem
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\JsonResponse|\Illuminate\View\View
      */
-    public function edit(StockItem $stockItem)
+    public function edit($id)
     {
-        //
+        if (request()->ajax()) {
+            $item = StockItem::with(['conversions', 'prices'])->find($id);
+            return Response::json([
+                'taxes' => Tax::active()->get(['id', 'code', 'rate']),
+                'uoms' => UnitOfMeasure::active()->get(['id', 'name', 'system_install']),
+                'priceLists' => PriceListName::active()->get(['id', 'name']),
+                'item' => $item
+            ]);
+        }
+
+        return view('stockitems.edit')->with('id', $id);
     }
 
     /**
@@ -91,7 +101,11 @@ class StockItemController extends Controller
      */
     public function update(Request $request, StockItem $stockItem)
     {
-        //
+        StockItemFactory::update($stockItem, $request);
+
+        flash('Successfully edited stock item.', 'success');
+
+        return redirect()->route('stockItem.index');
     }
 
     /**
@@ -102,6 +116,10 @@ class StockItemController extends Controller
      */
     public function destroy(StockItem $stockItem)
     {
-        //
+        $stockItem->delete();
+
+        flash('Successfully deleted stock item.', 'success');
+
+        return redirect()->route('stockItem.index');
     }
 }
