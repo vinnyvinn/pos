@@ -3,13 +3,48 @@
 @section('content')
     @component('components.page-header')
     @slot('icon')
-        fa fa-building
+        fa fa-dollar
     @endslot
     @slot('header')
-        Stalls
+        Sales
     @endslot
-    Manage the stalls.
+
     @endcomponent
+    <div class="panel panel-default">
+        <div class="panel-body">
+          <div class="row">
+              <div class="col-xs-6 clearfix">
+                  <button class="btn btn-sm btn-success">Complete Sale</button>
+                  <button class="btn btn-sm btn-info">Save Transaction</button>
+                  <button class="btn btn-sm btn-danger">Void Sale</button>
+              </div>
+              <div class="col-xs-6">
+                <table class="table pull-right">
+                  <thead>
+                    <tr>
+                    <th>
+                      Discount
+                    </th>
+                    <th>
+                      Sale Total
+                    </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                        <td>0.00</td>
+                        <td>0.00</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">Total Weight:0.00KGs</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+          </div>
+        </div
+    </div>
+
 
  <div class="panel panel-default">
      <div class="panel-heading">
