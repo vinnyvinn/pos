@@ -74,4 +74,9 @@ class Order extends Model
     {
         return $this->belongsTo(Customer::class, 'account_id');
     }
+
+    public function lines()
+    {
+        return $this->hasMany(OrderLine::class);
+    }
 }

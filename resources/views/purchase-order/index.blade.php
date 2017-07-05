@@ -45,7 +45,8 @@
                             <td class="text-right">{{ number_format($order->total_exclusive, 2) }}</td>
                             <td class="text-right">{{ number_format($order->total_inclusive, 2) }}</td>
                             <td>
-                                <a href="{{ route('purchaseOrder.edit', $order->id) }}" class="btn btn-success btn-xs">Receive</a>
+                                <a href="{{ route('purchaseOrder.edit', $order->id) }}" class="btn btn-success btn-xs"><i class="fa fa-pencil"></i></a>
+                                <a href="{{ route('goodsReceived.receive', $order->id) }}" class="btn btn-primary btn-xs">Receive</a>
                             </td>
                         </tr>
                     @endforeach

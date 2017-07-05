@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 @section('header')
     {{--<link href="{{ asset('assets/libs/bootstrap-datepicker/css/datepicker.css') }}" rel="stylesheet" />--}}
 @endsection
@@ -10,13 +9,13 @@
             fa-shopping-cart
         @endslot
         @slot('header')
-            Edit Purchase Order
+            Receive Purchase Order
         @endslot
-        Edit the purchase orders in the system.
+        Manage the received purchase orders in the system.
     @endcomponent
     <div class="row">
         <div class="col-sm-12">
-            <Editpurchaseorder :id="{{ $id }}"></Editpurchaseorder>
+            <purchaseorderreceive :id="{{ $id }}"></purchaseorderreceive>
         </div>
     </div>
 @endsection
