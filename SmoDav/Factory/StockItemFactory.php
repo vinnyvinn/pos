@@ -71,17 +71,29 @@ class StockItemFactory
     public static function preparePrices($request, $stockItem)
     {
         $mapped = [];
+        $tax = $stockItem->sellingTax;
+        $taxRate = $tax->rate;
+
         foreach ($request->get('prices') as $key => $values) {
             $priceList = substr($key, 6);
             foreach ($values as $conversion => $price) {
                 $unit = substr($conversion, 5);
+                $excl = $price;
+                
+                if ($taxRate) {
+                    $rate = (100 + $taxRate)/100;
+                    $excl = round($price / $rate, 2);
+                }
+
+                $tax = $price - $excl;
+
                 $mapped[] = [
                     'price_list_name_id' => $priceList,
                     'stock_item_id' => $stockItem->id,
                     'unit_conversion_id' => $unit,
                     'inclusive_price' => $price,
-                    'exclusive_price' => 0,
-                    'tax' => 0
+                    'exclusive_price' => $excl,
+                    'tax' => $tax
                 ];
             }
         }
