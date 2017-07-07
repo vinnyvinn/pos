@@ -221,7 +221,7 @@
 
             }, 1000);
         },
-        
+
         watch: {
             unitExclPrice(price) {
                 if (this.currentEntry != 'unitExclPrice') return;
