@@ -16,8 +16,8 @@ class CreateOrdersTable extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('account_id')->index()->unsigned();
-            $table->integer('user_id')->index()->unsigned()->nullable();
-            $table->integer('stall_id')->index()->unsigned()->nullable();
+            $table->integer('user_id')->index()->unsigned();
+            $table->integer('stall_id')->index()->unsigned();
             $table->tinyInteger('document_type');
             $table->tinyInteger('document_status');
             $table->string('document_number')->nullable();
@@ -26,7 +26,7 @@ class CreateOrdersTable extends Migration
             $table->text('description')->nullable();
             $table->date('order_date')->nullable();
             $table->date('due_date')->nullable();
-            $table->double('total_discount');
+            $table->double('total_discount')->default(0);
             $table->double('total_exclusive');
             $table->double('total_inclusive');
             $table->double('total_tax');

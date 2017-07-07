@@ -15,21 +15,21 @@ class CreateOrderLinesTable extends Migration
     {
         Schema::create('order_lines', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('order_id')->index()->unsigned();
+            $table->bigInteger('order_id')->index()->unsigned()->nullable();
             $table->integer('stock_item_id')->index()->unsigned();
             $table->integer('stall_id')->index()->unsigned()->nullable();
-            $table->string('code');
+            $table->string('code')->nullable();
             $table->string('name');
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->integer('uom')->index()->unsigned();
             $table->integer('order_quantity');
-            $table->integer('processed_quantity');
+            $table->integer('processed_quantity')->default(0);
             $table->integer('tax_id')->index()->unsigned();
             $table->double('tax_rate');
             $table->double('unit_tax');
             $table->double('unit_exclusive');
             $table->double('unit_inclusive');
-            $table->double('discount');
+            $table->double('discount')->default(0);
             $table->double('total_exclusive');
             $table->double('total_inclusive');
             $table->timestamps();

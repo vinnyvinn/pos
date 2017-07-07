@@ -7,106 +7,57 @@
                         <h2><strong>Purchase Order</strong></h2>
                     </div>
                     <div class="widget-content padding">
-                        <form action="/purchaseOrder" method="POST" @submit="validateForm">
+                        <form action="/goodsReceived" method="POST" @submit="validateForm">
                             <input type="hidden" name="_token" :value="csrf">
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label for="supplier_id">Supplier</label>
-                                    <select class="form-control input-sm" name="supplier_id" id="supplier_id" required>
-                                        <option value="null" disabled>Select a supplier</option>
+                                    <div ></div>
+                                    <select v-model="order.supplier_id" class="form-control input-sm" name="supplier_id" id="supplier_id" readonly>
+                                        <option value="disabled">Select Supplier</option>
                                         <option v-for="supplier in suppliers" :value="supplier.id">{{supplier.name}}</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label for="stall_id">Stall</label>
-                                    <select class="form-control input-sm" name="stall_id" id="stall_id" required>
-                                        <option value="null" disabled>Select a stall</option>
+                                    <select v-model="order.stall_id" class="form-control input-sm" name="stall_id" id="stall_id" readonly>
+                                        <option value="disabled">Select Supplier</option>
                                         <option v-for="stall in stalls" :value="stall.id">{{stall.name}}</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label for="description">Description</label>
-                                    <textarea class="form-control input-sm" name="description" id="description" cols="30" rows="5"></textarea>
+                                    <textarea v-model="order.description" class="form-control input-sm" name="description" id="description" cols="30" rows="5" readonly></textarea>
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label for="order_date">Order Date</label>
-                                    <input class="form-control input-sm datepicker" type="text" name="order_date" id="order_date" required>
+                                    <input v-model="order.order_date" class="form-control input-sm datepicker" type="text" name="order_date" id="order_date" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="due_date">Due Date</label>
-                                    <input class="form-control input-sm datepicker" type="text" name="due_date" id="due_date">
+                                    <input v-model="order.due_date" class="form-control input-sm datepicker" type="text" name="due_date" id="due_date" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="order_number">Order Number</label>
-                                    <input class="form-control input-sm" type="text" name="order_number" id="order_number">
+                                    <input v-model="order.order_number" class="form-control input-sm" type="text" name="order_number" id="order_number" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="external_order_number">External Order Number</label>
-                                    <input class="form-control input-sm" type="text" name="external_order_number" id="external_order_number">
+                                    <input v-model="order.external_order_number" class="form-control input-sm" type="text" name="external_order_number" id="external_order_number" readonly>
                                 </div>
                             </div>
                             <br>
-                            <table class="table table-responsive">
-                                <thead>
-                                <tr>
-                                    <th class="text-nowrap">Stock Item</th>
-                                    <th class="text-nowrap">UOM</th>
-                                    <th class="text-nowrap" width="120px">Quantity</th>
-                                    <th class="text-nowrap" width="150px">Unit Excl. Price</th>
-                                    <th class="text-nowrap" width="150px">Unit Incl. Price</th>
-                                    <th class="text-nowrap text-right">Total Exclusive</th>
-                                    <th class="text-nowrap text-right">Total Tax</th>
-                                    <th class="text-nowrap text-right">Total Inclusive</th>
-                                    <th></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr >
-                                    <td>
-                                        <select v-model="itemId" class="form-control input-sm" name="stockItem" required>
-                                            <option value="null" disabled>Select Item</option>
-                                            <option v-for="item in items" :value="item.id">{{ item.code }} - {{ item.name }}</option>
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <select v-model="conversionId" class="form-control input-sm" name="conversion_id" required>
-                                            <option value="null" disabled>Select Conversion</option>
-                                            <option v-for="conversion in conversions" :value="conversion.id">{{ conversion.name }}</option>
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <input min="1" v-model="quantity" onfocus="this.select()" class="form-control input-sm" type="number" name="quantity" required>
-                                    </td>
-                                    <td>
-                                        <input step="0.01" min="0" @keydown="entry('unitExclPrice')" onfocus="this.select()" class="form-control input-sm" v-model="unitExclPrice" type="number" name="unit_excl_price">
-                                    </td>
-                                    <td>
-                                        <input step="0.01" min="0" @keydown="entry('unitInclPrice')" onfocus="this.select()" class="form-control input-sm" v-model="unitInclPrice" type="number" name="unit_incl_price">
-                                    </td>
-                                    <td class="text-right">
-                                        {{ totalExcl.toLocaleString('en-GB') }}
-                                    </td>
-                                    <td class="text-right">
-                                        {{ totalTax.toLocaleString('en-GB') }}
-                                    </td>
-                                    <td class="text-right">
-                                        {{ totalIncl.toLocaleString('en-GB') }}
-                                    </td>
-                                    <td>
-                                        <button @click.prevent="addToOrder" class="btn btn-success btn-xs"><i class="fa fa-plus"></i></button>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
                             <br>
                             <table class="table table-responsive">
                                 <thead>
                                 <tr>
                                     <th class="text-nowrap">Stock Item</th>
                                     <th class="text-nowrap">UOM</th>
-                                    <th class="text-nowrap text-right" width="120px">Quantity</th>
+                                    <th class="text-nowrap text-right" width="120px">Order Qty.</th>
+                                    <th class="text-nowrap text-right" width="120px">Remaining Qty.</th>
+                                    <th class="text-nowrap text-right" width="120px">Quantity Received</th>
                                     <th class="text-nowrap text-right" width="150px">Unit Excl. Price</th>
                                     <th class="text-nowrap text-right" width="150px">Unit Incl. Price</th>
                                     <th class="text-nowrap text-right">Total Exclusive</th>
@@ -119,23 +70,25 @@
                                 <tr v-for="orderLine in orderLines">
                                     <td>{{ orderLine.code }} - {{ orderLine.name }}</td>
                                     <td>{{ orderLine.uom }}</td>
-                                    <td class="text-right">{{ parseFloat(orderLine.quantity).toLocaleString('en-GB') }}</td>
-                                    <td class="text-right">{{ parseFloat(orderLine.unitExclPrice).toLocaleString('en-GB') }}</td>
-                                    <td class="text-right">{{ parseFloat(orderLine.unitInclPrice).toLocaleString('en-GB') }}</td>
+                                    <td class="text-right">{{ parseFloat(orderLine.order_quantity).toLocaleString('en-GB') }}</td>
+                                    <td class="text-right">{{ (parseFloat(orderLine.order_quantity) - parseFloat(orderLine.processed_quantity)).toLocaleString('en-GB') }}</td>
+                                    <td class="text-right"><input min="0" :max="(parseFloat(orderLine.order_quantity) - parseFloat(orderLine.processed_quantity))" v-model="orderLine.quantity" type="number" class="form-control input-sm" name="quantity" id="quantity" required></td>
+                                    <td class="text-right"><input min="0" v-model="orderLine.unitExclPrice" type="number" step="0.01" class="form-control input-sm" name="unitExclPrice" id="unitExclPrice" required></td>
+                                    <td class="text-right"><input min="0" v-model="orderLine.unitInclPrice" type="number" step="0.01" class="form-control input-sm" name="unitExclPrice" id="unitExclPrice" required></td>
                                     <td class="text-right">{{ parseFloat(orderLine.totalExcl).toLocaleString('en-GB') }}</td>
                                     <td class="text-right">{{ parseFloat(orderLine.totalTax).toLocaleString('en-GB') }}</td>
                                     <td class="text-right">{{ parseFloat(orderLine.totalIncl).toLocaleString('en-GB') }}</td>
-                                    <td>
-                                        <button @click.prevent="editLine(orderLine)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></button>
-                                        <button @click.prevent="deleteLine(orderLine)" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></button>
-                                    </td>
+                                    <!--<td>-->
+                                    <!--<button @click.prevent="editLine(orderLine)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></button>-->
+                                    <!--<button @click.prevent="deleteLine(orderLine)" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></button>-->
+                                    <!--</td>-->
                                 </tr>
                                 </tbody>
                             </table>
                             <input type="hidden" name="lines" :value="JSON.stringify(orderLines)">
                             <br>
                             <div class="pull-right" style="padding-bottom: 10px;">
-                                <button type="submit" class="btn btn-success">Place Order</button>
+                                <button type="submit" class="btn btn-success">Receive Order</button>
                                 <a href="/purchaseOrder/" class="btn btn-danger">Back</a>
                             </div>
                         </form>
@@ -145,16 +98,19 @@
         </div>
     </div>
 </template>
+
 <script>
     export default {
         data() {
             return {
+                fromback: '',
                 unitExclPrice: 0,
                 unitInclPrice: 0,
                 itemId: null,
                 currentEntry: null,
                 quantity: 1,
                 conversionId: null,
+                order: {},
 
                 items: [],
                 suppliers: [],
@@ -165,7 +121,7 @@
             };
         },
         created() {
-          this.fetchData();
+            this.fetchData();
         },
         computed: {
             stockItem() {
@@ -213,11 +169,12 @@
             },
 
         },
-
         mounted() {
-            setTimeout(() => {
-
-            }, 1000);
+            $(document).ready(() => {
+                $('input[type=number]').on('focus', function () {
+                    this.select();
+                });
+            });
         },
         watch: {
             unitExclPrice(price) {
@@ -245,26 +202,54 @@
                 this.unitExclPrice = (Math.round((price/rate) * 100))/100;
             },
         },
+        props: ['id'],
         methods: {
             entry(value) {
                 this.currentEntry = value;
             },
             fetchData() {
-                axios.get('/purchaseOrder/create')
+                axios.get('/goodsReceived/'+ this.id +'/show')
                     .then(response => response.data)
-                    .then(({ items, suppliers, uoms, stalls }) => {
+                    .then(({ items, suppliers, uoms, stalls, order }) => {
                         this.items = items;
                         this.suppliers = suppliers;
                         this.uoms = uoms;
                         this.stalls = stalls;
+                        this.order = order;
+                        this.order.supplier_id = this.order.account_id;
+                        this.order.lines.forEach(line => {
+                            this.orderLines.push({
+                                id: line.id,
+                                code: line.code,
+                                name: line.name,
+                                itemId: line.stock_item_id,
+                                taxId: line.tax_id,
+                                taxRate: line.tax_rate,
+                                uom: this.getUOM(line.uom).name,
+                                conversionId: line.uom,
+                                quantity: 0,
+                                order_quantity: line.order_quantity,
+                                processed_quantity: line.processed_quantity,
+                                unitExclPrice: line.unit_exclusive,
+                                unitInclPrice: line.unit_inclusive,
+                                totalExcl: line.total_exclusive,
+                                totalIncl: line.total_inclusive,
+                                totalTax: line.unit_tax,
+                            });
+                        });
                     });
             },
+            getUOM(id) {
+                return this.uoms[id];
+            },
             validateForm(e) {
-                if (! this.orderLines.length) {
+                let filled = this.orderLines.filter(item => parseFloat(item.quantity) > 0);
+
+                if (! filled.length) {
                     e.preventDefault();
 
                     Messenger().post({
-                        message: 'Please add at least one order item.',
+                        message: 'Please receive at least one order item.',
                         type: 'error',
                         showCloseButton: true
                     });

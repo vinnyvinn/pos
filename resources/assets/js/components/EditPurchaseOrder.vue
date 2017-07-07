@@ -7,44 +7,45 @@
                         <h2><strong>Purchase Order</strong></h2>
                     </div>
                     <div class="widget-content padding">
-                        <form action="/purchaseOrder" method="POST" @submit="validateForm">
+                        <form :action="'/purchaseOrder/' + id" method="POST" @submit="validateForm">
                             <input type="hidden" name="_token" :value="csrf">
+                            <input type="hidden" name="_method" value="PUT">
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label for="supplier_id">Supplier</label>
-                                    <select class="form-control input-sm" name="supplier_id" id="supplier_id" required>
-                                        <option value="null" disabled>Select a supplier</option>
+                                    <select v-model="order.supplier_id" class="form-control input-sm" name="supplier_id" id="supplier_id" required>
+                                        <option value="disabled">Select Supplier</option>
                                         <option v-for="supplier in suppliers" :value="supplier.id">{{supplier.name}}</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label for="stall_id">Stall</label>
-                                    <select class="form-control input-sm" name="stall_id" id="stall_id" required>
-                                        <option value="null" disabled>Select a stall</option>
+                                    <select v-model="order.stall_id" class="form-control input-sm" name="stall_id" id="stall_id" required>
+                                        <option value="disabled">Select Supplier</option>
                                         <option v-for="stall in stalls" :value="stall.id">{{stall.name}}</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label for="description">Description</label>
-                                    <textarea class="form-control input-sm" name="description" id="description" cols="30" rows="5"></textarea>
+                                    <textarea v-model="order.description" class="form-control input-sm" name="description" id="description" cols="30" rows="5"></textarea>
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label for="order_date">Order Date</label>
-                                    <input class="form-control input-sm datepicker" type="text" name="order_date" id="order_date" required>
+                                    <input v-model="order.order_date" class="form-control input-sm datepicker" type="text" name="order_date" id="order_date" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="due_date">Due Date</label>
-                                    <input class="form-control input-sm datepicker" type="text" name="due_date" id="due_date">
+                                    <input v-model="order.due_date" class="form-control input-sm datepicker" type="text" name="due_date" id="due_date">
                                 </div>
                                 <div class="form-group">
                                     <label for="order_number">Order Number</label>
-                                    <input class="form-control input-sm" type="text" name="order_number" id="order_number">
+                                    <input v-model="order.order_number" class="form-control input-sm" type="text" name="order_number" id="order_number">
                                 </div>
                                 <div class="form-group">
                                     <label for="external_order_number">External Order Number</label>
-                                    <input class="form-control input-sm" type="text" name="external_order_number" id="external_order_number">
+                                    <input v-model="order.external_order_number" class="form-control input-sm" type="text" name="external_order_number" id="external_order_number">
                                 </div>
                             </div>
                             <br>
@@ -145,16 +146,19 @@
         </div>
     </div>
 </template>
+
 <script>
     export default {
         data() {
             return {
+                fromback: '',
                 unitExclPrice: 0,
                 unitInclPrice: 0,
                 itemId: null,
                 currentEntry: null,
                 quantity: 1,
                 conversionId: null,
+                order: {},
 
                 items: [],
                 suppliers: [],
@@ -165,7 +169,7 @@
             };
         },
         created() {
-          this.fetchData();
+            this.fetchData();
         },
         computed: {
             stockItem() {
@@ -213,7 +217,6 @@
             },
 
         },
-
         mounted() {
             setTimeout(() => {
 
@@ -245,19 +248,43 @@
                 this.unitExclPrice = (Math.round((price/rate) * 100))/100;
             },
         },
+        props: ['id'],
         methods: {
             entry(value) {
                 this.currentEntry = value;
             },
             fetchData() {
-                axios.get('/purchaseOrder/create')
+                axios.get('/purchaseOrder/'+ this.id +'/edit')
                     .then(response => response.data)
-                    .then(({ items, suppliers, uoms, stalls }) => {
+                    .then(({ items, suppliers, uoms, stalls, order }) => {
                         this.items = items;
                         this.suppliers = suppliers;
                         this.uoms = uoms;
                         this.stalls = stalls;
+                        this.order = order;
+                        this.order.supplier_id = this.order.account_id;
+                        this.order.lines.forEach(line => {
+                            this.orderLines.push({
+                                id: line.id,
+                                code: line.code,
+                                name: line.name,
+                                itemId: line.stock_item_id,
+                                taxId: line.tax_id,
+                                taxRate: line.tax_rate,
+                                uom: this.getUOM(line.uom).name,
+                                conversionId: line.uom,
+                                quantity: line.order_quantity,
+                                unitExclPrice: line.unit_exclusive,
+                                unitInclPrice: line.unit_inclusive,
+                                totalExcl: line.total_exclusive,
+                                totalIncl: line.total_inclusive,
+                                totalTax: line.unit_tax,
+                            });
+                        });
                     });
+            },
+            getUOM(id) {
+                return this.uoms[id];
             },
             validateForm(e) {
                 if (! this.orderLines.length) {
@@ -313,6 +340,9 @@
                 this.conversionId = line.conversionId;
                 this.deleteLine(line);
             },
+            updateOrder() {
+
+            }
         }
     }
 </script>
