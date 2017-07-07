@@ -99,9 +99,10 @@
                         <li>
                             <a href="{{ route('purchaseOrder.index') }}">View All</a>
                             <a href="{{ route('purchaseOrder.create') }}">Create</a>
-                            <a href="{{ route('purchaseOrder.index') }}">Unprocessed</a>
-                            <a href="">Partially Processed</a>
-                            <a href="">Archived</a>
+                            <a href="{{ route('purchaseOrder.index', ['t' => 'unprocessed']) }}">Unprocessed</a>
+                            <a href="{{ route('purchaseOrder.index', ['t' => 'partial']) }}">Partially Processed</a>
+                            <a href="{{ route('purchaseOrder.index', ['t' => 'archived']) }}">Archived</a>
+                            <a href="{{ route('purchaseOrder.index', ['t' => 'received']) }}">Goods Received</a>
                         </li>
                     </ul>
                 </li>

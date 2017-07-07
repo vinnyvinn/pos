@@ -17,4 +17,9 @@ class OrderLine extends Model
     {
         return $this->hasMany(Order::class);
     }
+
+    public function unitOfMeasure()
+    {
+        return $this->hasMany(UnitOfMeasure::class, 'uom');
+    }
 }

@@ -79,8 +79,8 @@
                                     <td class="text-right">{{ parseFloat(orderLine.totalTax).toLocaleString('en-GB') }}</td>
                                     <td class="text-right">{{ parseFloat(orderLine.totalIncl).toLocaleString('en-GB') }}</td>
                                     <!--<td>-->
-                                        <!--<button @click.prevent="editLine(orderLine)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></button>-->
-                                        <!--<button @click.prevent="deleteLine(orderLine)" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></button>-->
+                                    <!--<button @click.prevent="editLine(orderLine)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></button>-->
+                                    <!--<button @click.prevent="deleteLine(orderLine)" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></button>-->
                                     <!--</td>-->
                                 </tr>
                                 </tbody>
@@ -208,7 +208,7 @@
                 this.currentEntry = value;
             },
             fetchData() {
-                axios.get('/goodsReceived/'+ this.id +'/receive')
+                axios.get('/goodsReceived/'+ this.id +'/show')
                     .then(response => response.data)
                     .then(({ items, suppliers, uoms, stalls, order }) => {
                         this.items = items;

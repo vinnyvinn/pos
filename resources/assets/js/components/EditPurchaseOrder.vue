@@ -7,8 +7,9 @@
                         <h2><strong>Purchase Order</strong></h2>
                     </div>
                     <div class="widget-content padding">
-                        <form action="/purchaseOrder" method="POST" @submit="validateForm">
+                        <form :action="'/purchaseOrder/' + id" method="POST" @submit="validateForm">
                             <input type="hidden" name="_token" :value="csrf">
+                            <input type="hidden" name="_method" value="PUT">
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label for="supplier_id">Supplier</label>
@@ -264,6 +265,7 @@
                         this.order.supplier_id = this.order.account_id;
                         this.order.lines.forEach(line => {
                             this.orderLines.push({
+                                id: line.id,
                                 code: line.code,
                                 name: line.name,
                                 itemId: line.stock_item_id,
@@ -338,6 +340,9 @@
                 this.conversionId = line.conversionId;
                 this.deleteLine(line);
             },
+            updateOrder() {
+
+            }
         }
     }
 </script>

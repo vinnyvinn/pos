@@ -25,9 +25,27 @@ class Order extends Model
     public static function boot()
     {
         self::created(function ($model) {
-            $model->document_number = 'DOC-' .str_pad($model->id, 5, '0', STR_PAD_LEFT);
-            $model->save();
+            self::createDocNumber($model);
         });
+    }
+
+    private static function createDocNumber($order)
+    {
+        switch ($order->document_type) {
+            default:
+            case self::PURCHASE_ORDER:
+                $prefix = 'PO';
+                break;
+            case self::INVOICE:
+                $prefix = 'INV';
+                break;
+            case self::GOODS_RECEIVED_VOUCHER:
+                $prefix = 'GRV';
+                break;
+        }
+
+        $order->document_number = $prefix .str_pad($order->id, 5, '0', STR_PAD_LEFT);
+        $order->save();
     }
 
     public function scopeUnprocessed($builder)
