@@ -13,12 +13,14 @@
                                 <div class="form-group">
                                     <label for="supplier_id">Supplier</label>
                                     <select class="form-control input-sm" name="supplier_id" id="supplier_id" required>
+                                        <option value="null" disabled>Select a supplier</option>
                                         <option v-for="supplier in suppliers" :value="supplier.id">{{supplier.name}}</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label for="stall_id">Stall</label>
                                     <select class="form-control input-sm" name="stall_id" id="stall_id" required>
+                                        <option value="null" disabled>Select a stall</option>
                                         <option v-for="stall in stalls" :value="stall.id">{{stall.name}}</option>
                                     </select>
                                 </div>
@@ -209,18 +211,17 @@
             totalTax() {
                 return this.totalIncl - this.totalExcl;
             },
-
             total_exclusive(){
 
-            }
-
         },
+      },
 
         mounted() {
             setTimeout(() => {
 
             }, 1000);
         },
+        
         watch: {
             unitExclPrice(price) {
                 if (this.currentEntry != 'unitExclPrice') return;

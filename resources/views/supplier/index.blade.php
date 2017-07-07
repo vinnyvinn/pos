@@ -1,10 +1,10 @@
 @extends('layouts.app')
+
 @section('header')
-    {{--<link href="{{ asset('assets/libs/jquery-datatables/css/dataTables.bootstrap.css') }}" rel="stylesheet"--}}
-          {{--type="text/css"/>--}}
-    {{--<link href="{{ asset('assets/libs/jquery-datatables/extensions/TableTools/css/dataTables.tableTools.css') }}"--}}
-          {{--rel="stylesheet" type="text/css"/>--}}
+    <link href="{{ asset('assets/libs/jquery-datatables/css/dataTables.bootstrap.css') }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset('assets/libs/jquery-datatables/extensions/TableTools/css/dataTables.tableTools.css') }}" rel="stylesheet" type="text/css"/>
 @endsection
+
 @section('content')
     @component('components.page-header')
         @slot('icon')
@@ -19,10 +19,16 @@
         <div class="widget">
             <div class="widget-header">
                 <h2><strong>Suppliers</strong></h2>
+                <div class="additional-btn">
+                    <a href="{{ route('supplier.create') }}" class="pull-right btn btn-primary btn-xs">
+                        <span class="fa fa-plus"></span>
+                        Add New
+                    </a>
+                </div>
             </div>
             <div class="widget-content padding">
                 <div class="table-responsive">
-                    <table class="table table-striped table-bordered" id="supplierTable" cellspacing="0" width="100%">
+                    <table class="table table-striped" id="supplierTable" cellspacing="0">
                         <thead>
                         <tr>
                             <th>Account Number</th>

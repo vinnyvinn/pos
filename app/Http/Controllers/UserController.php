@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserRequest;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -15,7 +16,7 @@ class UserController extends Controller
     public function index()
     {
         $users = User::where('id', '<>', 1)
-            ->get(['username', 'full_name', 'email']);
+            ->get(['id', 'username', 'full_name', 'email']);
 
         return view('users.index', ['users' => $users]);
     }
@@ -36,9 +37,17 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
-        //
+        $data = $request->all();
+        $data['password'] = bcrypt($data['password']);
+        $data['permissions'] = '[]'; //TODO: change this
+
+        User::create($data);
+
+        flash('Successfully registered new user.');
+
+        return redirect()->route('users.index');
     }
 
     /**
@@ -47,7 +56,7 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(User $id)
     {
         //
     }
@@ -55,24 +64,34 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param User $user
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function edit($id)
+    public function edit(User $user)
     {
-        //
+        return view('users.edit')->with('user', $user);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param UserRequest $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UserRequest $request, $id)
     {
-        //
+        $data = $request->all();
+        unset($data['password']);
+        if ($request->get('password')) {
+            $data['password'] = bcrypt($request->get('password'));
+        }
+
+        User::findOrFail($id)->update($data);
+
+        flash('Successfully updated user.');
+
+        return redirect()->route('users.index');
     }
 
     /**
@@ -83,6 +102,10 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        User::where('id', $id)->delete();
+
+        flash('Successfully deleted user.');
+
+        return redirect()->route('users.index');
     }
 }

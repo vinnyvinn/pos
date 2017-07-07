@@ -89,7 +89,44 @@
                         </select>
                     </div>
 
-                    <a v-if="item.has_conversions == '1'" href="#" class="btn btn-primary" @click.prevent="addConversion">Add Row</a>
+                    <div class="row" v-if="item.has_conversions == '1'">
+                        <div class="col-sm-12">
+                            <h3><strong>Conversions</strong></h3>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label for="unit_a_quantity">Stocking Quantity</label>
+                                <input min="1" id="unit_a_quantity" onclick="this.select()" v-model="currentConversion.unit_a_quantity" type="number" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="stocking_unit">Stocking Unit</label>
+                                <input type="text" id="stocking_unit" class="form-control" :value="stockingUnit ? stockingUnit.name : ''" readonly>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label for="unit_b_quantity">Other Unit Qty.</label>
+                                <input id="unit_b_quantity" required min="1" onclick="this.select()" v-model="currentConversion.unit_b_quantity" type="number" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="unit_b_id">Other Unit</label>
+                                <select id="unit_b_id" v-model="currentConversion.unit_b_id" class="form-control">
+                                    <option v-for="uom in conversionUOMs" :value="uom.id">{{ uom.name }}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label for="unit_b_id">Add Conversion</label>
+                                <button @click.prevent="addConversion()" class="btn btn-success btn-block"><i class="fa fa-plus"></i></button>
+                            </div>
+                        </div>
+                    </div>
 
                     <div v-if="item.has_conversions == '1'" class="table-responsive">
                         <table class="table">
@@ -104,7 +141,6 @@
                             </tr>
                             </thead>
                             <tbody>
-
                             <tr v-for="(conversion, index) in conversions">
                                 <td><input required min="1" onclick="this.select()" v-model="conversion.unit_a_quantity" type="number" class="form-control" number></td>
                                 <td><input type="text" class="form-control" :value="stockingUnit ? stockingUnit.name : ''" readonly></td>
@@ -122,21 +158,17 @@
                             </tbody>
                         </table>
                     </div>
-
-                    <input type="hidden" name="conversions" :value="JSON.stringify(conversions)">
-
+                    <input type="hidden" name="conversions" :value="stringConversions">
                 </div>
             </div>
         </section>
         <section class="step" data-step-title="Pricing">
             <div class="row">
                 <div class="col-sm-6">
-
                     <div class="form-group">
                         <label for="unit_cost" class="control-label">Average Unit Cost</label>
-                        <input type="text" v-model="item.unit_cost" placeholder="125" title="Numeric with optional decimal" pattern="[0-9\.]+$" class="form-control" id="unit_cost" name="unit_cost" required>
+                        <input type="number" step="0.01" v-model="item.unit_cost" title="Numeric with optional decimal" pattern="[0-9\.]+$" class="form-control" id="unit_cost" name="unit_cost" required>
                     </div>
-
                 </div>
 
             </div>
@@ -165,12 +197,14 @@
                             <tr v-for="list in priceLists">
                                 <td>{{ list.name }}</td>
                                 <td>
-                                    <input type="text" v-model="convertedPriceLists['price_' + list.id]['unit_' + item.stocking_uom].inclusive_price"
+                                    <input type="text" :name="'prices[price_' + list.id + '][unit_' + item.stocking_uom + ']'"
+                                           v-model="convertedPriceLists['price_' + list.id]['unit_' + item.stocking_uom].inclusive_price"
                                            placeholder="125" title="Numeric with optional decimal" pattern="[0-9\.]+$"
                                            class="form-control input-sm" onclick="this.select()" required>
                                 </td>
                                 <td v-for="conversion in conversions">
-                                    <input type="text" v-model="convertedPriceLists['price_' + list.id]['unit_' + conversion.unit_b_id].inclusive_price"
+                                    <input type="text" :name="'prices[price_' + list.id + '][unit_' + conversion.unit_b_id + ']'"
+                                           v-model="convertedPriceLists['price_' + list.id]['unit_' + conversion.unit_b_id].inclusive_price"
                                            placeholder="125" title="Numeric with optional decimal" pattern="[0-9\.]+$"
                                            class="form-control input-sm" onclick="this.select()" required>
                                 </td>
@@ -179,8 +213,6 @@
                             </tbody>
                         </table>
                     </div>
-
-                    <input type="hidden" name="prices" :value="JSON.stringify(convertedPriceLists)">
                 </div>
             </div>
         </section>
@@ -192,12 +224,19 @@
         mounted() {
             this.initializeVariables();
         },
+        props: ['id'],
         data() {
             return {
+                currentConversion: {
+                    unit_a_quantity: 1,
+                    unit_b_quantity: 1,
+                    unit_b_id: 0,
+                },
                 uoms: [],
                 taxes: [],
                 priceLists: [],
                 conversions: [],
+                convertedPriceLists: {},
                 item: {
                     name: '',
                     code: '',
@@ -215,7 +254,6 @@
                 }
             };
         },
-
         computed: {
             stockingUnit() {
                 return this.uoms.filter((uom) => {
@@ -230,35 +268,49 @@
                 return units;
             },
 
-            convertedPriceLists() {
-                let conversions = {};
+            stringConversions() {
+                return JSON.stringify(this.conversions);
+            },
+        },
+        watch: {
+            conversions() {
+                this.updatePLs();
+            },
+            priceLists() {
+                this.updatePLs();
+            },
+        },
 
-                for(let j = 0; j < this.priceLists.length; j++) {
-                    conversions['price_' + this.priceLists[j].id] = {};
-                    conversions['price_' + this.priceLists[j].id]['unit_' + this.item.stocking_uom] = {
-                        'price_list_name_id': this.priceLists[j].id,
-                        'unit_conversion_id': this.item.stocking_uom,
-                        'inclusive_price': 0,
-                        'exclusive_price': 0,
-                        'tax': 0
-                    };
+        methods: {
+            updatePLs() {
+                this.priceLists.forEach(price => {
+                    if (! this.convertedPriceLists['price_' + price.id]) {
+                        this.convertedPriceLists['price_' + price.id] = {};
+                    }
 
-                    for(let i = 0; i < this.conversions.length; i++) {
-                        conversions['price_' + this.priceLists[j].id]['unit_' + this.conversions[i].unit_b_id] = {
-                            'price_list_name_id': this.priceLists[j].id,
-                            'unit_conversion_id': this.conversions[i].unit_b_id,
+                    if (! this.convertedPriceLists['price_' + price.id]['unit_' + this.item.stocking_uom]) {
+                        this.convertedPriceLists['price_' + price.id]['unit_' + this.item.stocking_uom] = {
+                            'price_list_name_id': price.id,
+                            'unit_conversion_id': this.item.stocking_uom,
                             'inclusive_price': 0,
                             'exclusive_price': 0,
                             'tax': 0
                         };
                     }
-                }
 
-                return conversions;
-            }
-        },
-
-        methods: {
+                    this.conversions.forEach(conversion => {
+                        if (! this.convertedPriceLists['price_' + price.id]['unit_' + conversion.unit_b_id]) {
+                            this.convertedPriceLists['price_' + price.id]['unit_' + conversion.unit_b_id] = {
+                                'price_list_name_id': price.id,
+                                'unit_conversion_id': conversion.unit_b_id,
+                                'inclusive_price': 0,
+                                'exclusive_price': 0,
+                                'tax': 0
+                            };
+                        }
+                    });
+                });
+            },
 
             validateConversions() {
                 if (this.item.has_conversions == 0) {
@@ -271,14 +323,27 @@
             },
 
             addConversion() {
-                this.conversions.push({
+                if (! this.currentConversion.unit_b_id) {
+                    Messenger().post({
+                        message: 'Please select the unit to convert to.',
+                        type: 'error',
+                        showCloseButton: true
+                    });
+                    return;
+                }
+                this.conversions.push(this.currentConversion);
+                this.currentConversion = {
                     unit_a_quantity: 1,
                     unit_b_quantity: 1,
                     unit_b_id: 0,
-                });
+                };
             },
 
             initializeVariables() {
+                if (this.id) {
+                    return this.initializeEdit();
+                }
+
                 axios.get('/stockItem/create')
                     .then((response) => {
                         if (response.status == 200) {
@@ -296,6 +361,55 @@
                         this.item.selling_uom = defaultUOM.id;
                         this.taxes = response.taxes;
                         this.priceLists = response.priceLists;
+                    });
+            },
+
+            initializeEdit() {
+                axios.get('/stockItem/' + this.id + '/edit')
+                    .then((response) => {
+                        if (response.status == 200) {
+                            return response.data;
+                        }
+
+                        throw new Error('unable to complete request');
+                    })
+                    .then((response) => {
+                        let defaultUOM = response.uoms.filter((item) => {
+                            return item.system_install;
+                        })[0];
+                        this.uoms = response.uoms;
+                        this.item.stocking_uom = defaultUOM.id;
+                        this.item.selling_uom = defaultUOM.id;
+                        this.taxes = response.taxes;
+                        this.priceLists = response.priceLists;
+
+                        this.item = response.item;
+
+                        this.priceLists.forEach(price => {
+                            if (! this.convertedPriceLists['price_' + price.id]) {
+                                this.convertedPriceLists['price_' + price.id] = {};
+                            }
+                        });
+
+
+                        this.item.prices.forEach(price => {
+                            let conversion = {};
+                            conversion.price_list_name_id = price.price_list_name_id;
+                            conversion.unit_conversion_id = price.unit_conversion_id;
+                            conversion.inclusive_price = price.inclusive_price;
+                            conversion.exclusive_price = price.exclusive_price;
+                            conversion.tax = price.tax;
+                            this.convertedPriceLists['price_' + price.price_list_name_id]['unit_' + price.unit_conversion_id] = conversion;
+                        });
+
+
+                        this.item.conversions.forEach(conversion => {
+                            this.conversions.push({
+                                unit_a_quantity: conversion.stocking_ratio,
+                                unit_b_id: conversion.converted_unit_id,
+                                unit_b_quantity: conversion.converted_ratio,
+                            });
+                        });
                     });
             },
 

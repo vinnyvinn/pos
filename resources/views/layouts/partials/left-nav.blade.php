@@ -99,6 +99,9 @@
                         <li>
                             <a href="{{ route('purchaseOrder.index') }}">View All</a>
                             <a href="{{ route('purchaseOrder.create') }}">Create</a>
+                            <a href="{{ route('purchaseOrder.index') }}">Unprocessed</a>
+                            <a href="">Partially Processed</a>
+                            <a href="">Archived</a>
                         </li>
                     </ul>
                 </li>

@@ -26,15 +26,15 @@ class CreateOrdersTable extends Migration
             $table->text('description')->nullable();
             $table->date('order_date')->nullable();
             $table->date('due_date')->nullable();
-            $table->double('total_discount');
+            $table->double('total_discount')->default(0);
             $table->double('total_exclusive');
             $table->double('total_inclusive');
             $table->double('total_tax');
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
-            $table->foreign('stall_id')->references('id')->on('stalls')->onDelete('set null');
+            // $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
+            // $table->foreign('stall_id')->references('id')->on('stalls')->onDelete('set null');
         });
     }
 

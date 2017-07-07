@@ -63,11 +63,13 @@
                                     @endif
                                     <td>
                                         <a href="{{ route('price-list-name.edit', $list->id) }}" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></a>
-                                        <a href="{{ route('price-list-name.destroy', $list->id) }}"
-                                           class="btn btn-danger btn-xs" data-method="DELETE"
-                                           rel="nofollow"
-                                           data-confirm="Are you sure you want to delete this?"
-                                           data-token="{{ csrf_token() }}"><i class="fa fa-trash"></i></a>
+                                        @if($list->id != 1)
+                                            <a href="{{ route('price-list-name.destroy', $list->id) }}"
+                                               class="btn btn-danger btn-xs" data-method="DELETE"
+                                               rel="nofollow"
+                                               data-confirm="Are you sure you want to delete this?"
+                                               data-token="{{ csrf_token() }}"><i class="fa fa-trash"></i></a>
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach
