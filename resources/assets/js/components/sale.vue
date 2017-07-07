@@ -4,18 +4,9 @@
          <div class="row">
          <div class="col-xs-6">
                  CASH - CASH CUSTOMER
-
-                 <button class="btn btn-xs btn-info pull-right">CHANGE CUSTOMER</button>
-
-         </div>
-         <div class="col-xs-6">
-                <strong> Credit Limit: </strong>
-
-                 <strong class="pull-right">Account Balance: </strong>
-
-         </div>
          </div>
      </div>
+   </div>
      <div class="panel-body">
              <table class="table table-responsive">
                  <thead>
@@ -62,7 +53,7 @@
                     <td class="text-right">
                         {{ totalIncl.toLocaleString('en-GB') }}
                     </td>
-                    <td>
+                    <td v-if="conversionId && totalIncl && stockItem">
                       <button @click.prevent="addSaleLine" class="btn btn-success btn-xs"><i class="fa fa-plus"></i></button>
                     </td>
                  </tr>
@@ -98,7 +89,10 @@
                                <button @click.prevent="deleteSale(sale)" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></button>
                            </td>
                        </tr>
-                       <tr v-if="salesLines.length"><td colspan="9"><button type="button" class="btn btn-info btn-sm pull-right" @click.prevent="completeSale(salesLines)">Complete Sale</button></td></tr>
+                       <tr v-if="salesLines.length">
+                         <td colspan="4" class = "text-right"><strong>Total Sale Amount:</strong> {{total_sale.toLocaleString('en-GB')}}</td>
+                         <td colspan="5"><button type="button" class="btn btn-info btn-sm pull-right" @click.prevent="completeSale(salesLines)">Complete Sale</button></td>
+                       </tr>
                        </tbody>
                    </table>
          </div>
@@ -121,15 +115,14 @@
      },
      methods:{
        getStock(){
-         axios.get('/sale').then(response=>{
-          //  console.log(response.data);
+         axios.get('/sale/create').then(response=>{
+
             this.uoms = response.data.uoms;
 
             let stock = response.data.stock;
             stock = stock.map(item => {
               item.stock = item.stock[0].quantity_on_hand;
               item.selling_tax = item.selling_tax.rate;
-
               return item;
             });
 
@@ -140,22 +133,22 @@
          );
        },
        addSaleLine(){
-        this.salesLines.push(
-          {
-          id: this.stockItem,
-          name: this.selected_stockItem.name,
-          uom: this.conversionId,
-          quantity: this.quantity,
-          unitExclPrice: this.unitExclPrice.toLocaleString('en-GB'),
-          unitInclPrice: this.unitInclPrice.toLocaleString('en-GB'),
-          totalExcl: this.totalExcl.toLocaleString('en-GB'),
-          totalIncl: this.totalIncl.toLocaleString('en-GB'),
-          totalTax: this.totalTax.toLocaleString('en-GB')
-          }
-      );
-      this.stockItem = "";
-        this.conversionId = "";
-        this.quantity = 1;
+    
+           this.salesLines.push(
+             {
+             id: this.stockItem,
+             name: this.selected_stockItem.name,
+             uom: this.conversionId,
+             quantity: this.quantity,
+             unitExclPrice: this.unitExclPrice.toLocaleString('en-GB'),
+             unitInclPrice: this.unitInclPrice.toLocaleString('en-GB'),
+             totalExcl: this.totalExcl.toLocaleString('en-GB'),
+             totalIncl: this.totalIncl.toLocaleString('en-GB'),
+             totalTax: this.totalTax.toLocaleString('en-GB')
+             });
+           this.stockItem = "";
+           this.conversionId = "";
+           this.quantity = 1;
       },
       editSale(sale){
           if (sale) {
@@ -170,6 +163,23 @@
       },
       completeSale(salesLines){
         axios.post('/sale',salesLines).then(response=>{
+          if(response.data.error){
+            Messenger().post({
+                message: response.data.error,
+                type: 'error',
+                showCloseButton: true
+            });
+          }
+          if (response.data.message) {
+            Messenger().post({
+                message: response.data.message,
+                type: 'success',
+                showCloseButton: true
+            });
+            setTimeout(function(){
+                  window.location.href="/sale";
+            },100);
+          }
           console.log(response.data);
         }).catch(response=>{
           console.log(response.data);
@@ -181,6 +191,7 @@
          return (parseFloat(this.quantity)* parseFloat(this.selected_stockItem.unit_cost))
                 +(parseFloat(this.quantity)* parseFloat(this.selected_stockItem.selling_tax.rate));
        },
+
        selected_stockItem(){
          if (this.stockItem) {
            let selectedStockItem = this.stock.filter(stki=>{
@@ -189,6 +200,7 @@
            return selectedStockItem[0];
          }
        },
+
      conversions() {
 
          let conversions = [];
@@ -238,8 +250,16 @@
           return  this.totalIncl - this.totalExcl;
       },
 
-      total_exclusive(){
-      }
+      total_sale(){
+        if(!this.salesLines.length) return 0;
+        let total = this.salesLines.map(t=>{
+            return t.totalIncl;
+          }).reduce((s,t)=>{
+            return parseFloat(s) + parseFloat(t);
+          });
+          return total;
+      },
+
    },
      watch: {
 

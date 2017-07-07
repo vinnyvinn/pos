@@ -14177,12 +14177,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -14203,15 +14197,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     getStock: function getStock() {
       var _this = this;
 
-      axios.get('/sale').then(function (response) {
-        //  console.log(response.data);
+      axios.get('/sale/create').then(function (response) {
+
         _this.uoms = response.data.uoms;
 
         var stock = response.data.stock;
         stock = stock.map(function (item) {
           item.stock = item.stock[0].quantity_on_hand;
           item.selling_tax = item.selling_tax.rate;
-
           return item;
         });
 
@@ -14221,6 +14214,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       });
     },
     addSaleLine: function addSaleLine() {
+
       this.salesLines.push({
         id: this.stockItem,
         name: this.selected_stockItem.name,
@@ -14249,6 +14243,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     completeSale: function completeSale(salesLines) {
       axios.post('/sale', salesLines).then(function (response) {
+        if (response.data.error) {
+          Messenger().post({
+            message: response.data.error,
+            type: 'error',
+            showCloseButton: true
+          });
+        }
+        if (response.data.message) {
+          Messenger().post({
+            message: response.data.message,
+            type: 'success',
+            showCloseButton: true
+          });
+          setTimeout(function () {
+            window.location.href = "/sale";
+          }, 100);
+        }
         console.log(response.data);
       }).catch(function (response) {
         console.log(response.data);
@@ -14319,7 +14330,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     totalTax: function totalTax() {
       return this.totalIncl - this.totalExcl;
     },
-    total_exclusive: function total_exclusive() {}
+    total_sale: function total_sale() {
+      if (!this.salesLines.length) return 0;
+      var total = this.salesLines.map(function (t) {
+        return t.totalIncl;
+      }).reduce(function (s, t) {
+        return parseFloat(s) + parseFloat(t);
+      });
+      return total;
+    }
   },
   watch: {}
 });
@@ -16509,7 +16528,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "text-right"
   }, [_vm._v("\n                       " + _vm._s(_vm.totalTax.toLocaleString('en-GB')) + "\n                   ")]), _vm._v(" "), _c('td', {
     staticClass: "text-right"
-  }, [_vm._v("\n                       " + _vm._s(_vm.totalIncl.toLocaleString('en-GB')) + "\n                   ")]), _vm._v(" "), _c('td', [_c('button', {
+  }, [_vm._v("\n                       " + _vm._s(_vm.totalIncl.toLocaleString('en-GB')) + "\n                   ")]), _vm._v(" "), (_vm.conversionId && _vm.totalIncl && _vm.stockItem) ? _c('td', [_c('button', {
     staticClass: "btn btn-success btn-xs",
     on: {
       "click": function($event) {
@@ -16519,7 +16538,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('i', {
     staticClass: "fa fa-plus"
-  })])])])])]), _vm._v(" "), _c('br'), _vm._v(" "), _c('table', {
+  })])]) : _vm._e()])])]), _vm._v(" "), _c('br'), _vm._v(" "), _c('table', {
     staticClass: "table table-responsive"
   }, [_vm._m(2), _vm._v(" "), _c('tbody', [_vm._l((_vm.salesLines), function(sale) {
     return (_vm.salesLines.length) ? _c('tr', [_c('td', [_vm._v(_vm._s(sale.name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(sale.uom))]), _vm._v(" "), _c('td', {
@@ -16556,8 +16575,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticClass: "fa fa-trash"
     })])])]) : _vm._e()
   }), _vm._v(" "), (_vm.salesLines.length) ? _c('tr', [_c('td', {
+    staticClass: "text-right",
     attrs: {
-      "colspan": "9"
+      "colspan": "4"
+    }
+  }, [_c('strong', [_vm._v("Total Sale Amount:")]), _vm._v(" " + _vm._s(_vm.total_sale.toLocaleString('en-GB')))]), _vm._v(" "), _c('td', {
+    attrs: {
+      "colspan": "5"
     }
   }, [_c('button', {
     staticClass: "btn btn-info btn-sm pull-right",
@@ -16578,13 +16602,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col-xs-6"
-  }, [_vm._v("\n                CASH - CASH CUSTOMER\n\n                "), _c('button', {
-    staticClass: "btn btn-xs btn-info pull-right"
-  }, [_vm._v("CHANGE CUSTOMER")])]), _vm._v(" "), _c('div', {
-    staticClass: "col-xs-6"
-  }, [_c('strong', [_vm._v(" Credit Limit: ")]), _vm._v(" "), _c('strong', {
-    staticClass: "pull-right"
-  }, [_vm._v("Account Balance: ")])])])])
+  }, [_vm._v("\n                CASH - CASH CUSTOMER\n        ")])])])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('thead', [_c('tr', [_c('th', {
     staticClass: "text-nowrap"

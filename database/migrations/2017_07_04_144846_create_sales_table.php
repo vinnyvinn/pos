@@ -17,8 +17,8 @@ class CreateSalesTable extends Migration
             $table->increments('id');
             $table->integer('unit_conversion_id');
             $table->string('uom');
-            $table->string('stock_item_id');
-            $table->integer('stock_name');
+            $table->integer('stock_item_id');
+            $table->string('stock_name');
             $table->string('quantity');
             $table->string('unitExclPrice');
             $table->string('unitInclPrice');

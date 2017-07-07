@@ -60,7 +60,6 @@
                         <li><a href="{{ route('supplier.index') }}">View All</a></li>
                         <li><a href="{{ route('supplier.create') }}">Create</a></li>
                     </ul>
-
                 </li>
 
                 <li class='has_sub'>
@@ -119,7 +118,22 @@
                         </li>
                     </ul>
                 </li>
-                <li><a href="{{route('sale.index')}}"> <i class="fa fa-dollar"></i>Sale</a></li>
+                <li class="has_sub">
+                    <a href="javascript:void(0);">
+                        <i class="fa fa-dollar"></i>
+                        <span>Sale</span>
+                        <span class="pull-right"><i class="fa fa-angle-down"></i></span>
+                    </a>
+                    <ul>
+                        <li>
+                            <a href="{{route('sale.index')}}">View All</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('sale.create') }}">Make Sale</a>
+                        </li>
+                    </ul>
+                </li>
+
             </ul>
             <div class="clearfix"></div>
         </div>

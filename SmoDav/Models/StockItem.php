@@ -93,7 +93,7 @@ class StockItem extends Model
               },
               'conversions' => function ($builder) {
                   return $builder->select([
-                    'id', 'stocking_unit_id', 'stock_item_id', 'converted_unit_id',
+                     'stocking_unit_id', 'stock_item_id', 'converted_unit_id',
                     'stocking_ratio', 'converted_ratio'
                   ]);
               },
