@@ -11,7 +11,7 @@
             fa fa-cart
         @endslot
         @slot('header')
-            Purchase Order
+            {{ $title }} Purchase Orders
         @endslot
         Manage purchase orders
     @endcomponent
@@ -19,13 +19,14 @@
         <div class="col-sm-12">
             <div class="widget">
             <div class="widget-header">
-                <h2><strong>Purchase Order</strong></h2>
+                <h2><strong>{{ $title }} Purchase Orders</strong></h2>
             </div>
             <div class="widget-content padding">
                 <div class="table-responsive">
                     <table class="table table-striped nowrap" id="purchaseOrder_table" cellspacing="0">
                     <thead>
                     <tr>
+                        <th>Doc. No.</th>
                         <th>Supplier</th>
                         <th>Stall</th>
                         <th>Order Date</th>
@@ -38,6 +39,7 @@
                     <tbody>
                     @foreach($orders as $order)
                         <tr>
+                            <td><a href="{{ route('purchaseOrder.show', $order->id) }}">{{ $order->document_number }}</a></td>
                             <td>{{ $order->supplier->name }}</td>
                             <td>{{ $order->stall->name }}</td>
                             <td>{{ $order->order_date }}</td>
@@ -45,8 +47,12 @@
                             <td class="text-right">{{ number_format($order->total_exclusive, 2) }}</td>
                             <td class="text-right">{{ number_format($order->total_inclusive, 2) }}</td>
                             <td>
+                                @if($order->document_status == 0)
                                 <a href="{{ route('purchaseOrder.edit', $order->id) }}" class="btn btn-success btn-xs"><i class="fa fa-pencil"></i></a>
-                                <a href="{{ route('goodsReceived.receive', $order->id) }}" class="btn btn-primary btn-xs">Receive</a>
+                                @endif
+                                @if($order->document_status == 0 || $order->document_status == 1)
+                                    <a href="{{ route('goodsReceived.receive', $order->id) }}" class="btn btn-primary btn-xs">Receive</a>
+                                @endif
                             </td>
                         </tr>
                     @endforeach

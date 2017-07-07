@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
@@ -51,12 +52,22 @@ class GoodsReceivedController extends Controller
         $data['account_id'] = $request->get('supplier_id');
         $data['user_id'] = Auth::id();
         $data['document_type'] = Order::GOODS_RECEIVED_VOUCHER;
-        $data['document_status'] = Order::STATUS_PARTIALLY_PROCESSED;
+        $data['document_status'] = Order::STATUS_ARCHIVED;
         $data['total_exclusive'] = 0;
         $data['total_inclusive'] = 0;
         $data['total_tax'] = 0;
         if (! $data['due_date']) {
             $data['due_date'] = Carbon::parse($request->get('order_date'));
+        }
+
+        $data['lines'] = array_filter($data['lines'], function ($item) {
+            return floatval($item->quantity) > 0;
+        });
+
+        if (! count($data['lines'])) {
+            flash('Please receive at least one item');
+
+            return redirect()->back();
         }
 
         foreach ($data['lines'] as $line) {
@@ -65,40 +76,70 @@ class GoodsReceivedController extends Controller
             $data['total_tax'] += $line->totalTax;
         }
 
-        \DB::transaction(
-            function () use ($data) {
-                $order = Order::create($data);
-                $data['lines'] = array_map(
-                    function ($line) use ($order, $data) {
-                        $line = (array) $line;
-                        $line['order_id'] = $order->id;
-                        $line['stall_id'] = $data['stall_id'];
-                        $line['stock_item_id'] = $line['itemId'];
-                        $line['uom'] = $line['conversionId'];
-                        $line['order_quantity'] = $line['quantity'];
-                        $line['processed_quantity'] = $line['quantity'];
-                        $line['discount'] = 0;
-                        $line['tax_id'] = $line['taxId'];
-                        $line['tax_rate'] = $line['taxRate'];
-                        $line['unit_exclusive'] = $line['unitExclPrice'];
-                        $line['unit_inclusive'] = $line['unitInclPrice'];
-                        $line['unit_tax'] = $line['unit_inclusive'] - $line['unit_exclusive'];
-                        $line['total_exclusive'] = $line['order_quantity'] * $line['unit_exclusive'];
-                        $line['total_inclusive'] = $line['order_quantity'] * $line['unit_inclusive'];
+        DB::transaction(function () use ($data) {
+            $order = Order::create($data);
+            $sampleLineId = null;
+            foreach ($data['lines'] as $line) {
+                OrderLine::where('id', $line->id)->increment('processed_quantity', $line->quantity);
+                Stock::where('stall_id', $data['stall_id'])
+                    ->where('item_id', $line->itemId)
+                    ->increment('quantity_on_hand', $line->quantity);
+                $sampleLineId = $line->id;
+            }
 
-                        unset(
-                            $line['itemId'], $line['conversionId'], $line['quantity'], $line['taxId'], $line['taxRate'],
-                            $line['unitExclPrice'], $line['unitInclPrice'], $line['totalExcl'], $line['totalIncl'],
-                            $line['totalTax']
-                        );
+            $data['lines'] = array_map(
+                function ($line) use ($order, $data) {
+                    $line = (array) $line;
+                    $line['order_id'] = $order->id;
+                    $line['stall_id'] = $data['stall_id'];
+                    $line['stock_item_id'] = $line['itemId'];
+                    $line['uom'] = $line['conversionId'];
+                    $line['order_quantity'] = $line['quantity'];
+                    $line['processed_quantity'] = $line['quantity'];
+                    $line['discount'] = 0;
+                    $line['tax_id'] = $line['taxId'];
+                    $line['tax_rate'] = $line['taxRate'];
+                    $line['unit_exclusive'] = $line['unitExclPrice'];
+                    $line['unit_inclusive'] = $line['unitInclPrice'];
+                    $line['unit_tax'] = $line['unit_inclusive'] - $line['unit_exclusive'];
+                    $line['total_exclusive'] = $line['order_quantity'] * $line['unit_exclusive'];
+                    $line['total_inclusive'] = $line['order_quantity'] * $line['unit_inclusive'];
 
-                        return $line;
-                    },
-                    $data['lines']);
-                OrderLine::insert($data['lines']);
-            });
+                    unset(
+                        $line['itemId'], $line['conversionId'], $line['quantity'], $line['taxId'], $line['taxRate'],
+                        $line['unitExclPrice'], $line['unitInclPrice'], $line['totalExcl'], $line['totalIncl'],
+                        $line['totalTax'], $line['id']
+                    );
 
-        flash('Successfully received a new purchase order');
+                    return $line;
+                },
+                $data['lines']
+            );
+
+            OrderLine::insert($data['lines']);
+
+            $sampleOrder = OrderLine::find($sampleLineId);
+
+            $exists = OrderLine::where('order_id', $sampleOrder->order_id)
+                ->whereColumn('processed_quantity', '<', 'order_quantity')
+                ->exists();
+
+            if (! $exists) {
+                Order::where('id', $sampleOrder->order_id)->update([
+                    'document_status' => Order::STATUS_ARCHIVED
+                ]);
+
+                return;
+            }
+
+            Order::where('id', $sampleOrder->order_id)->update([
+                'document_status' => Order::STATUS_PARTIALLY_PROCESSED
+            ]);
+        });
+
+
+
+        flash('Successfully received goods');
 
         return redirect()->route('purchaseOrder.index');
     }
@@ -107,11 +148,13 @@ class GoodsReceivedController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show($id)
     {
-        //
+
+
     }
 
     /**
@@ -156,7 +199,10 @@ class GoodsReceivedController extends Controller
             }])
                 ->get(['name', 'id', 'code', 'stocking_uom', 'buying_tax']);
 
-            $order = Order::with(['lines'])->findOrFail($id);
+            $order = Order::with(['lines' => function ($builder) {
+                return $builder->whereRaw('processed_quantity < order_quantity');
+            }])->findOrFail($id);
+
 
             return Response::json([
                 'order' => $order,
