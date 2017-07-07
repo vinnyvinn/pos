@@ -59,9 +59,10 @@
     </div>
     @include('layouts.partials.content.js')
 
-    @yield('footer')
 
     <script src="{{ asset(mix('js/app.js')) }}"></script>
+
+    @yield('footer')
 
     @if(session('flash_message'))
         <script>

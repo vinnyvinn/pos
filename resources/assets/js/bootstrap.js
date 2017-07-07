@@ -22,7 +22,7 @@ require('./libs/messenger-theme-flat');
 Messenger.options = {
     extraClasses: 'messenger-fixed messenger-on-top messenger-on-right',
     theme: 'flat'
-}
+};
 
 window.Vue = require('vue');
 
