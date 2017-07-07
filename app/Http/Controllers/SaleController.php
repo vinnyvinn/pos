@@ -3,58 +3,38 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use SmoDav\Models\UnitOfMeasure;
+use SmoDav\Models\StockItem;
 class SaleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
+        $stallId = 1; // TODO: Change this to use session
+
+        if (request()->ajax()) {
+            $stockItems = StockItem::forSale($stallId);
+            return response()->json([
+              'stock'=> $stockItems,
+              'uoms' => UnitOfMeasure::active()->get(['id', 'name'])->keyBy('id')
+            ]);
+        }
         return view('sale.index');
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+      // return response()->json($request->all());
+      foreach ($request->all() as $value) {
+        return response()->json($value);
+      }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
-        //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         //

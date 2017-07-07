@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Response;
 use SmoDav\Models\Order;
 
@@ -48,8 +50,7 @@ class PurchaseOrderController extends Controller
             ]);
         }
 
-        return view('purchase-order.create')
-            ->with('orderLines', OrderLine::all());
+        return view('purchase-order.create');
     }
 
     /**
@@ -60,7 +61,23 @@ class PurchaseOrderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $data = $request->all();
+        $data['lines'] = json_decode($data['lines']);
+        $data['account_id'] = $request->get('supplier_id');
+        $data['user_id'] = Auth::user()->id;
+        $data['document_type'] = Order::PURCHASE_ORDER;
+        $data['document_status'] = Order::STATUS_UNPROCESSED;
+
+        // dd($data);
+
+        if ($data['due_date'] == null) {
+            $data['due_date'] = Carbon::parse($request->get('order_date'));
+        }
+         OrderLine::create($data)->with('order');
+
+        flash('Successfully created a new purchase order');
+        return redirect()->route('purchaseOrder.index');
     }
 
     /**
