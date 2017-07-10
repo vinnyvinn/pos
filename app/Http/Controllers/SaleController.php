@@ -14,6 +14,7 @@ class SaleController extends Controller
 {
     public function index()
     {
+
         return view('sale.index', ['sales' => Order::where('document_type', Order::INVOICE)->orderBy('id', 'desc')->get()]);
     }
     public function create()
@@ -30,6 +31,7 @@ class SaleController extends Controller
       }
       return view('sale.create');
     }
+
     public function store(Request $request)
     {
       // TODO: Change this to use session
@@ -67,6 +69,9 @@ class SaleController extends Controller
             $stock_quantity = $item_in_stock->first()->quantity_on_hand;
             $units_sold = ($value['quantity'] * ($conversion->converted_ratio/ $conversion->stocking_ratio));
             $new_stock_quantity = $item_in_stock->first()->quantity_on_hand - $units_sold;
+            if ($new_stock_quantity < 0) {
+                $new_stock_quantity = 0;
+            }
             $item_in_stock->update(['quantity_on_hand' => $new_stock_quantity]);
           }
 
@@ -104,18 +109,11 @@ class SaleController extends Controller
         //
     }
 
-
     public function update(Request $request, $id)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         //

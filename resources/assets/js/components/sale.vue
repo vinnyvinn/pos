@@ -8,7 +8,7 @@
                   </div>
                   <form @submit.prevent="validateForm">
                   <div class="widget-content padding">
-                          <div class="col-sm-6 col-sm-offset-3">
+                          <div class="col-sm-6">
                               <div class="form-group">
                                   <label for="customer_id">Customers</label>
                                   <select class="form-control input-sm" v-model="customer_id" name="customer_id" id="customer_id" required>
@@ -17,6 +17,10 @@
                                   </select>
                               </div>
                               </div>
+                          <div class="col-sm-6">
+                            <h4 class="text-right"><strong>Total</strong></h4>
+                            <h2 class="text-right">{{ total_inclusive.toLocaleString('en-GB') }}</h2>
+                          </div>
                           <br>
              <table class="table table-responsive">
                  <thead>
@@ -46,7 +50,7 @@
                       </select>
                     </td>
                     <td>
-                      <input type="number" class="form-control input-sm" v-model="quantity" required/>
+                      <input type="number" onfocus="this.select()" class="form-control input-sm" v-model="quantity" required/>
                     </td>
                     <td class="text-right">
                         {{unitExclPrice.toLocaleString('en-GB')}}
@@ -100,8 +104,7 @@
                            </td>
                        </tr>
                        <tr>
-                         <td colspan="4" class = "text-right"><strong>Total Sale Amount:</strong> {{total_inclusive.toLocaleString('en-GB')}}</td>
-                         <td colspan="5"><button type="submit" class="btn btn-info btn-sm pull-right" @click.prevent="validateForm">Complete Sale</button></td>
+                        <td colspan="9"><button type="submit" class="btn btn-info btn-sm pull-right" @click.prevent="validateForm">Complete Sale</button></td>
                        </tr>
                        </tbody>
                    </table>
@@ -124,7 +127,6 @@
           stockItem: "",
           quantity: 1,
           uoms:[],
-          quantity_on_hand_tracker: [],
           conversionId: null
        }
      },
@@ -149,8 +151,7 @@
             this.stock = stock;
          }).catch(response=>{
            console.log(response.data);
-         }
-         );
+         });
        },
 
        validateSaline(){
@@ -170,7 +171,7 @@
              });
              return;
          }
-         if (parseFloat(this.quantity) < 1) {
+         if ( !this.quantity || parseFloat(this.quantity) < 1) {
              Messenger().post({
                  message: "Quantity Should be greater than One!",
                  type: 'error',
@@ -182,7 +183,6 @@
        },
 
        addSaleLine(){
-
            this.salesLines.push(
              {
              id: this.stockItem,
@@ -226,7 +226,7 @@
         }
         if (!this.salesLines.length) {
           Messenger().post({
-              message: "There is no sale made Yet!",
+              message: "Please Make A Sale First!",
               type: 'error',
               showCloseButton: true
           });
@@ -257,9 +257,7 @@
                 type: 'success',
                 showCloseButton: true
             });
-            setTimeout(function(){
-                  window.location.href="/sale";
-            },100);
+            this.salesLines = [];
           }
           console.log(response.data);
         }).catch(response=>{
