@@ -15,11 +15,17 @@ class CreateSalesTable extends Migration
     {
         Schema::create('sales', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('unit_conversion_id');
-            $table->string('uom');
-            $table->integer('stock_item_id');
+            $table->integer('stock_item_id')->unsigned()->nullable();
+            $table->integer('stall_id')->unsigned()->nullable();
+            $table->integer('sale_id')->unsigned()->nullable();
+            $table->integer('unit_conversion_id')->unsigned()->nullable();
             $table->string('stock_name');
-            $table->string('quantity');
+            $table->string('code');
+            $table->string('description');
+            $table->double('quantity');
+            $table->double('tax_rate');
+            $table->double('unit_tax')->default(0);
+            $table->double('discount')->default(0);
             $table->string('unitExclPrice');
             $table->string('unitInclPrice');
             $table->string('totalInclPrice');

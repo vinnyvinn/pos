@@ -18,6 +18,7 @@ class CreateOrderLinesTable extends Migration
             $table->bigInteger('order_id')->index()->unsigned()->nullable();
             $table->integer('stock_item_id')->index()->unsigned();
             $table->integer('stall_id')->index()->unsigned()->nullable();
+            $table->integer('customer_id')->index()->unsigned()->nullable();
             $table->string('code')->nullable();
             $table->string('name');
             $table->text('description')->nullable();

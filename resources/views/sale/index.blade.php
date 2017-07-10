@@ -8,7 +8,7 @@
     @slot('header')
         Sales
     @endslot
-
+Manage Sales
     @endcomponent
     <div class="row">
         <div class="col-sm-12">
@@ -26,12 +26,9 @@
                       <table class="table table-responsive" id="sales_table">
                             <thead>
                               <tr>
-                                <th>Name</th>
-                                <th>Code</th>
-                                <th>UOM</th>
-                                <th>Quantity</th>
-                                <th>Exclusive Price</th>
-                                <th>Inclusive Price</th>
+                                <th>DOC No.</th>
+                                <th>Customer</th>
+                                <th>Stall</th>
                                 <th>Total Exclusive</th>
                                 <th>Total Inclusive</th>
                                 <th>Total Tax</th>
@@ -40,26 +37,20 @@
                           <tbody>
                             @foreach ($sales as $key => $sale)
                               <tr>
-                                <td>{{$sale->stock_name}}</td>
-                                <td>{{$sale->code}}</td>
-                                <td>{{$sale->uom}}</td>
-                                <td>{{$sale->quantity}}</td>
-                                <td>{{$sale->unitExclPrice}}</td>
-                                <td>{{$sale->unitInclPrice}}</td>
-                                <td>{{$sale->totalInclPrice}}</td>
+                                <td>{{ $sale->document_number }}</td>
+                                <td>{{ $sale->customer->name }}</td>
+                                <td>{{ $sale->stall->name }}</td>
+                                <td>{{$sale->total_exclusive}}</td>
+                                <td>{{$sale->total_inclusive}}</td>
                                 <td>{{$sale->total_tax}}</td>
-                                <td>{{$sale->totalExclPrice}}</td>
                               </tr>
                             @endforeach
                           </tbody>
                         <tfoot>
                           <tr>
-                            <th>Name</th>
-                            <th>Code</th>
-                            <th>UOM</th>
-                            <th>Quantity</th>
-                            <th>Exclusive Price</th>
-                            <th>Inclusive Price</th>
+                            <th>DOC No.</th>
+                            <th>Customer</th>
+                            <th>Stall</th>
                             <th>Total Exclusive</th>
                             <th>Total Inclusive</th>
                             <th>Total Tax</th>

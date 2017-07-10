@@ -1,13 +1,31 @@
 <template>
- <div class="panel panel-default">
-     <div class="panel-heading">
-         <div class="row">
-         <div class="col-xs-6">
-                 CASH - CASH CUSTOMER
-         </div>
-     </div>
-   </div>
-     <div class="panel-body">
+  <div class="row">
+      <div class="col-sm-12">
+          <div class="container">
+              <div class="widget">
+                  <div class="widget-header">
+                      <h2><strong>Sales</strong></h2>
+                  </div>
+                  <form @submit.prevent="validateForm">
+                  <div class="widget-content padding">
+                          <div class="col-sm-6">
+                              <div class="form-group">
+                                  <label for="supplier_id">Customers</label>
+                                  <select class="form-control input-sm" v-model="customer_id" name="supplier_id" id="supplier_id" required>
+                                      <option value="null" disabled>Select a Customer</option>
+                                      <option v-for="customer in customers" :value="customer.id">{{customer.name}}</option>
+                                  </select>
+                              </div>
+                              </div>
+                              <div class="col-sm-6">
+                              <div class="form-group">
+                                  <label for="description">Description</label>
+                                  <textarea class="form-control input-sm" name="description" id="description" cols="30" rows="1"></textarea>
+                              </div>
+                              </div>
+
+
+                          <br>
              <table class="table table-responsive">
                  <thead>
                    <tr>
@@ -27,7 +45,7 @@
                     <td>
                       <select class="form-control input-sm" id="stock_item" v-model="stockItem">
                              <option value="">select Item</option>
-                             <option v-if="stock" v-for="stock_item in stock" :value="stock_item.id">{{stock_item.name}}</option>
+                             <option v-if="stock" v-for="stock_item in stock" :value="stock_item.id">{{stock_item.code+" "+stock_item.name}}</option>
                      </select></td>
                     <td>
                       <select v-model="conversionId" class="form-control input-sm" name="conversion_id" required>
@@ -53,8 +71,8 @@
                     <td class="text-right">
                         {{ totalIncl.toLocaleString('en-GB') }}
                     </td>
-                    <td v-if="conversionId && totalIncl && stockItem">
-                      <button @click.prevent="addSaleLine" class="btn btn-success btn-xs"><i class="fa fa-plus"></i></button>
+                    <td>
+                      <button @click.prevent="validateSaline" class="btn btn-success btn-xs"><i class="fa fa-plus"></i></button>
                     </td>
                  </tr>
                </tbody>
@@ -76,49 +94,59 @@
                        </thead>
                        <tbody>
                        <tr v-if="salesLines.length" v-for="sale in salesLines">
-                           <td>{{sale.name}}</td>
+                           <td>{{sale.code+' '+sale.name}}</td>
                            <td>{{sale.uom}}</td>
                            <td class="text-right">{{sale.quantity}}</td>
-                           <td class="text-right">{{sale.unitExclPrice}}</td>
-                           <td class="text-right">{{sale.unitInclPrice}}</td>
-                           <td class="text-right">{{sale.totalExcl}}</td>
-                           <td class="text-right">{{sale.totalTax}}</td>
-                           <td class="text-right">{{sale.totalIncl}}</td>
+                           <td class="text-right">{{sale.unitExclPrice.toLocaleString('en-GB')}}</td>
+                           <td class="text-right">{{sale.unitInclPrice.toLocaleString('en-GB')}}</td>
+                           <td class="text-right">{{sale.totalExcl.toLocaleString('en-GB')}}</td>
+                           <td class="text-right">{{sale.totalTax.toLocaleString('en-GB')}}</td>
+                           <td class="text-right">{{sale.totalIncl.toLocaleString('en-GB')}}</td>
                            <td>
                                <button @click.prevent="editSale(sale)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></button>
                                <button @click.prevent="deleteSale(sale)" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></button>
                            </td>
                        </tr>
-                       <tr v-if="salesLines.length">
-                         <td colspan="4" class = "text-right"><strong>Total Sale Amount:</strong> {{total_sale.toLocaleString('en-GB')}}</td>
-                         <td colspan="5"><button type="button" class="btn btn-info btn-sm pull-right" @click.prevent="completeSale(salesLines)">Complete Sale</button></td>
+                       <tr>
+                         <td colspan="4" class = "text-right"><strong>Total Sale Amount:</strong> {{total_inclusive.toLocaleString('en-GB')}}</td>
+                         <td colspan="5"><button type="submit" class="btn btn-info btn-sm pull-right" @click.prevent="validateForm">Complete Sale</button></td>
                        </tr>
                        </tbody>
                    </table>
          </div>
+           </form>
      </div>
+   </div>
+ </div>
+ </div>
    </template>
    <script>
    export default{
      data(){
        return{
           stock:[],
-          salesLines:[],
-          stockItem:"",
+          customer_id: null,
+          description: "",
+          customers: [],
+          salesLines: [],
+          stockItem: "",
           quantity: 1,
           uoms:[],
-          conversionId:null
+          quantity_on_hand_tracker: [],
+          conversionId: null
        }
      },
+
      created(){
        this.getStock();
      },
+
      methods:{
        getStock(){
          axios.get('/sale/create').then(response=>{
 
             this.uoms = response.data.uoms;
-
+            this.customers = response.data.customers;
             let stock = response.data.stock;
             stock = stock.map(item => {
               item.stock = item.stock[0].quantity_on_hand;
@@ -132,19 +160,42 @@
          }
          );
        },
+
+       validateSaline(){
+         if (!this.stockItem) {
+             Messenger().post({
+                 message: "Please Select A product!",
+                 type: 'error',
+                 showCloseButton: true
+             });
+             return;
+         }
+         if (!this.conversionId) {
+             Messenger().post({
+                 message: "Please Select A Conversion!",
+                 type: 'error',
+                 showCloseButton: true
+             });
+             return;
+         }
+         this.addSaleLine();
+       },
+
        addSaleLine(){
-    
+
            this.salesLines.push(
              {
              id: this.stockItem,
              name: this.selected_stockItem.name,
-             uom: this.conversionId,
+             code: this.selected_stockItem.code,
+             unit_conversion_id: this.conversionId,
+             uom: this.uom,
              quantity: this.quantity,
-             unitExclPrice: this.unitExclPrice.toLocaleString('en-GB'),
-             unitInclPrice: this.unitInclPrice.toLocaleString('en-GB'),
-             totalExcl: this.totalExcl.toLocaleString('en-GB'),
-             totalIncl: this.totalIncl.toLocaleString('en-GB'),
-             totalTax: this.totalTax.toLocaleString('en-GB')
+             unitExclPrice: this.unitExclPrice,
+             unitInclPrice: this.unitInclPrice,
+             totalExcl: this.totalExcl,
+             totalIncl: this.totalIncl,
+             totalTax: this.totalTax
              });
            this.stockItem = "";
            this.conversionId = "";
@@ -153,16 +204,45 @@
       editSale(sale){
           if (sale) {
             this.stockItem = sale.id ;
-            this.conversionId = sale.uom;
+            this.conversionId = sale.unit_conversion_id;
             this.quantity = sale.quantity;
             this.deleteSale(sale);
           }
       },
+
       deleteSale(sale){
         this.salesLines.splice(this.salesLines.indexOf(sale), 1);
       },
-      completeSale(salesLines){
-        axios.post('/sale',salesLines).then(response=>{
+
+      validateForm(){
+        if (!this.customer_id) {
+          Messenger().post({
+              message: "Select a Customer!",
+              type: 'error',
+              showCloseButton: true
+          });
+          return;
+        }
+        if (!this.salesLines.length) {
+          Messenger().post({
+              message: "There is no sale made Yet!",
+              type: 'error',
+              showCloseButton: true
+          });
+          return;
+        }
+        this.completeSale();
+      },
+
+      completeSale(){
+        axios.post('/sale',{
+          salesLines: this.salesLines,
+          customer_id: this.customer_id,
+          description: this.description,
+          total_inclusive: this.total_inclusive,
+          total_exclusive: this.total_exclusive,
+          total_tax: this.sale_total_tax,
+        }).then(response=>{
           if(response.data.error){
             Messenger().post({
                 message: response.data.error,
@@ -186,7 +266,16 @@
         });
       }
      },
+
      computed:{
+       uom(){
+         if (!this.conversionId) return null;
+         return this.conversions.filter(conversion=>{
+           return conversion.id == this.conversionId;
+         }).map(conversion=>{
+           return conversion.name;
+         })[0];
+       },
        total_price(){
          return (parseFloat(this.quantity)* parseFloat(this.selected_stockItem.unit_cost))
                 +(parseFloat(this.quantity)* parseFloat(this.selected_stockItem.selling_tax.rate));
@@ -207,7 +296,7 @@
           if (! this.selected_stockItem) return conversions;
          if (! this.selected_stockItem.id) return conversions;
 
-         conversions.push(this.uoms[this.selected_stockItem.selling_uom]);
+         conversions.push(this.uoms[this.selected_stockItem.stocking_uom]);
          this.selected_stockItem.conversions.forEach(conversion => {
              conversions.push(this.uoms[conversion.converted_unit_id]);
          });
@@ -250,7 +339,8 @@
           return  this.totalIncl - this.totalExcl;
       },
 
-      total_sale(){
+
+      total_inclusive(){
         if(!this.salesLines.length) return 0;
         let total = this.salesLines.map(t=>{
             return t.totalIncl;
@@ -259,10 +349,28 @@
           });
           return total;
       },
+      total_exclusive(){
+        if(!this.salesLines.length) return 0;
+        let total = this.salesLines.map(t=>{
+            return t.totalExcl;
+          }).reduce((s,t)=>{
+            return parseFloat(s) + parseFloat(t);
+          });
+          return total;
+      },
+      sale_total_tax(){
+        if(!this.salesLines.length) return 0;
+        let total = this.salesLines.map(t=>{
+            return t.totalTax;
+          }).reduce((s,t)=>{
+            return parseFloat(s) + parseFloat(t);
+          });
+          return total;
+      },
 
    },
-     watch: {
 
+     watch: {
 
      }
    }
