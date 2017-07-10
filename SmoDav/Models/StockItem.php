@@ -68,4 +68,44 @@ class StockItem extends Model
     {
         return $this->hasMany(PriceList::class, 'stock_item_id');
     }
+
+    public function uom()
+    {
+      return $this->belongsTo(UnitOfMeasure::class, 'selling_uom', 'id');
+    }
+
+    public function stock()
+    {
+      return $this->hasMany(Stock::class, 'item_id');
+    }
+
+    public static function forSale($stallId)
+    {
+        $items = StockItem::active()->with([
+            'prices' => function ($builder) {
+                return $builder->select([
+                  'stock_item_id', 'unit_conversion_id', 'inclusive_price'
+                ]);
+            },
+            'stock' => function ($builder) use ($stallId) {
+                  return $builder->where('stall_id', $stallId)
+                      ->select(['item_id', 'quantity_on_hand']);
+              },
+              'conversions' => function ($builder) {
+                  return $builder->select([
+                     'stocking_unit_id', 'stock_item_id', 'converted_unit_id',
+                    'stocking_ratio', 'converted_ratio'
+                  ]);
+              },
+              'sellingTax' => function ($builder) {
+                  return $builder->select(['id', 'rate']);
+              }
+            ])
+            ->get([
+                'id', 'code', 'description', 'has_conversions', 'name', 'selling_tax',
+                'selling_uom', 'stocking_uom'
+              ]);
+
+        return $items;
+    }
 }

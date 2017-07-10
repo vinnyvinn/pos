@@ -33,8 +33,8 @@ class CreateOrdersTable extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
-            $table->foreign('stall_id')->references('id')->on('stalls')->onDelete('set null');
+            // $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
+            // $table->foreign('stall_id')->references('id')->on('stalls')->onDelete('set null');
         });
     }
 

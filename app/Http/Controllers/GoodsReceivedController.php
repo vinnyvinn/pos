@@ -13,6 +13,7 @@ use SmoDav\Models\Stall;
 use SmoDav\Models\Stock;
 use SmoDav\Models\StockItem;
 use SmoDav\Models\Supplier;
+use SmoDav\Models\UnitConversion;
 use SmoDav\Models\UnitOfMeasure;
 
 class GoodsReceivedController extends Controller
@@ -76,10 +77,18 @@ class GoodsReceivedController extends Controller
             $data['total_tax'] += $line->totalTax;
         }
 
+
+
         DB::transaction(function () use ($data) {
             $order = Order::create($data);
             $sampleLineId = null;
+
+            // TODO: Implement cache
+
+            $conversions = UnitConversion::all();
+
             foreach ($data['lines'] as $line) {
+                $line->quantity = $this->updateQuantity($line, $conversions);
                 OrderLine::where('id', $line->id)->increment('processed_quantity', $line->quantity);
                 Stock::where('stall_id', $data['stall_id'])
                     ->where('item_id', $line->itemId)
@@ -216,4 +225,23 @@ class GoodsReceivedController extends Controller
 
         return view('goods-received.receive')->with('id', $id);
     }
+
+    private function updateQuantity($line, $conversions)
+    {
+        $conversion = $conversions
+            ->where('stock_item_id', $line->itemId)
+            ->where('converted_unit_id', $line->conversionId)
+            ->first();
+
+        if (! $conversion) {
+            return $line->quantity;
+        }
+
+        if ($conversion->converted_ratio < $conversion->stocking_ratio) {
+            return $line->quantity * ($conversion->stocking_ratio / $conversion->converted_ratio);
+        }
+
+        return $line->quantity / ($conversion->converted_ratio / $conversion->stocking_ratio);
+    }
+
 }

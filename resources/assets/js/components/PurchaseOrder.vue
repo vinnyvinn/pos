@@ -211,14 +211,17 @@
             totalTax() {
                 return this.totalIncl - this.totalExcl;
             },
+            total_exclusive(){
 
         },
+      },
 
         mounted() {
             setTimeout(() => {
 
             }, 1000);
         },
+
         watch: {
             unitExclPrice(price) {
                 if (this.currentEntry != 'unitExclPrice') return;
@@ -240,10 +243,9 @@
                     this.unitExclPrice = price;
                     return;
                 }
-
                 rate = (100 + parseFloat(rate))/100;
                 this.unitExclPrice = (Math.round((price/rate) * 100))/100;
-            },
+            }
         },
         methods: {
             entry(value) {

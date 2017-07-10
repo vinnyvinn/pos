@@ -95,6 +95,8 @@ class PurchaseOrderController extends Controller
         $data['user_id'] = Auth::id();
         $data['document_type'] = Order::PURCHASE_ORDER;
         $data['document_status'] = Order::STATUS_UNPROCESSED;
+
+        if ($data['due_date'] == null) {
         $data['total_exclusive'] = 0;
         $data['total_inclusive'] = 0;
         $data['total_tax'] = 0;
@@ -145,6 +147,7 @@ class PurchaseOrderController extends Controller
 
         return redirect()->route('purchaseOrder.index');
     }
+  }
 
     /**
      * Display the specified resource.

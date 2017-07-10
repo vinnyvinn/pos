@@ -17,10 +17,10 @@ Vue.component('loader', require('./components/core/loader.vue'));
 Vue.component('stock-item', require('./components/StockItem.vue'));
 Vue.component('settings', require('./components/Settings.vue'));
 Vue.component('purchase-order', require('./components/PurchaseOrder.vue'));
+Vue.component('sale', require('./components/sale.vue'));
 Vue.component('Editpurchaseorder', require('./components/EditPurchaseOrder.vue'));
 Vue.component('purchaseorderreceive', require('./components/PurchaseOrderReceive.vue'));
 Vue.component('showpurchaseorder', require('./components/ShowPurchaseOrder.vue'));
-
 
 const app = new Vue({
     el: '#app',
