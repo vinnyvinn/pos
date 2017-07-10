@@ -88,7 +88,7 @@ class StockItem extends Model
                 ]);
             },
             'stock' => function ($builder) use ($stallId) {
-                  return $builder->where('stall_id', $stallId)
+                  return $builder->where('stall_id', $stallId)->where('quantity_on_hand' '>' 0)
                       ->select(['item_id', 'quantity_on_hand']);
               },
               'conversions' => function ($builder) {

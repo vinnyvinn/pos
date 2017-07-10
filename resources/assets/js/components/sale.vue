@@ -188,6 +188,7 @@
              id: this.stockItem,
              name: this.selected_stockItem.name,
              code: this.selected_stockItem.code,
+             tax_rate: this.selected_stockItem.selling_tax,
              unit_conversion_id: this.conversionId,
              uom: this.uom,
              quantity: this.quantity,

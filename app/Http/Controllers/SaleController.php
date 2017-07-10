@@ -77,13 +77,14 @@ class SaleController extends Controller
               'stock_name' => $value['name'],
               'code' =>$value['code'],
               'quantity' => $value['quantity'],
-              'tax_rate' => 0,
-              'unit_tax' => 0,
+              'tax_rate' => $value['tax_rate'],
+              'unit_tax' => $value['unitInclPrice'] - $value['unitExclPrice'],
               'unitExclPrice' => $value['unitExclPrice'],
               'unitInclPrice' => $value['unitInclPrice'],
               'totalInclPrice' => $value['totalIncl'],
               'totalExclPrice' => $value['totalExcl'],
-              'total_tax' => $value['totalTax']
+              'total_tax' => $value['totalTax'],
+              'created_at' => Carbon::now()
             ];
         }
 
