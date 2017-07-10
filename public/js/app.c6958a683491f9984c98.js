@@ -14191,14 +14191,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -14252,6 +14244,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       if (!this.conversionId) {
         Messenger().post({
           message: "Please Select A Conversion!",
+          type: 'error',
+          showCloseButton: true
+        });
+        return;
+      }
+      if (parseFloat(this.quantity) < 1) {
+        Messenger().post({
+          message: "Quantity Should be greater than One!",
           type: 'error',
           showCloseButton: true
         });
@@ -16545,12 +16545,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('div', {
     staticClass: "widget-content padding"
   }, [_c('div', {
-    staticClass: "col-sm-6"
+    staticClass: "col-sm-6 col-sm-offset-3"
   }, [_c('div', {
     staticClass: "form-group"
   }, [_c('label', {
     attrs: {
-      "for": "supplier_id"
+      "for": "customer_id"
     }
   }, [_vm._v("Customers")]), _vm._v(" "), _c('select', {
     directives: [{
@@ -16561,8 +16561,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }],
     staticClass: "form-control input-sm",
     attrs: {
-      "name": "supplier_id",
-      "id": "supplier_id",
+      "name": "customer_id",
+      "id": "customer_id",
       "required": ""
     },
     on: {
@@ -16587,9 +16587,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "value": customer.id
       }
     }, [_vm._v(_vm._s(customer.name))])
-  })], 2)])]), _vm._v(" "), _vm._m(1), _vm._v(" "), _c('br'), _vm._v(" "), _c('table', {
+  })], 2)])]), _vm._v(" "), _c('br'), _vm._v(" "), _c('table', {
     staticClass: "table table-responsive"
-  }, [_vm._m(2), _vm._v(" "), _c('tbody', [_c('tr', [_c('td', [_c('select', {
+  }, [_vm._m(1), _vm._v(" "), _c('tbody', [_c('tr', [_c('td', [_c('select', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -16701,7 +16701,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "fa fa-plus"
   })])])])])]), _vm._v(" "), _c('br'), _vm._v(" "), _c('table', {
     staticClass: "table table-responsive"
-  }, [_vm._m(3), _vm._v(" "), _c('tbody', [_vm._l((_vm.salesLines), function(sale) {
+  }, [_vm._m(2), _vm._v(" "), _c('tbody', [_vm._l((_vm.salesLines), function(sale) {
     return (_vm.salesLines.length) ? _c('tr', [_c('td', [_vm._v(_vm._s(sale.code + ' ' + sale.name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(sale.uom))]), _vm._v(" "), _c('td', {
       staticClass: "text-right"
     }, [_vm._v(_vm._s(sale.quantity))]), _vm._v(" "), _c('td', {
@@ -16760,24 +16760,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   return _c('div', {
     staticClass: "widget-header"
   }, [_c('h2', [_c('strong', [_vm._v("Sales")])])])
-},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "col-sm-6"
-  }, [_c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "description"
-    }
-  }, [_vm._v("Description")]), _vm._v(" "), _c('textarea', {
-    staticClass: "form-control input-sm",
-    attrs: {
-      "name": "description",
-      "id": "description",
-      "cols": "30",
-      "rows": "1"
-    }
-  })])])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('thead', [_c('tr', [_c('th', {
     staticClass: "text-nowrap"

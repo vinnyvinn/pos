@@ -8,23 +8,15 @@
                   </div>
                   <form @submit.prevent="validateForm">
                   <div class="widget-content padding">
-                          <div class="col-sm-6">
+                          <div class="col-sm-6 col-sm-offset-3">
                               <div class="form-group">
-                                  <label for="supplier_id">Customers</label>
-                                  <select class="form-control input-sm" v-model="customer_id" name="supplier_id" id="supplier_id" required>
+                                  <label for="customer_id">Customers</label>
+                                  <select class="form-control input-sm" v-model="customer_id" name="customer_id" id="customer_id" required>
                                       <option value="null" disabled>Select a Customer</option>
                                       <option v-for="customer in customers" :value="customer.id">{{customer.name}}</option>
                                   </select>
                               </div>
                               </div>
-                              <div class="col-sm-6">
-                              <div class="form-group">
-                                  <label for="description">Description</label>
-                                  <textarea class="form-control input-sm" name="description" id="description" cols="30" rows="1"></textarea>
-                              </div>
-                              </div>
-
-
                           <br>
              <table class="table table-responsive">
                  <thead>
@@ -173,6 +165,14 @@
          if (!this.conversionId) {
              Messenger().post({
                  message: "Please Select A Conversion!",
+                 type: 'error',
+                 showCloseButton: true
+             });
+             return;
+         }
+         if (parseFloat(this.quantity) < 1) {
+             Messenger().post({
+                 message: "Quantity Should be greater than One!",
                  type: 'error',
                  showCloseButton: true
              });
