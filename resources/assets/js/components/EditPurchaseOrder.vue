@@ -74,7 +74,7 @@
                                     <td>
                                         <select v-model="conversionId" class="form-control input-sm" name="conversion_id" required>
                                             <option value="null" disabled>Select Conversion</option>
-                                            <option v-for="conversion in conversions" :value="conversion.id">{{ conversion.name }}</option>
+                                            <option v-for="conversion in conversions" :value="conversion.id">{{ conversion.name}}</option>
                                         </select>
                                     </td>
                                     <td>
@@ -200,9 +200,9 @@
                     conversions.push(this.uoms[conversion.converted_unit_id]);
                 });
 
-                if (conversions.length) {
-                    this.conversionId = conversions[0].id;
-                }
+//                if (conversions.length) {
+//                    this.conversionId = conversions[0].id;
+//                }
 
                 return conversions;
             },
@@ -333,11 +333,12 @@
                 this.orderLines.splice(this.orderLines.indexOf(line), 1);
             },
             editLine(line) {
+                console.log(line);
                 this.unitExclPrice = line.unitExclPrice;
                 this.unitInclPrice = line.unitInclPrice;
                 this.itemId = line.itemId;
                 this.quantity = line.quantity;
-                this.conversionId = line.conversionId;
+                this.conversionId = parseInt(line.conversionId);
                 this.deleteLine(line);
             },
             updateOrder() {
