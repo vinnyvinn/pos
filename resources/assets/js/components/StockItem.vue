@@ -209,7 +209,6 @@
                                            class="form-control input-sm" onclick="this.select()" required>
                                 </td>
                             </tr>
-
                             </tbody>
                         </table>
                     </div>
@@ -277,6 +276,9 @@
                 this.updatePLs();
             },
             priceLists() {
+                this.updatePLs();
+            },
+            stockingUnit() {
                 this.updatePLs();
             },
         },

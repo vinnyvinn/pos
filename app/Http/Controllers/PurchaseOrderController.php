@@ -54,11 +54,7 @@ class PurchaseOrderController extends Controller
             ->with('title', $title);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\JsonResponse|\Illuminate\View\View
-     */
+
     public function create()
     {
         if (request()->ajax()) {
@@ -80,13 +76,7 @@ class PurchaseOrderController extends Controller
         return view('purchase-order.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     *
-     * @return \Illuminate\Http\Response
-     */
+  
     public function store(Request $request)
     {
         $data = $request->all();
@@ -95,6 +85,8 @@ class PurchaseOrderController extends Controller
         $data['user_id'] = Auth::id();
         $data['document_type'] = Order::PURCHASE_ORDER;
         $data['document_status'] = Order::STATUS_UNPROCESSED;
+
+        if ($data['due_date'] == null) {
         $data['total_exclusive'] = 0;
         $data['total_inclusive'] = 0;
         $data['total_tax'] = 0;
@@ -145,6 +137,7 @@ class PurchaseOrderController extends Controller
 
         return redirect()->route('purchaseOrder.index');
     }
+  }
 
     /**
      * Display the specified resource.
