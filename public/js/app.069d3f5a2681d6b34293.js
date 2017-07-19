@@ -14193,7 +14193,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -14206,7 +14205,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       stockItem: "",
       quantity: 1,
       uoms: [],
-      conversionId: null
+      conversionId: null,
+      quantity_check: []
     };
   },
   created: function created() {
@@ -14219,7 +14219,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       var _this = this;
 
       axios.get('/sale/create').then(function (response) {
-
         _this.uoms = response.data.uoms;
         _this.customers = response.data.customers;
         var stock = response.data.stock;
@@ -14228,13 +14227,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           item.selling_tax = item.selling_tax.rate;
           return item;
         });
-
         _this.stock = stock;
       }).catch(function (response) {
         console.log(response.data);
       });
     },
+    validateQuantity: function validateQuantity() {},
     validateSaline: function validateSaline() {
+      var _this2 = this;
+
       if (!this.stockItem) {
         Messenger().post({
           message: "Please Select A product!",
@@ -14251,12 +14252,29 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         });
         return;
       }
-      if (!this.quantity || parseFloat(this.quantity) < 1) {
+      if (!this.quantity || parseFloat(this.quantity) < 0.001) {
         Messenger().post({
           message: "Quantity Should be greater than One!",
           type: 'error',
           showCloseButton: true
         });
+        return;
+      }
+      if (this.uom_checker(this.selected_stockItem, this.conversionId, this.quantity)) {
+        this.addQuantity(this.selected_stockItem, this.uom_checker(this.selected_stockItem, this.conversionId, this.quantity));
+      } else {
+        this.addQuantity(this.selected_stockItem, this.quantity);
+      }
+      var item_sold = this.quantity_check.filter(function (stock) {
+        return stock.id == _this2.selected_stockItem.id;
+      })[0];
+      if (parseFloat(this.selected_stockItem.stock) < parseFloat(item_sold.quantity)) {
+        Messenger().post({
+          message: "Quantity Exceeds Amount In Stock!",
+          type: 'error',
+          showCloseButton: true
+        });
+        item_sold.quantity = parseFloat(item_sold.quantity) - parseFloat(item_sold.addedquantity);
         return;
       }
       this.addSaleLine();
@@ -14269,6 +14287,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         tax_rate: this.selected_stockItem.selling_tax,
         unit_conversion_id: this.conversionId,
         uom: this.uom,
+        has_conversions: this.selected_stockItem.has_conversions,
+        conversions: this.selected_stockItem.conversions,
         quantity: this.quantity,
         unitExclPrice: this.unitExclPrice,
         unitInclPrice: this.unitInclPrice,
@@ -14276,6 +14296,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         totalIncl: this.totalIncl,
         totalTax: this.totalTax
       });
+      var sale = {
+        id: this.stockItem,
+        unit_conversion_id: this.conversionId,
+        quantity: this.quantity,
+        has_conversions: this.selected_stockItem.has_conversions,
+        conversions: this.selected_stockItem.conversions
+
+      };
+      //  this.uom_checker(this.selected_stockItem, this.conversionId);
       this.stockItem = "";
       this.conversionId = "";
       this.quantity = 1;
@@ -14290,6 +14319,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     deleteSale: function deleteSale(sale) {
       this.salesLines.splice(this.salesLines.indexOf(sale), 1);
+      var sale_to_be_edited = this.quantity_check.filter(function (s) {
+        return s.id == sale.id;
+      })[0];
+      console.log(this.deleteSaleQuantity(sale));
+      if (this.deleteSaleQuantity(sale)) {
+        return sale_to_be_edited.quantity = parseFloat(sale_to_be_edited.quantity) - parseFloat(this.deleteSaleQuantity(sale));
+      }
+      return sale_to_be_edited.quantity = parseFloat(sale_to_be_edited.quantity) - parseFloat(sale.quantity);
     },
     validateForm: function validateForm() {
       if (!this.customer_id) {
@@ -14311,7 +14348,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.completeSale();
     },
     completeSale: function completeSale() {
-      var _this2 = this;
+      var _this3 = this;
 
       axios.post('/sale', {
         salesLines: this.salesLines,
@@ -14334,22 +14371,55 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             type: 'success',
             showCloseButton: true
           });
-          _this2.salesLines = [];
+          _this3.salesLines = [];
         }
         console.log(response.data);
       }).catch(function (response) {
         console.log(response.data);
       });
+    },
+    addQuantity: function addQuantity(sale, quantity) {
+      var stock = this.quantity_check.filter(function (stock) {
+        return stock.id == sale.id;
+      });
+      if (stock.length) {
+        var sum = parseFloat(stock[0].quantity) + parseFloat(quantity);
+        stock[0].quantity = sum;
+        stock[0].addedquantity = quantity;
+      } else {
+        this.quantity_check.push({ id: sale.id, quantity: quantity, addedquantity: quantity });
+      }
+    },
+    deleteSaleQuantity: function deleteSaleQuantity(sale) {
+      if (!sale) return false;
+      if (!sale.has_conversions || !sale.conversions.length) return false;
+      var quantity_c = sale.conversions.filter(function (stk) {
+        return stk.stock_item_id == sale.id && stk.converted_unit_id == sale.unit_conversion_id;
+      });
+      // console.log(quantity_c);
+      if (!quantity_c.length) return false;
+      var quantity_to_delete = parseFloat(sale.quantity) * (parseFloat(quantity_c[0].converted_ratio) / parseFloat(quantity_c[0].stocking_ratio));
+      return quantity_to_delete;
+    },
+    uom_checker: function uom_checker(saleLine, conversion_id, quantity) {
+      if (!saleLine) return false;
+      if (!saleLine.has_conversions || !saleLine.conversions.length) return false;
+      var quantity_c = saleLine.conversions.filter(function (stk) {
+        return stk.stock_item_id == saleLine.id && stk.converted_unit_id == conversion_id;
+      });
+      if (!quantity_c.length) return false;
+      var quantity_to_add = parseFloat(quantity) * (parseFloat(quantity_c[0].converted_ratio) / parseFloat(quantity_c[0].stocking_ratio));
+      return quantity_to_add;
     }
   },
 
   computed: {
     uom: function uom() {
-      var _this3 = this;
+      var _this4 = this;
 
       if (!this.conversionId) return null;
       return this.conversions.filter(function (conversion) {
-        return conversion.id == _this3.conversionId;
+        return conversion.id == _this4.conversionId;
       }).map(function (conversion) {
         return conversion.name;
       })[0];
@@ -14358,17 +14428,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       return parseFloat(this.quantity) * parseFloat(this.selected_stockItem.unit_cost) + parseFloat(this.quantity) * parseFloat(this.selected_stockItem.selling_tax.rate);
     },
     selected_stockItem: function selected_stockItem() {
-      var _this4 = this;
+      var _this5 = this;
 
       if (this.stockItem) {
         var selectedStockItem = this.stock.filter(function (stki) {
-          return stki.id == _this4.stockItem;
+          return stki.id == _this5.stockItem;
         });
         return selectedStockItem[0];
       }
     },
     conversions: function conversions() {
-      var _this5 = this;
+      var _this6 = this;
 
       var conversions = [];
       if (!this.selected_stockItem) return conversions;
@@ -14376,7 +14446,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
       conversions.push(this.uoms[this.selected_stockItem.stocking_uom]);
       this.selected_stockItem.conversions.forEach(function (conversion) {
-        conversions.push(_this5.uoms[conversion.converted_unit_id]);
+        conversions.push(_this6.uoms[conversion.converted_unit_id]);
       });
 
       if (conversions.length) {
@@ -14386,12 +14456,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       return conversions;
     },
     unitInclPrice: function unitInclPrice() {
-      var _this6 = this;
+      var _this7 = this;
 
-      //  console.log(this.selected_stockItem.prices);
       if (!this.selected_stockItem) return 0;
       var price = parseFloat(this.selected_stockItem.prices.filter(function (p) {
-        return p.unit_conversion_id == _this6.conversionId;
+        return p.unit_conversion_id == _this7.conversionId;
       }).map(function (prc) {
         return prc.inclusive_price;
       })[0]);
@@ -16577,18 +16646,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.customer_id = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
       }
     }
-  }, [_c('option', {
-    attrs: {
-      "value": "null",
-      "disabled": ""
-    }
-  }, [_vm._v("Select a Customer")]), _vm._v(" "), _vm._l((_vm.customers), function(customer) {
+  }, _vm._l((_vm.customers), function(customer) {
     return _c('option', {
       domProps: {
         "value": customer.id
       }
     }, [_vm._v(_vm._s(customer.name))])
-  })], 2)])]), _vm._v(" "), _c('div', {
+  }))])]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-6"
   }, [_vm._m(1), _vm._v(" "), _c('h2', {
     staticClass: "text-right"
