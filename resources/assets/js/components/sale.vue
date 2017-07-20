@@ -12,7 +12,6 @@
                               <div class="form-group">
                                   <label for="customer_id">Customers</label>
                                   <select class="form-control input-sm" v-model="customer_id" name="customer_id" id="customer_id" required>
-                                      <option value="null" disabled>Select a Customer</option>
                                       <option v-for="customer in customers" :value="customer.id">{{customer.name}}</option>
                                   </select>
                               </div>
@@ -127,7 +126,8 @@
           stockItem: "",
           quantity: 1,
           uoms:[],
-          conversionId: null
+          conversionId: null,
+          quantity_check:[]
        }
      },
 
@@ -138,7 +138,6 @@
      methods:{
        getStock(){
          axios.get('/sale/create').then(response=>{
-
             this.uoms = response.data.uoms;
             this.customers = response.data.customers;
             let stock = response.data.stock;
@@ -147,13 +146,14 @@
               item.selling_tax = item.selling_tax.rate;
               return item;
             });
-
             this.stock = stock;
          }).catch(response=>{
            console.log(response.data);
          });
        },
+       validateQuantity(){
 
+       },
        validateSaline(){
          if (!this.stockItem) {
              Messenger().post({
@@ -171,13 +171,31 @@
              });
              return;
          }
-         if ( !this.quantity || parseFloat(this.quantity) < 1) {
+         if ( !this.quantity || parseFloat(this.quantity) < 0.001) {
              Messenger().post({
                  message: "Quantity Should be greater than One!",
                  type: 'error',
                  showCloseButton: true
              });
              return;
+         }
+         if (this.uom_checker(this.selected_stockItem, this.conversionId, this.quantity)) {
+           this.addQuantity(this.selected_stockItem, this.uom_checker(this.selected_stockItem, this.conversionId, this.quantity));
+         }
+         else{
+           this.addQuantity(this.selected_stockItem, this.quantity);
+         }
+         let item_sold = this.quantity_check.filter(stock=>{
+           return stock.id == this.selected_stockItem.id;
+         })[0];
+         if(parseFloat(this.selected_stockItem.stock) < parseFloat(item_sold.quantity)){
+           Messenger().post({
+               message: "Quantity Exceeds Amount In Stock!",
+               type: 'error',
+               showCloseButton: true
+           });
+           item_sold.quantity = parseFloat(item_sold.quantity) - parseFloat(item_sold.addedquantity);
+           return;
          }
          this.addSaleLine();
        },
@@ -191,6 +209,8 @@
              tax_rate: this.selected_stockItem.selling_tax,
              unit_conversion_id: this.conversionId,
              uom: this.uom,
+             has_conversions: this.selected_stockItem.has_conversions,
+             conversions: this.selected_stockItem.conversions,
              quantity: this.quantity,
              unitExclPrice: this.unitExclPrice,
              unitInclPrice: this.unitInclPrice,
@@ -198,6 +218,15 @@
              totalIncl: this.totalIncl,
              totalTax: this.totalTax
              });
+             let sale = {
+               id: this.stockItem,
+               unit_conversion_id: this.conversionId,
+               quantity: this.quantity,
+               has_conversions:this.selected_stockItem.has_conversions,
+               conversions: this.selected_stockItem.conversions
+
+             };
+            //  this.uom_checker(this.selected_stockItem, this.conversionId);
            this.stockItem = "";
            this.conversionId = "";
            this.quantity = 1;
@@ -213,6 +242,14 @@
 
       deleteSale(sale){
         this.salesLines.splice(this.salesLines.indexOf(sale), 1);
+        let sale_to_be_edited = this.quantity_check.filter(s=>{
+          return s.id == sale.id
+        })[0];
+      console.log(this.deleteSaleQuantity(sale));
+      if (this.deleteSaleQuantity(sale)) {
+        return sale_to_be_edited.quantity = parseFloat(sale_to_be_edited.quantity) - parseFloat(this.deleteSaleQuantity(sale));
+      }
+      return sale_to_be_edited.quantity = parseFloat(sale_to_be_edited.quantity) - parseFloat(sale.quantity);
       },
 
       validateForm(){
@@ -263,6 +300,40 @@
         }).catch(response=>{
           console.log(response.data);
         });
+      },
+      addQuantity(sale, quantity){
+          let stock = this.quantity_check.filter(stock=>{
+            return stock.id == sale.id
+          });
+          if (stock.length){
+            let sum = parseFloat(stock[0].quantity) + parseFloat(quantity);
+            stock[0].quantity = sum;
+            stock[0].addedquantity = quantity;
+          }
+          else{
+              this.quantity_check.push({id: sale.id, quantity: quantity, addedquantity: quantity});
+          }
+      },
+      deleteSaleQuantity(sale){
+        if(!sale) return false;
+        if(!sale.has_conversions || !sale.conversions.length) return false;
+        let quantity_c = sale.conversions.filter(stk=>{
+          return stk.stock_item_id == sale.id && stk.converted_unit_id == sale.unit_conversion_id;
+        });
+        // console.log(quantity_c);
+        if (!quantity_c.length) return false;
+        let quantity_to_delete = parseFloat(sale.quantity) * (parseFloat(quantity_c[0].converted_ratio) / parseFloat(quantity_c[0].stocking_ratio));
+        return quantity_to_delete;
+      },
+      uom_checker(saleLine, conversion_id, quantity){
+          if (!saleLine) return false;
+          if(!saleLine.has_conversions || !saleLine.conversions.length) return false;
+          let quantity_c = saleLine.conversions.filter(stk=>{
+            return stk.stock_item_id == saleLine.id && stk.converted_unit_id == conversion_id;
+          });
+          if (!quantity_c.length) return false;
+        let quantity_to_add = parseFloat(quantity) * (parseFloat(quantity_c[0].converted_ratio) / parseFloat(quantity_c[0].stocking_ratio));
+        return quantity_to_add;
       }
      },
 
@@ -307,7 +378,6 @@
          return conversions;
      },
      unitInclPrice() {
-      //  console.log(this.selected_stockItem.prices);
        if (!this.selected_stockItem) return 0;
          let price = parseFloat(this.selected_stockItem.prices.filter(p=> p.unit_conversion_id == this.conversionId).
          map(prc =>{
