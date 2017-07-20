@@ -1,3 +1,6 @@
+<style>
+
+</style>
 <template>
   <div class="row">
       <div class="col-sm-12">
@@ -103,6 +106,9 @@
                            </td>
                        </tr>
                        <tr>
+                        <td colspan="9"> <button type="button" class="btn btn-primary"
+                           data-toggle="modal" data-target="#paymentModal">Make Payment</button>
+                         </td>
                         <td colspan="9"><button type="submit" class="btn btn-info btn-sm pull-right" @click.prevent="validateForm">Complete Sale</button></td>
                        </tr>
                        </tbody>
@@ -112,8 +118,52 @@
      </div>
    </div>
  </div>
+ <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Make Payment</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+          <table class="table">
+            <thead>
+              <tr>
+                <th></th>
+                <th></th>
+
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Total Amount</td>
+                <td>
+                  <input type="number" :value="total_inclusive" class="form-control input-sm" disabled/>
+                </td>
+              </tr>
+              <tr>
+
+                <td>Cash Received</td>
+                <td><input type="number" v-model="amountReceived" min="1" class="form-control input-sm"/></td>
+              </tr>
+              <tr>
+                <td>Balance</td>
+                <td>{{balance}}</td>
+              </tr>
+            </tbody>
+          </table>
+    </div>
+  </div>
+</div>
+ </div>
  </div>
    </template>
+   <style>
+
+   </style>
    <script>
    export default{
      data(){
@@ -127,7 +177,9 @@
           quantity: 1,
           uoms:[],
           conversionId: null,
-          quantity_check:[]
+          quantity_check:[],
+          paymentTypes: ['Credit', 'Cash', 'M-Pesa'],
+          amountReceived:""
        }
      },
 
@@ -150,9 +202,6 @@
          }).catch(response=>{
            console.log(response.data);
          });
-       },
-       validateQuantity(){
-
        },
        validateSaline(){
          if (!this.stockItem) {
@@ -216,7 +265,8 @@
              unitInclPrice: this.unitInclPrice,
              totalExcl: this.totalExcl,
              totalIncl: this.totalIncl,
-             totalTax: this.totalTax
+             totalTax: this.totalTax,
+
              });
              let sale = {
                id: this.stockItem,
@@ -231,6 +281,7 @@
            this.conversionId = "";
            this.quantity = 1;
       },
+
       editSale(sale){
           if (sale) {
             this.stockItem = sale.id ;
@@ -252,7 +303,8 @@
       return sale_to_be_edited.quantity = parseFloat(sale_to_be_edited.quantity) - parseFloat(sale.quantity);
       },
 
-      validateForm(){
+      validateForm()
+      {
         if (!this.customer_id) {
           Messenger().post({
               message: "Select a Customer!",
@@ -271,8 +323,14 @@
         }
         this.completeSale();
       },
-
-      completeSale(){
+      makePayment()
+      {
+        $(()=>{
+          $("#paymentModal").modal('show');
+        });
+      },
+      completeSale()
+      {
         axios.post('/sale',{
           salesLines: this.salesLines,
           customer_id: this.customer_id,
@@ -301,7 +359,8 @@
           console.log(response.data);
         });
       },
-      addQuantity(sale, quantity){
+      addQuantity(sale, quantity)
+      {
           let stock = this.quantity_check.filter(stock=>{
             return stock.id == sale.id
           });
@@ -314,7 +373,8 @@
               this.quantity_check.push({id: sale.id, quantity: quantity, addedquantity: quantity});
           }
       },
-      deleteSaleQuantity(sale){
+      deleteSaleQuantity(sale)
+        {
         if(!sale) return false;
         if(!sale.has_conversions || !sale.conversions.length) return false;
         let quantity_c = sale.conversions.filter(stk=>{
@@ -325,7 +385,8 @@
         let quantity_to_delete = parseFloat(sale.quantity) * (parseFloat(quantity_c[0].converted_ratio) / parseFloat(quantity_c[0].stocking_ratio));
         return quantity_to_delete;
       },
-      uom_checker(saleLine, conversion_id, quantity){
+      uom_checker(saleLine, conversion_id, quantity)
+      {
           if (!saleLine) return false;
           if(!saleLine.has_conversions || !saleLine.conversions.length) return false;
           let quantity_c = saleLine.conversions.filter(stk=>{
@@ -337,8 +398,10 @@
       }
      },
 
-     computed:{
-       uom(){
+     computed:
+     {
+       uom()
+       {
          if (!this.conversionId) return null;
          return this.conversions.filter(conversion=>{
            return conversion.id == this.conversionId;
@@ -346,12 +409,14 @@
            return conversion.name;
          })[0];
        },
-       total_price(){
+       total_price()
+       {
          return (parseFloat(this.quantity)* parseFloat(this.selected_stockItem.unit_cost))
                 +(parseFloat(this.quantity)* parseFloat(this.selected_stockItem.selling_tax.rate));
        },
 
-       selected_stockItem(){
+       selected_stockItem()
+       {
          if (this.stockItem) {
            let selectedStockItem = this.stock.filter(stki=>{
               return  stki.id == this.stockItem;
@@ -360,7 +425,8 @@
          }
        },
 
-     conversions() {
+     conversions()
+      {
 
          let conversions = [];
           if (! this.selected_stockItem) return conversions;
@@ -377,7 +443,8 @@
 
          return conversions;
      },
-     unitInclPrice() {
+     unitInclPrice()
+      {
        if (!this.selected_stockItem) return 0;
          let price = parseFloat(this.selected_stockItem.prices.filter(p=> p.unit_conversion_id == this.conversionId).
          map(prc =>{
@@ -385,7 +452,8 @@
          })[0]);
          return price;
      },
-    unitExclPrice() {
+    unitExclPrice()
+     {
        if (!this.selected_stockItem) return 0;
        let rate = this.selected_stockItem.selling_tax;
        if (! rate) {
@@ -396,20 +464,24 @@
        rate = (100 - parseFloat(rate));
        return (Math.round(rate * price))/100;
       },
-      totalExcl() {
+      totalExcl()
+       {
           return parseFloat(this.unitExclPrice) * parseInt(this.quantity);
       },
 
-      totalIncl() {
+      totalIncl()
+       {
           return parseFloat(this.unitInclPrice) * parseInt(this.quantity);
       },
 
-      totalTax() {
+      totalTax()
+       {
           return  this.totalIncl - this.totalExcl;
       },
 
 
-      total_inclusive(){
+      total_inclusive()
+      {
         if(!this.salesLines.length) return 0;
         let total = this.salesLines.map(t=>{
             return t.totalIncl;
@@ -418,7 +490,8 @@
           });
           return total;
       },
-      total_exclusive(){
+      total_exclusive()
+      {
         if(!this.salesLines.length) return 0;
         let total = this.salesLines.map(t=>{
             return t.totalExcl;
@@ -427,7 +500,8 @@
           });
           return total;
       },
-      sale_total_tax(){
+      sale_total_tax()
+      {
         if(!this.salesLines.length) return 0;
         let total = this.salesLines.map(t=>{
             return t.totalTax;
@@ -436,11 +510,18 @@
           });
           return total;
       },
+      balance()
+      {
+              if(!this.amountReceived) return 0;
+              // if(parseFloat(this.amountReceived) < parseFloat(this.total_inclusive)) return "Invalid Amount!";
 
-   },
-
+                  let balance = parseFloat(this.amountReceived) - parseFloat(this.total_inclusive);
+                  if(parseFloat(balance) < 0) return "Invalid Amount Received!";
+                  return balance;
+      },
+},
      watch: {
 
      }
-   }
+}
    </script>
