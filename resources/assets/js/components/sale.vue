@@ -1,6 +1,3 @@
-<style>
-
-</style>
 <template>
   <div class="row">
       <div class="col-sm-12">
@@ -11,20 +8,20 @@
                   </div>
                   <form @submit.prevent="validateForm">
                   <div class="widget-content padding">
-                          <div class="col-sm-6">
+                          <div   v-if="!checkout_toggle" class="col-sm-6">
                               <div class="form-group">
                                   <label for="customer_id">Customers</label>
                                   <select class="form-control input-sm" v-model="customer_id" name="customer_id" id="customer_id" required>
                                       <option v-for="customer in customers" :value="customer.id">{{customer.name}}</option>
                                   </select>
                               </div>
-                              </div>
-                          <div class="col-sm-6">
+                          </div>
+                          <div   v-if="!checkout_toggle" class="col-sm-6">
                             <h4 class="text-right"><strong>Total</strong></h4>
                             <h2 class="text-right">{{ total_inclusive.toLocaleString('en-GB') }}</h2>
                           </div>
                           <br>
-             <table class="table table-responsive">
+             <table   v-if="!checkout_toggle" class="table table-responsive">
                  <thead>
                    <tr>
                        <th class="text-nowrap">Stock Item</th>
@@ -76,7 +73,7 @@
                </tbody>
            </table>
            <br>
-                   <table class="table table-responsive">
+                   <table  v-if="!checkout_toggle" class="table table-responsive">
                        <thead>
                        <tr>
                            <th class="text-nowrap">Stock Item</th>
@@ -106,69 +103,27 @@
                            </td>
                        </tr>
                        <tr>
-                        <td colspan="9"> <button type="button" class="btn btn-primary"
-                           data-toggle="modal" data-target="#paymentModal">Make Payment</button>
-                         </td>
-                        <td colspan="9"><button type="submit" class="btn btn-info btn-sm pull-right" @click.prevent="validateForm">Complete Sale</button></td>
+                        <td colspan="9">
+                          <button type="submit" class="btn btn-info btn-sm pull-right" @click.prevent="setCheckout">Checkout</button>
+                        </td>
                        </tr>
                        </tbody>
                    </table>
+                     <checkout v-if="checkout_toggle":customer=customer :payment_types=payment_types :total_inclusive = total_inclusive @paymentType="validateForm" @toggleCheckout="setCheckout"></checkout>
          </div>
            </form>
      </div>
    </div>
  </div>
- <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Make Payment</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
 
-          <table class="table">
-            <thead>
-              <tr>
-                <th></th>
-                <th></th>
-
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Total Amount</td>
-                <td>
-                  <input type="number" :value="total_inclusive" class="form-control input-sm" disabled/>
-                </td>
-              </tr>
-              <tr>
-
-                <td>Cash Received</td>
-                <td><input type="number" v-model="amountReceived" min="1" class="form-control input-sm"/></td>
-              </tr>
-              <tr>
-                <td>Balance</td>
-                <td>{{balance}}</td>
-              </tr>
-            </tbody>
-          </table>
-    </div>
-  </div>
-</div>
- </div>
  </div>
    </template>
-   <style>
-
-   </style>
    <script>
+   import checkout from './checkout.vue';
    export default{
      data(){
-       return{
-          stock:[],
+       return {
+          stock: [],
           customer_id: null,
           description: "",
           customers: [],
@@ -178,8 +133,11 @@
           uoms:[],
           conversionId: null,
           quantity_check:[],
-          paymentTypes: ['Credit', 'Cash', 'M-Pesa'],
-          amountReceived:""
+           checkout_toggle: false,
+           payment_type:"",
+           notes:"",
+           transaction_codes:"",
+           payment_types:""
        }
      },
 
@@ -188,10 +146,33 @@
      },
 
      methods:{
-       getStock(){
+       setCheckout()
+       {
+         if (!this.customer_id) {
+           Messenger().post({
+               message: "Select a Customer!",
+               type: 'error',
+               showCloseButton: true
+           });
+           return;
+         }
+         if (!this.salesLines.length) {
+           Messenger().post({
+               message: "No Sale Has Been Made!",
+               type: 'error',
+               showCloseButton: true
+           });
+           return;
+         }
+          return this.checkout_toggle = !this.checkout_toggle;
+
+       },
+       getStock()
+       {
          axios.get('/sale/create').then(response=>{
             this.uoms = response.data.uoms;
             this.customers = response.data.customers;
+            this.payment_types = response.data.payment_types;
             let stock = response.data.stock;
             stock = stock.map(item => {
               item.stock = item.stock[0].quantity_on_hand;
@@ -266,7 +247,6 @@
              totalExcl: this.totalExcl,
              totalIncl: this.totalIncl,
              totalTax: this.totalTax,
-
              });
              let sale = {
                id: this.stockItem,
@@ -303,7 +283,7 @@
       return sale_to_be_edited.quantity = parseFloat(sale_to_be_edited.quantity) - parseFloat(sale.quantity);
       },
 
-      validateForm()
+      validateForm(payment_type, notes, transaction_codes)
       {
         if (!this.customer_id) {
           Messenger().post({
@@ -321,13 +301,15 @@
           });
           return;
         }
+        if(!localStorage.getItem('payment_method')){
+          console.log(2);
+        }else{
+          console.log(localStorage.getItem('payment_method'));
+        }
+        this.payment_type = payment_type;
+        this.notes = notes;
+        this.transaction_codes = transaction_codes;
         this.completeSale();
-      },
-      makePayment()
-      {
-        $(()=>{
-          $("#paymentModal").modal('show');
-        });
       },
       completeSale()
       {
@@ -338,6 +320,9 @@
           total_inclusive: this.total_inclusive,
           total_exclusive: this.total_exclusive,
           total_tax: this.sale_total_tax,
+          transaction_type_id: this.payment_type,
+          notes: this.notes,
+          transaction_codes: this.transaction_codes
         }).then(response=>{
           if(response.data.error){
             Messenger().post({
@@ -352,6 +337,7 @@
                 type: 'success',
                 showCloseButton: true
             });
+            this.checkout_toggle = !this.checkout_toggle;
             this.salesLines = [];
           }
           console.log(response.data);
@@ -400,6 +386,13 @@
 
      computed:
      {
+       customer()
+       {
+         if(!this.customer_id) return null;
+         return this.customers.filter(customer=>{
+           return customer.id == this.customer_id;
+         })[0];
+       },
        uom()
        {
          if (!this.conversionId) return null;
@@ -520,8 +513,9 @@
                   return balance;
       },
 },
-     watch: {
-
-     }
+  components:
+   {
+       checkout: checkout
+  }
 }
    </script>

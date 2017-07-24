@@ -32,6 +32,7 @@ Manage Sales
                                 <th>Total Exclusive</th>
                                 <th>Total Inclusive</th>
                                 <th>Total Tax</th>
+                                <th>Transaction Type</th>
                               </tr>
                             </thead>
                           <tbody>
@@ -43,6 +44,7 @@ Manage Sales
                                 <td>{{$sale->total_exclusive}}</td>
                                 <td>{{$sale->total_inclusive}}</td>
                                 <td>{{$sale->total_tax}}</td>
+                                <td>{{$sale->paymentType->name}}</td>
                               </tr>
                             @endforeach
                           </tbody>
@@ -54,6 +56,7 @@ Manage Sales
                             <th>Total Exclusive</th>
                             <th>Total Inclusive</th>
                             <th>Total Tax</th>
+                            <th>Transaction Type</th>
                           </tr>
                         </tfoot>
                       </table>

@@ -10,12 +10,14 @@ use SmoDav\Models\Sale;
 use SmoDav\Models\Order;
 use SmoDav\Models\UnitConversion;
 use SmoDav\Models\Customer;
+use SmoDav\Models\PaymentTypes;
 class SaleController extends Controller
 {
     public function index()
     {
 
-        return view('sale.index', ['sales' => Order::where('document_type', Order::INVOICE)->orderBy('id', 'desc')->get()]);
+        return view('sale.index',
+        ['sales' => Order::with(['stall', 'customer', 'paymentType'])->where('document_type', Order::INVOICE)->orderBy('id', 'desc')->get()]);
     }
     public function create()
     {
@@ -26,7 +28,8 @@ class SaleController extends Controller
           return response()->json([
             'stock'=> $stockItems,
             'uoms' => UnitOfMeasure::active()->get(['id', 'name'])->keyBy('id'),
-            'customers'=> Customer::get(['name', 'id'])
+            'customers'=> Customer::get(['name', 'id', 'is_credit']),
+            'payment_types'=> PaymentTypes::get(['name', 'slug', 'id', 'is_credit'])
           ]);
       }
       return view('sale.create');
@@ -34,9 +37,16 @@ class SaleController extends Controller
 
     public function store(Request $request)
     {
+      // return response()->json($request->all());
       // TODO: Change this to use session
       // return response()->json($request->all());
       \DB::transaction(function () use($request) {
+        $customer = Customer::findOrfail($request->customer_id);
+        if ($customer->is_credit == 1) {
+          $balance = $request->total_inclusive;
+          $balance += $customer->account_balance;
+          $customer->update(['account_balance' => $balance]);
+        }
         $sale = Order::create([
           'user_id'=> \Auth::user()->id,
           'account_id' => $request->customer_id,
@@ -45,7 +55,10 @@ class SaleController extends Controller
           'document_type' => Order::INVOICE,
           'total_exclusive' => $request->total_exclusive,
           'total_inclusive' => $request->total_inclusive,
-          'total_tax' => $request->total_tax
+          'total_tax' => $request->total_tax,
+          'transaction_codes'=> $request->transaction_codes,
+          'transaction_type_id' => $request->transaction_type_id,
+          'notes' => $request->notes
         ]);
         foreach ($request->salesLines as $index => $value) {
           if (!$value['quantity']) {
