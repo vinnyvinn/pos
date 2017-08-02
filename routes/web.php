@@ -20,5 +20,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('users', 'UserController');
     Route::resource('sale', 'SaleController');
     Route::get('goodsReceived/{id}/receive', 'GoodsReceivedController@receive')->name('goodsReceived.receive');
+    Route::get('sale/receipt/{id}', 'SaleController@receipt')->name('receipt');
+    Route::get('credit', 'SaleController@credit');
     Route::resource('goodsReceived', 'GoodsReceivedController');
 });

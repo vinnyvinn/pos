@@ -13,8 +13,8 @@ class Order extends Model
         'document_number','order_number',
         'external_order_number', 'description', 'due_date',
          'order_date','total_exclusive' ,'total_inclusive',
-        'total_tax', 'transaction_codes','transaction_type_id',
-          'notes'
+        'total_tax', 'mpesa', 'cash',
+        'notes', 'balance', 'credit'
     ];
     use SoftDeletes;
 

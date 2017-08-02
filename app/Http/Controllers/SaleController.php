@@ -11,11 +11,12 @@ use SmoDav\Models\Order;
 use SmoDav\Models\UnitConversion;
 use SmoDav\Models\Customer;
 use SmoDav\Models\PaymentTypes;
+use SmoDav\Models\Tax;
+use PDF;
 class SaleController extends Controller
 {
     public function index()
     {
-
         return view('sale.index',
         ['sales' => Order::with(['stall', 'customer', 'paymentType'])->where('document_type', Order::INVOICE)->orderBy('id', 'desc')->get()]);
     }
@@ -28,8 +29,9 @@ class SaleController extends Controller
           return response()->json([
             'stock'=> $stockItems,
             'uoms' => UnitOfMeasure::active()->get(['id', 'name'])->keyBy('id'),
-            'customers'=> Customer::get(['name', 'id', 'is_credit']),
-            'payment_types'=> PaymentTypes::get(['name', 'slug', 'id', 'is_credit'])
+            'customers'=> Customer::get(['name', 'account_balance', 'account_number', 'credit_limit', 'id', 'is_credit']),
+            'payment_types'=> PaymentTypes::get(['name', 'slug', 'id', 'is_credit']),
+            'taxes' => Tax::active()->get(['id', 'code', 'rate'])
           ]);
       }
       return view('sale.create');
@@ -39,14 +41,16 @@ class SaleController extends Controller
     {
       // return response()->json($request->all());
       // TODO: Change this to use session
-      // return response()->json($request->all());
-      \DB::transaction(function () use($request) {
-        $customer = Customer::findOrfail($request->customer_id);
+      $customer = Customer::findOrfail($request->customer_id);
+      $sale_id = null;
+      $sale = \DB::transaction(function () use($request, $customer) {
+
         if ($customer->is_credit == 1) {
-          $balance = $request->total_inclusive;
+          $balance = $request->credit;
           $balance += $customer->account_balance;
           $customer->update(['account_balance' => $balance]);
         }
+
         $sale = Order::create([
           'user_id'=> \Auth::user()->id,
           'account_id' => $request->customer_id,
@@ -56,10 +60,13 @@ class SaleController extends Controller
           'total_exclusive' => $request->total_exclusive,
           'total_inclusive' => $request->total_inclusive,
           'total_tax' => $request->total_tax,
-          'transaction_codes'=> $request->transaction_codes,
-          'transaction_type_id' => $request->transaction_type_id,
+          'mpesa'=> json_encode($request->mpesa),
+          'cash'=> $request->cash,
+          'credit'=> $request->credit,
+          'balance' => $request->balance,
           'notes' => $request->notes
         ]);
+        $sale_id = $sale->id;
         foreach ($request->salesLines as $index => $value) {
           if (!$value['quantity']) {
               return response()->json(['error'=>'please Input Valid quantity!']);
@@ -68,9 +75,10 @@ class SaleController extends Controller
           $sales[] = [];
             $item_in_stock = Stock::where('item_id', $value['id'])->where('stall_id', 1);
             $conversion = UnitConversion::where('stock_item_id', $value['id'])
+                              ->where('converted_unit_id', $value['unit_conversion_id'])
                               ->get(['stocking_unit_id', 'stocking_ratio', 'converted_ratio'])->first();
 
-          if ($conversion->stocking_unit_id == $value['unit_conversion_id']) {
+          if (!$conversion) {
               $stock_quantity = $item_in_stock->first()->quantity_on_hand;
               $new_stock_quantity = $item_in_stock->first()->quantity_on_hand - $value['quantity'];
             if ($new_stock_quantity < 0) {
@@ -105,11 +113,14 @@ class SaleController extends Controller
               'created_at' => Carbon::now()
             ];
         }
-
         Sale::insert($sales);
-});
+        return $sale;
+      });
 
-      return response()->json(['message' => 'Successfully Completed Sale!']);
+          if (isset($customer)  && isset($sale)) {
+              return response()->json( [ 'message' => 'Sale Made Successfully!' ]  );
+          }
+          return response()->json( [ 'error' => 'Could Not Complete Sale!' ]  );
     }
 
     public function show($id)
@@ -130,5 +141,18 @@ class SaleController extends Controller
     public function destroy($id)
     {
         //
+    }
+    public function receipt($id)
+    {
+        $pdf = PDF::loadView('sale.receipt', ['sale' => Order::with(['sale.stock', 'customer'])->findOrfail($id),
+         'taxes' => Tax::active()->get(['id', 'code', 'rate'])]);
+        // return $pdf->stream(Carbon::now().'_receipt.pdf');
+       return view('sale.receipt', ['sale' => Order::with(['sale.stock', 'customer'])->findOrfail($id),
+         'taxes' => Tax::active()->get(['id', 'code', 'rate'])]);
+    }
+    public function credit()
+    {
+
+        return view('sale.credit-sale-receipt');
     }
 }

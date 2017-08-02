@@ -1,10 +1,11 @@
 <template>
-  <div class="row">
+<div id="parent">
+  <div class="row" id="sale">
       <div class="col-sm-12">
           <div class="container">
               <div class="widget">
-                  <div class="widget-header">
-                      <h2><strong>Sales</strong></h2>
+                  <div v-if="!checkout_toggle" class="widget-header" style="margin-left:25px; margin-top:20px">
+                    <button type="submit" class="btn btn-info btn-sm" @click.prevent="setCheckout">Checkout</button>
                   </div>
                   <form @submit.prevent="validateForm">
                   <div class="widget-content padding">
@@ -49,7 +50,7 @@
                       </select>
                     </td>
                     <td>
-                      <input type="number" onfocus="this.select()" class="form-control input-sm" v-model="quantity" required/>
+                      <input type="number" onfocus="this.select()" class="form-control input-sm" v-model="quantity" min="0" required/>
                     </td>
                     <td class="text-right">
                         {{unitExclPrice.toLocaleString('en-GB')}}
@@ -104,12 +105,11 @@
                        </tr>
                        <tr>
                         <td colspan="9">
-                          <button type="submit" class="btn btn-info btn-sm pull-right" @click.prevent="setCheckout">Checkout</button>
                         </td>
                        </tr>
                        </tbody>
                    </table>
-                     <checkout v-if="checkout_toggle":customer=customer :payment_types=payment_types :total_inclusive = total_inclusive @paymentType="validateForm" @toggleCheckout="setCheckout"></checkout>
+                     <checkout v-if="checkout_toggle" :taxes=taxes :saleLines=salesLines :customer=customer :payment_types=payment_types :total_inclusive = total_inclusive @paymentType="validateForm" @toggleCheckout="setCheckout"></checkout>
          </div>
            </form>
      </div>
@@ -117,12 +117,18 @@
  </div>
 
  </div>
+   <div id="receipt" v-if="receipt">
+          <receipt :total_inclusive = total_inclusive :taxes = taxes :balance = balance :credit = credit :cash = cash :mpesa=mpesa :customer = customer :saleLines = salesLines></receipt>
+   </div>
+ </div>
    </template>
    <script>
    import checkout from './checkout.vue';
-   export default{
-     data(){
+   import receipt from './credit-receipt.vue';
+   export default {
+     data() {
        return {
+         receipt: false,
           stock: [],
           customer_id: null,
           description: "",
@@ -132,22 +138,23 @@
           quantity: 1,
           uoms:[],
           conversionId: null,
-          quantity_check:[],
+          quantity_check: [],
            checkout_toggle: false,
-           payment_type:"",
-           notes:"",
-           transaction_codes:"",
-           payment_types:""
+           cash: "",
+           notes: "",
+           credit: "",
+           mpesa: "",
+           balance: "",
+           taxes: null
        }
      },
 
-     created(){
+     created() {
        this.getStock();
      },
 
-     methods:{
-       setCheckout()
-       {
+     methods: {
+       setCheckout() {
          if (!this.customer_id) {
            Messenger().post({
                message: "Select a Customer!",
@@ -169,10 +176,11 @@
        },
        getStock()
        {
-         axios.get('/sale/create').then(response=>{
+         axios.get('/sale/create').then(response=> {
             this.uoms = response.data.uoms;
             this.customers = response.data.customers;
             this.payment_types = response.data.payment_types;
+            this.taxes = response.data.taxes;
             let stock = response.data.stock;
             stock = stock.map(item => {
               item.stock = item.stock[0].quantity_on_hand;
@@ -184,7 +192,7 @@
            console.log(response.data);
          });
        },
-       validateSaline(){
+       validateSaline() {
          if (!this.stockItem) {
              Messenger().post({
                  message: "Please Select A product!",
@@ -230,9 +238,24 @@
          this.addSaleLine();
        },
 
-       addSaleLine(){
-           this.salesLines.push(
-             {
+       addSaleLine() {
+         let existingSale = this.salesLines.filter(saleLine=>{
+           return saleLine.id == this.stockItem && saleLine.unit_conversion_id == this.conversionId
+         })[0];
+         let quantity = this.quantity;
+         if(existingSale){
+               existingSale.quantity = parseFloat(existingSale.quantity) + parseFloat(this.quantity);
+               existingSale.totalExcl = parseFloat(existingSale.totalExcl) + parseFloat(this.totalExcl);
+               existingSale.totalIncl = parseFloat(existingSale.totalIncl) + parseFloat(this.totalIncl);
+               existingSale.totalTax = parseFloat(existingSale.totalTax) + parseFloat(this.totalTax);
+               this.stockItem = "";
+               this.conversionId = "";
+               this.quantity = 1;
+
+            return existingSale;
+         }
+
+        this.salesLines.unshift({
              id: this.stockItem,
              name: this.selected_stockItem.name,
              code: this.selected_stockItem.code,
@@ -241,13 +264,14 @@
              uom: this.uom,
              has_conversions: this.selected_stockItem.has_conversions,
              conversions: this.selected_stockItem.conversions,
-             quantity: this.quantity,
+             quantity: quantity,
              unitExclPrice: this.unitExclPrice,
              unitInclPrice: this.unitInclPrice,
              totalExcl: this.totalExcl,
              totalIncl: this.totalIncl,
              totalTax: this.totalTax,
              });
+
              let sale = {
                id: this.stockItem,
                unit_conversion_id: this.conversionId,
@@ -260,9 +284,10 @@
            this.stockItem = "";
            this.conversionId = "";
            this.quantity = 1;
+
       },
 
-      editSale(sale){
+      editSale(sale) {
           if (sale) {
             this.stockItem = sale.id ;
             this.conversionId = sale.unit_conversion_id;
@@ -276,15 +301,15 @@
         let sale_to_be_edited = this.quantity_check.filter(s=>{
           return s.id == sale.id
         })[0];
-      console.log(this.deleteSaleQuantity(sale));
+
       if (this.deleteSaleQuantity(sale)) {
         return sale_to_be_edited.quantity = parseFloat(sale_to_be_edited.quantity) - parseFloat(this.deleteSaleQuantity(sale));
       }
+
       return sale_to_be_edited.quantity = parseFloat(sale_to_be_edited.quantity) - parseFloat(sale.quantity);
       },
 
-      validateForm(payment_type, notes, transaction_codes)
-      {
+      validateForm(cash, mpesa, credit, balance, notes) {
         if (!this.customer_id) {
           Messenger().post({
               message: "Select a Customer!",
@@ -301,18 +326,33 @@
           });
           return;
         }
-        if(!localStorage.getItem('payment_method')){
-          console.log(2);
-        }else{
-          console.log(localStorage.getItem('payment_method'));
-        }
-        this.payment_type = payment_type;
+        console.log(mpesa);
+        this.credit = credit;
         this.notes = notes;
-        this.transaction_codes = transaction_codes;
+        this.mpesa = mpesa;
+        this.cash = cash;
+        this.balance = balance;
+        this.receipt = true;
         this.completeSale();
       },
-      completeSale()
-      {
+
+      preparePrint(){
+
+        $('#sale').hide();
+        $('#button-menu-mobile').hide();
+        $('#left-menu').hide();
+        $('#receipt').show();
+
+      },
+
+      restorePrint(){
+        $('#button-menu-mobile').show();
+        $('#left-menu').show();
+        $('#sale').show();
+      $('#receipt').hide();
+    },
+
+      completeSale() {
         axios.post('/sale',{
           salesLines: this.salesLines,
           customer_id: this.customer_id,
@@ -320,33 +360,35 @@
           total_inclusive: this.total_inclusive,
           total_exclusive: this.total_exclusive,
           total_tax: this.sale_total_tax,
-          transaction_type_id: this.payment_type,
+          cash: this.cash,
+          credit: this.credit,
           notes: this.notes,
-          transaction_codes: this.transaction_codes
+          mpesa: this.mpesa,
+          balance: this.balance
         }).then(response=>{
-          if(response.data.error){
-            Messenger().post({
-                message: response.data.error,
-                type: 'error',
-                showCloseButton: true
-            });
-          }
           if (response.data.message) {
-            Messenger().post({
-                message: response.data.message,
-                type: 'success',
-                showCloseButton: true
-            });
-            this.checkout_toggle = !this.checkout_toggle;
-            this.salesLines = [];
+            this.preparePrint();
+            window.print();
+            this.restorePrint();
           }
-          console.log(response.data);
+        }).then(r=>{
+
+          this.receipt = false;
+          this.salesLines = [];
+          this.checkout_toggle = !this.checkout_toggle;
+          this.cash =0;
+          this.credit = 0;
+          this.notes = "",
+          this.mpesa = [];
+          this.balance = 0;
+          this.quantity_check=[];
+          this.quantity = 1;
         }).catch(response=>{
-          console.log(response.data);
+
         });
+
       },
-      addQuantity(sale, quantity)
-      {
+      addQuantity(sale, quantity) {
           let stock = this.quantity_check.filter(stock=>{
             return stock.id == sale.id
           });
@@ -359,8 +401,7 @@
               this.quantity_check.push({id: sale.id, quantity: quantity, addedquantity: quantity});
           }
       },
-      deleteSaleQuantity(sale)
-        {
+      deleteSaleQuantity(sale) {
         if(!sale) return false;
         if(!sale.has_conversions || !sale.conversions.length) return false;
         let quantity_c = sale.conversions.filter(stk=>{
@@ -371,8 +412,7 @@
         let quantity_to_delete = parseFloat(sale.quantity) * (parseFloat(quantity_c[0].converted_ratio) / parseFloat(quantity_c[0].stocking_ratio));
         return quantity_to_delete;
       },
-      uom_checker(saleLine, conversion_id, quantity)
-      {
+      uom_checker(saleLine, conversion_id, quantity) {
           if (!saleLine) return false;
           if(!saleLine.has_conversions || !saleLine.conversions.length) return false;
           let quantity_c = saleLine.conversions.filter(stk=>{
@@ -384,17 +424,14 @@
       }
      },
 
-     computed:
-     {
-       customer()
-       {
+     computed: {
+       customer() {
          if(!this.customer_id) return null;
          return this.customers.filter(customer=>{
            return customer.id == this.customer_id;
          })[0];
        },
-       uom()
-       {
+       uom() {
          if (!this.conversionId) return null;
          return this.conversions.filter(conversion=>{
            return conversion.id == this.conversionId;
@@ -402,14 +439,12 @@
            return conversion.name;
          })[0];
        },
-       total_price()
-       {
+       total_price() {
          return (parseFloat(this.quantity)* parseFloat(this.selected_stockItem.unit_cost))
                 +(parseFloat(this.quantity)* parseFloat(this.selected_stockItem.selling_tax.rate));
        },
 
-       selected_stockItem()
-       {
+       selected_stockItem() {
          if (this.stockItem) {
            let selectedStockItem = this.stock.filter(stki=>{
               return  stki.id == this.stockItem;
@@ -418,9 +453,7 @@
          }
        },
 
-     conversions()
-      {
-
+     conversions(){
          let conversions = [];
           if (! this.selected_stockItem) return conversions;
          if (! this.selected_stockItem.id) return conversions;
@@ -436,8 +469,7 @@
 
          return conversions;
      },
-     unitInclPrice()
-      {
+     unitInclPrice() {
        if (!this.selected_stockItem) return 0;
          let price = parseFloat(this.selected_stockItem.prices.filter(p=> p.unit_conversion_id == this.conversionId).
          map(prc =>{
@@ -445,8 +477,7 @@
          })[0]);
          return price;
      },
-    unitExclPrice()
-     {
+    unitExclPrice() {
        if (!this.selected_stockItem) return 0;
        let rate = this.selected_stockItem.selling_tax;
        if (! rate) {
@@ -457,24 +488,19 @@
        rate = (100 - parseFloat(rate));
        return (Math.round(rate * price))/100;
       },
-      totalExcl()
-       {
+      totalExcl() {
           return parseFloat(this.unitExclPrice) * parseInt(this.quantity);
       },
 
-      totalIncl()
-       {
+      totalIncl() {
           return parseFloat(this.unitInclPrice) * parseInt(this.quantity);
       },
 
-      totalTax()
-       {
+      totalTax() {
           return  this.totalIncl - this.totalExcl;
       },
 
-
-      total_inclusive()
-      {
+      total_inclusive() {
         if(!this.salesLines.length) return 0;
         let total = this.salesLines.map(t=>{
             return t.totalIncl;
@@ -483,8 +509,7 @@
           });
           return total;
       },
-      total_exclusive()
-      {
+      total_exclusive() {
         if(!this.salesLines.length) return 0;
         let total = this.salesLines.map(t=>{
             return t.totalExcl;
@@ -493,8 +518,7 @@
           });
           return total;
       },
-      sale_total_tax()
-      {
+      sale_total_tax() {
         if(!this.salesLines.length) return 0;
         let total = this.salesLines.map(t=>{
             return t.totalTax;
@@ -502,20 +526,12 @@
             return parseFloat(s) + parseFloat(t);
           });
           return total;
-      },
-      balance()
-      {
-              if(!this.amountReceived) return 0;
-              // if(parseFloat(this.amountReceived) < parseFloat(this.total_inclusive)) return "Invalid Amount!";
+      }
 
-                  let balance = parseFloat(this.amountReceived) - parseFloat(this.total_inclusive);
-                  if(parseFloat(balance) < 0) return "Invalid Amount Received!";
-                  return balance;
-      },
 },
-  components:
-   {
-       checkout: checkout
+  components: {
+       checkout: checkout,
+       receipt : receipt
   }
 }
    </script>
