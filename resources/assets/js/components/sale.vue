@@ -1,14 +1,28 @@
 <template>
- <div class="panel panel-default">
-     <div class="panel-heading">
-         <div class="row">
-         <div class="col-xs-6">
-                 CASH - CASH CUSTOMER
-         </div>
-     </div>
-   </div>
-     <div class="panel-body">
-             <table class="table table-responsive">
+<div id="parent">
+  <div class="row" id="sale">
+      <div class="col-sm-12">
+          <div class="container">
+              <div class="widget">
+                  <div v-if="!checkout_toggle" class="widget-header" style="margin-left:25px; margin-top:20px">
+                    <button type="submit" class="btn btn-info btn-sm" @click.prevent="setCheckout">Checkout</button>
+                  </div>
+                  <form @submit.prevent="validateForm">
+                  <div class="widget-content padding">
+                          <div   v-if="!checkout_toggle" class="col-sm-6">
+                              <div class="form-group">
+                                  <label for="customer_id">Customers</label>
+                                  <select class="form-control input-sm" v-model="customer_id" name="customer_id" id="customer_id" required>
+                                      <option v-for="customer in customers" :value="customer.id">{{customer.name}}</option>
+                                  </select>
+                              </div>
+                          </div>
+                          <div   v-if="!checkout_toggle" class="col-sm-6">
+                            <h4 class="text-right"><strong>Total</strong></h4>
+                            <h2 class="text-right">{{ total_inclusive.toLocaleString('en-GB') }}</h2>
+                          </div>
+                          <br>
+             <table   v-if="!checkout_toggle" class="table table-responsive">
                  <thead>
                    <tr>
                        <th class="text-nowrap">Stock Item</th>
@@ -27,7 +41,7 @@
                     <td>
                       <select class="form-control input-sm" id="stock_item" v-model="stockItem">
                              <option value="">select Item</option>
-                             <option v-if="stock" v-for="stock_item in stock" :value="stock_item.id">{{stock_item.name}}</option>
+                             <option v-if="stock" v-for="stock_item in stock" :value="stock_item.id">{{stock_item.code+" "+stock_item.name}}</option>
                      </select></td>
                     <td>
                       <select v-model="conversionId" class="form-control input-sm" name="conversion_id" required>
@@ -36,7 +50,7 @@
                       </select>
                     </td>
                     <td>
-                      <input type="number" class="form-control input-sm" v-model="quantity" required/>
+                      <input type="number" onfocus="this.select()" class="form-control input-sm" v-model="quantity" min="0" required/>
                     </td>
                     <td class="text-right">
                         {{unitExclPrice.toLocaleString('en-GB')}}
@@ -53,14 +67,14 @@
                     <td class="text-right">
                         {{ totalIncl.toLocaleString('en-GB') }}
                     </td>
-                    <td v-if="conversionId && totalIncl && stockItem">
-                      <button @click.prevent="addSaleLine" class="btn btn-success btn-xs"><i class="fa fa-plus"></i></button>
+                    <td>
+                      <button @click.prevent="validateSaline" class="btn btn-success btn-xs"><i class="fa fa-plus"></i></button>
                     </td>
                  </tr>
                </tbody>
            </table>
            <br>
-                   <table class="table table-responsive">
+                   <table  v-if="!checkout_toggle" class="table table-responsive">
                        <thead>
                        <tr>
                            <th class="text-nowrap">Stock Item</th>
@@ -76,123 +90,361 @@
                        </thead>
                        <tbody>
                        <tr v-if="salesLines.length" v-for="sale in salesLines">
-                           <td>{{sale.name}}</td>
+                           <td>{{sale.code+' '+sale.name}}</td>
                            <td>{{sale.uom}}</td>
                            <td class="text-right">{{sale.quantity}}</td>
-                           <td class="text-right">{{sale.unitExclPrice}}</td>
-                           <td class="text-right">{{sale.unitInclPrice}}</td>
-                           <td class="text-right">{{sale.totalExcl}}</td>
-                           <td class="text-right">{{sale.totalTax}}</td>
-                           <td class="text-right">{{sale.totalIncl}}</td>
+                           <td class="text-right">{{sale.unitExclPrice.toLocaleString('en-GB')}}</td>
+                           <td class="text-right">{{sale.unitInclPrice.toLocaleString('en-GB')}}</td>
+                           <td class="text-right">{{sale.totalExcl.toLocaleString('en-GB')}}</td>
+                           <td class="text-right">{{sale.totalTax.toLocaleString('en-GB')}}</td>
+                           <td class="text-right">{{sale.totalIncl.toLocaleString('en-GB')}}</td>
                            <td>
                                <button @click.prevent="editSale(sale)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></button>
                                <button @click.prevent="deleteSale(sale)" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></button>
                            </td>
                        </tr>
-                       <tr v-if="salesLines.length">
-                         <td colspan="4" class = "text-right"><strong>Total Sale Amount:</strong> {{total_sale.toLocaleString('en-GB')}}</td>
-                         <td colspan="5"><button type="button" class="btn btn-info btn-sm pull-right" @click.prevent="completeSale(salesLines)">Complete Sale</button></td>
+                       <tr>
+                        <td colspan="9">
+                        </td>
                        </tr>
                        </tbody>
                    </table>
+                     <checkout v-if="checkout_toggle" :taxes=taxes :saleLines=salesLines :customer=customer :payment_types=payment_types :total_inclusive = total_inclusive @paymentType="validateForm" @toggleCheckout="setCheckout"></checkout>
          </div>
+           </form>
      </div>
+   </div>
+ </div>
+
+ </div>
+   <div id="receipt" v-if="receipt">
+          <receipt :total_inclusive = total_inclusive :taxes = taxes :balance = balance :credit = credit :cash = cash :mpesa=mpesa :customer = customer :saleLines = salesLines></receipt>
+   </div>
+ </div>
    </template>
    <script>
-   export default{
-     data(){
-       return{
-          stock:[],
-          salesLines:[],
-          stockItem:"",
+   import checkout from './checkout.vue';
+   import receipt from './credit-receipt.vue';
+   export default {
+     data() {
+       return {
+         receipt: false,
+          stock: [],
+          customer_id: null,
+          description: "",
+          customers: [],
+          salesLines: [],
+          stockItem: "",
           quantity: 1,
           uoms:[],
-          conversionId:null
+          conversionId: null,
+          quantity_check: [],
+           checkout_toggle: false,
+           cash: "",
+           notes: "",
+           credit: "",
+           mpesa: "",
+           balance: "",
+           taxes: null
        }
      },
-     created(){
+
+     created() {
        this.getStock();
      },
-     methods:{
-       getStock(){
-         axios.get('/sale/create').then(response=>{
 
+     methods: {
+       setCheckout() {
+         if (!this.customer_id) {
+           Messenger().post({
+               message: "Select a Customer!",
+               type: 'error',
+               showCloseButton: true
+           });
+           return;
+         }
+         if (!this.salesLines.length) {
+           Messenger().post({
+               message: "No Sale Has Been Made!",
+               type: 'error',
+               showCloseButton: true
+           });
+           return;
+         }
+          return this.checkout_toggle = !this.checkout_toggle;
+
+       },
+       getStock()
+       {
+         axios.get('/sale/create').then(response=> {
             this.uoms = response.data.uoms;
-
+            this.customers = response.data.customers;
+            this.payment_types = response.data.payment_types;
+            this.taxes = response.data.taxes;
             let stock = response.data.stock;
             stock = stock.map(item => {
               item.stock = item.stock[0].quantity_on_hand;
               item.selling_tax = item.selling_tax.rate;
               return item;
             });
-
             this.stock = stock;
          }).catch(response=>{
            console.log(response.data);
-         }
-         );
+         });
        },
-       addSaleLine(){
-    
-           this.salesLines.push(
-             {
+       validateSaline() {
+         if (!this.stockItem) {
+             Messenger().post({
+                 message: "Please Select A product!",
+                 type: 'error',
+                 showCloseButton: true
+             });
+             return;
+         }
+         if (!this.conversionId) {
+             Messenger().post({
+                 message: "Please Select A Conversion!",
+                 type: 'error',
+                 showCloseButton: true
+             });
+             return;
+         }
+         if ( !this.quantity || parseFloat(this.quantity) < 0.001) {
+             Messenger().post({
+                 message: "Quantity Should be greater than One!",
+                 type: 'error',
+                 showCloseButton: true
+             });
+             return;
+         }
+         if (this.uom_checker(this.selected_stockItem, this.conversionId, this.quantity)) {
+           this.addQuantity(this.selected_stockItem, this.uom_checker(this.selected_stockItem, this.conversionId, this.quantity));
+         }
+         else{
+           this.addQuantity(this.selected_stockItem, this.quantity);
+         }
+         let item_sold = this.quantity_check.filter(stock=>{
+           return stock.id == this.selected_stockItem.id;
+         })[0];
+         if(parseFloat(this.selected_stockItem.stock) < parseFloat(item_sold.quantity)){
+           Messenger().post({
+               message: "Quantity Exceeds Amount In Stock!",
+               type: 'error',
+               showCloseButton: true
+           });
+           item_sold.quantity = parseFloat(item_sold.quantity) - parseFloat(item_sold.addedquantity);
+           return;
+         }
+         this.addSaleLine();
+       },
+
+       addSaleLine() {
+         let existingSale = this.salesLines.filter(saleLine=>{
+           return saleLine.id == this.stockItem && saleLine.unit_conversion_id == this.conversionId
+         })[0];
+         let quantity = this.quantity;
+         if(existingSale){
+               existingSale.quantity = parseFloat(existingSale.quantity) + parseFloat(this.quantity);
+               existingSale.totalExcl = parseFloat(existingSale.totalExcl) + parseFloat(this.totalExcl);
+               existingSale.totalIncl = parseFloat(existingSale.totalIncl) + parseFloat(this.totalIncl);
+               existingSale.totalTax = parseFloat(existingSale.totalTax) + parseFloat(this.totalTax);
+               this.stockItem = "";
+               this.conversionId = "";
+               this.quantity = 1;
+
+            return existingSale;
+         }
+
+        this.salesLines.unshift({
              id: this.stockItem,
              name: this.selected_stockItem.name,
-             uom: this.conversionId,
-             quantity: this.quantity,
-             unitExclPrice: this.unitExclPrice.toLocaleString('en-GB'),
-             unitInclPrice: this.unitInclPrice.toLocaleString('en-GB'),
-             totalExcl: this.totalExcl.toLocaleString('en-GB'),
-             totalIncl: this.totalIncl.toLocaleString('en-GB'),
-             totalTax: this.totalTax.toLocaleString('en-GB')
+             code: this.selected_stockItem.code,
+             tax_rate: this.selected_stockItem.selling_tax,
+             unit_conversion_id: this.conversionId,
+             uom: this.uom,
+             has_conversions: this.selected_stockItem.has_conversions,
+             conversions: this.selected_stockItem.conversions,
+             quantity: quantity,
+             unitExclPrice: this.unitExclPrice,
+             unitInclPrice: this.unitInclPrice,
+             totalExcl: this.totalExcl,
+             totalIncl: this.totalIncl,
+             totalTax: this.totalTax,
              });
+
+             let sale = {
+               id: this.stockItem,
+               unit_conversion_id: this.conversionId,
+               quantity: this.quantity,
+               has_conversions:this.selected_stockItem.has_conversions,
+               conversions: this.selected_stockItem.conversions
+
+             };
+            //  this.uom_checker(this.selected_stockItem, this.conversionId);
            this.stockItem = "";
            this.conversionId = "";
            this.quantity = 1;
+
       },
-      editSale(sale){
+
+      editSale(sale) {
           if (sale) {
             this.stockItem = sale.id ;
-            this.conversionId = sale.uom;
+            this.conversionId = sale.unit_conversion_id;
             this.quantity = sale.quantity;
             this.deleteSale(sale);
           }
       },
+
       deleteSale(sale){
         this.salesLines.splice(this.salesLines.indexOf(sale), 1);
+        let sale_to_be_edited = this.quantity_check.filter(s=>{
+          return s.id == sale.id
+        })[0];
+
+      if (this.deleteSaleQuantity(sale)) {
+        return sale_to_be_edited.quantity = parseFloat(sale_to_be_edited.quantity) - parseFloat(this.deleteSaleQuantity(sale));
+      }
+
+      return sale_to_be_edited.quantity = parseFloat(sale_to_be_edited.quantity) - parseFloat(sale.quantity);
       },
-      completeSale(salesLines){
-        axios.post('/sale',salesLines).then(response=>{
-          if(response.data.error){
-            Messenger().post({
-                message: response.data.error,
-                type: 'error',
-                showCloseButton: true
-            });
-          }
+
+      validateForm(cash, mpesa, credit, balance, notes) {
+        if (!this.customer_id) {
+          Messenger().post({
+              message: "Select a Customer!",
+              type: 'error',
+              showCloseButton: true
+          });
+          return;
+        }
+        if (!this.salesLines.length) {
+          Messenger().post({
+              message: "Please Make A Sale First!",
+              type: 'error',
+              showCloseButton: true
+          });
+          return;
+        }
+        console.log(mpesa);
+        this.credit = credit;
+        this.notes = notes;
+        this.mpesa = mpesa;
+        this.cash = cash;
+        this.balance = balance;
+        this.receipt = true;
+        this.completeSale();
+      },
+
+      preparePrint(){
+
+        $('#sale').hide();
+        $('#button-menu-mobile').hide();
+        $('#left-menu').hide();
+        $('#receipt').show();
+
+      },
+
+      restorePrint(){
+        $('#button-menu-mobile').show();
+        $('#left-menu').show();
+        $('#sale').show();
+      $('#receipt').hide();
+    },
+
+      completeSale() {
+        axios.post('/sale',{
+          salesLines: this.salesLines,
+          customer_id: this.customer_id,
+          description: this.description,
+          total_inclusive: this.total_inclusive,
+          total_exclusive: this.total_exclusive,
+          total_tax: this.sale_total_tax,
+          cash: this.cash,
+          credit: this.credit,
+          notes: this.notes,
+          mpesa: this.mpesa,
+          balance: this.balance
+        }).then(response=>{
           if (response.data.message) {
-            Messenger().post({
-                message: response.data.message,
-                type: 'success',
-                showCloseButton: true
-            });
-            setTimeout(function(){
-                  window.location.href="/sale";
-            },100);
+            this.preparePrint();
+            window.print();
+            this.restorePrint();
           }
-          console.log(response.data);
+        }).then(r=>{
+
+          this.receipt = false;
+          this.salesLines = [];
+          this.checkout_toggle = !this.checkout_toggle;
+          this.cash =0;
+          this.credit = 0;
+          this.notes = "",
+          this.mpesa = [];
+          this.balance = 0;
+          this.quantity_check=[];
+          this.quantity = 1;
         }).catch(response=>{
-          console.log(response.data);
+
         });
+
+      },
+      addQuantity(sale, quantity) {
+          let stock = this.quantity_check.filter(stock=>{
+            return stock.id == sale.id
+          });
+          if (stock.length){
+            let sum = parseFloat(stock[0].quantity) + parseFloat(quantity);
+            stock[0].quantity = sum;
+            stock[0].addedquantity = quantity;
+          }
+          else{
+              this.quantity_check.push({id: sale.id, quantity: quantity, addedquantity: quantity});
+          }
+      },
+      deleteSaleQuantity(sale) {
+        if(!sale) return false;
+        if(!sale.has_conversions || !sale.conversions.length) return false;
+        let quantity_c = sale.conversions.filter(stk=>{
+          return stk.stock_item_id == sale.id && stk.converted_unit_id == sale.unit_conversion_id;
+        });
+        // console.log(quantity_c);
+        if (!quantity_c.length) return false;
+        let quantity_to_delete = parseFloat(sale.quantity) * (parseFloat(quantity_c[0].converted_ratio) / parseFloat(quantity_c[0].stocking_ratio));
+        return quantity_to_delete;
+      },
+      uom_checker(saleLine, conversion_id, quantity) {
+          if (!saleLine) return false;
+          if(!saleLine.has_conversions || !saleLine.conversions.length) return false;
+          let quantity_c = saleLine.conversions.filter(stk=>{
+            return stk.stock_item_id == saleLine.id && stk.converted_unit_id == conversion_id;
+          });
+          if (!quantity_c.length) return false;
+        let quantity_to_add = parseFloat(quantity) * (parseFloat(quantity_c[0].converted_ratio) / parseFloat(quantity_c[0].stocking_ratio));
+        return quantity_to_add;
       }
      },
-     computed:{
-       total_price(){
+
+     computed: {
+       customer() {
+         if(!this.customer_id) return null;
+         return this.customers.filter(customer=>{
+           return customer.id == this.customer_id;
+         })[0];
+       },
+       uom() {
+         if (!this.conversionId) return null;
+         return this.conversions.filter(conversion=>{
+           return conversion.id == this.conversionId;
+         }).map(conversion=>{
+           return conversion.name;
+         })[0];
+       },
+       total_price() {
          return (parseFloat(this.quantity)* parseFloat(this.selected_stockItem.unit_cost))
                 +(parseFloat(this.quantity)* parseFloat(this.selected_stockItem.selling_tax.rate));
        },
 
-       selected_stockItem(){
+       selected_stockItem() {
          if (this.stockItem) {
            let selectedStockItem = this.stock.filter(stki=>{
               return  stki.id == this.stockItem;
@@ -201,13 +453,12 @@
          }
        },
 
-     conversions() {
-
+     conversions(){
          let conversions = [];
           if (! this.selected_stockItem) return conversions;
          if (! this.selected_stockItem.id) return conversions;
 
-         conversions.push(this.uoms[this.selected_stockItem.selling_uom]);
+         conversions.push(this.uoms[this.selected_stockItem.stocking_uom]);
          this.selected_stockItem.conversions.forEach(conversion => {
              conversions.push(this.uoms[conversion.converted_unit_id]);
          });
@@ -219,7 +470,6 @@
          return conversions;
      },
      unitInclPrice() {
-      //  console.log(this.selected_stockItem.prices);
        if (!this.selected_stockItem) return 0;
          let price = parseFloat(this.selected_stockItem.prices.filter(p=> p.unit_conversion_id == this.conversionId).
          map(prc =>{
@@ -250,7 +500,7 @@
           return  this.totalIncl - this.totalExcl;
       },
 
-      total_sale(){
+      total_inclusive() {
         if(!this.salesLines.length) return 0;
         let total = this.salesLines.map(t=>{
             return t.totalIncl;
@@ -259,11 +509,29 @@
           });
           return total;
       },
+      total_exclusive() {
+        if(!this.salesLines.length) return 0;
+        let total = this.salesLines.map(t=>{
+            return t.totalExcl;
+          }).reduce((s,t)=>{
+            return parseFloat(s) + parseFloat(t);
+          });
+          return total;
+      },
+      sale_total_tax() {
+        if(!this.salesLines.length) return 0;
+        let total = this.salesLines.map(t=>{
+            return t.totalTax;
+          }).reduce((s,t)=>{
+            return parseFloat(s) + parseFloat(t);
+          });
+          return total;
+      }
 
-   },
-     watch: {
-
-
-     }
-   }
+},
+  components: {
+       checkout: checkout,
+       receipt : receipt
+  }
+}
    </script>

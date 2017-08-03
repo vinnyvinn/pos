@@ -54,11 +54,7 @@ class PurchaseOrderController extends Controller
             ->with('title', $title);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\JsonResponse|\Illuminate\View\View
-     */
+
     public function create()
     {
         if (request()->ajax()) {
@@ -80,13 +76,7 @@ class PurchaseOrderController extends Controller
         return view('purchase-order.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     *
-     * @return \Illuminate\Http\Response
-     */
+  
     public function store(Request $request)
     {
         $data = $request->all();

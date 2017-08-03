@@ -8,9 +8,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Order extends Model
 {
     protected $fillable = [
-        'account_id','user_id','stall_id','document_type','document_status','document_number','order_number',
-        'external_order_number', 'description', 'due_date', 'order_date','total_exclusive' ,'total_inclusive',
-        'total_tax'
+        'account_id','user_id','stall_id',
+        'customer_id','document_type','document_status',
+        'document_number','order_number',
+        'external_order_number', 'description', 'due_date',
+         'order_date','total_exclusive' ,'total_inclusive',
+        'total_tax', 'mpesa', 'cash',
+        'notes', 'balance', 'credit'
     ];
     use SoftDeletes;
 
@@ -91,6 +95,16 @@ class Order extends Model
     public function customer()
     {
         return $this->belongsTo(Customer::class, 'account_id');
+    }
+
+    public function paymentType()
+    {
+        return $this->belongsTo(PaymentTypes::class, 'transaction_type_id');
+    }
+
+    public function sale()
+    {
+        return $this->hasMany(Sale::class, 'sale_id', 'id');
     }
 
     public function lines()
