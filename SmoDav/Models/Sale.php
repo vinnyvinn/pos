@@ -23,4 +23,8 @@ class Sale extends Model
             'totalExclPrice',
             'total_tax'
             ];
+  public function stock()
+  {
+    return $this->belongsTo(StockItem::class, 'stock_item_id' , 'id');
+  }
 }

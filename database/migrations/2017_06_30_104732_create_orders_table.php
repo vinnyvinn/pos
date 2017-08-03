@@ -31,6 +31,11 @@ class CreateOrdersTable extends Migration
             $table->double('total_exclusive');
             $table->double('total_inclusive');
             $table->double('total_tax');
+            $table->string('cash')->nullable();
+            $table->string('credit')->nullable();
+            $table->string('mpesa')->nullable();
+            $table->string('balance')->nullable();
+            $table->text('notes')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
