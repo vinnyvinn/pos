@@ -86,7 +86,6 @@ class PurchaseOrderController extends Controller
         $data['document_type'] = Order::PURCHASE_ORDER;
         $data['document_status'] = Order::STATUS_UNPROCESSED;
 
-        if ($data['due_date'] == null) {
         $data['total_exclusive'] = 0;
         $data['total_inclusive'] = 0;
         $data['total_tax'] = 0;
@@ -100,44 +99,42 @@ class PurchaseOrderController extends Controller
             $data['total_tax'] += $line->totalTax;
         }
 
-        \DB::transaction(
-            function () use ($data) {
-                $order = Order::create($data);
-                $data['lines'] = array_map(
-                    function ($line) use ($order, $data) {
-                        $line = (array) $line;
-                        $line['order_id'] = $order->id;
-                        $line['stall_id'] = $data['stall_id'];
-                        $line['stock_item_id'] = $line['itemId'];
-                        $line['uom'] = $line['conversionId'];
-                        $line['order_quantity'] = $line['quantity'];
-                        $line['processed_quantity'] = 0;
-                        $line['discount'] = 0;
-                        $line['tax_id'] = $line['taxId'];
-                        $line['tax_rate'] = $line['taxRate'];
-                        $line['unit_exclusive'] = $line['unitExclPrice'];
-                        $line['unit_inclusive'] = $line['unitInclPrice'];
-                        $line['unit_tax'] = $line['unit_inclusive'] - $line['unit_exclusive'];
-                        $line['total_exclusive'] = $line['order_quantity'] * $line['unit_exclusive'];
-                        $line['total_inclusive'] = $line['order_quantity'] * $line['unit_inclusive'];
+        \DB::transaction(function () use ($data) {
+            $order = Order::create($data);
+            $data['lines'] = array_map(
+                function ($line) use ($order, $data) {
+                    $line = (array) $line;
+                    $line['order_id'] = $order->id;
+                    $line['stall_id'] = $data['stall_id'];
+                    $line['stock_item_id'] = $line['itemId'];
+                    $line['uom'] = $line['conversionId'];
+                    $line['order_quantity'] = $line['quantity'];
+                    $line['processed_quantity'] = 0;
+                    $line['discount'] = 0;
+                    $line['tax_id'] = $line['taxId'];
+                    $line['tax_rate'] = $line['taxRate'];
+                    $line['unit_exclusive'] = $line['unitExclPrice'];
+                    $line['unit_inclusive'] = $line['unitInclPrice'];
+                    $line['unit_tax'] = $line['unit_inclusive'] - $line['unit_exclusive'];
+                    $line['total_exclusive'] = $line['order_quantity'] * $line['unit_exclusive'];
+                    $line['total_inclusive'] = $line['order_quantity'] * $line['unit_inclusive'];
 
-                        unset(
-                            $line['itemId'], $line['conversionId'], $line['quantity'], $line['taxId'], $line['taxRate'],
-                            $line['unitExclPrice'], $line['unitInclPrice'], $line['totalExcl'], $line['totalIncl'],
-                            $line['totalTax']
-                        );
+                    unset(
+                        $line['itemId'], $line['conversionId'], $line['quantity'], $line['taxId'], $line['taxRate'],
+                        $line['unitExclPrice'], $line['unitInclPrice'], $line['totalExcl'], $line['totalIncl'],
+                        $line['totalTax']
+                    );
 
-                        return $line;
-                    },
-                    $data['lines']);
-                OrderLine::insert($data['lines']);
-            });
+                    return $line;
+                },
+                $data['lines']);
+            OrderLine::insert($data['lines']);
+        });
 
         flash('Successfully created a new purchase order');
 
         return redirect()->route('purchaseOrder.index');
     }
-  }
 
     /**
      * Display the specified resource.
