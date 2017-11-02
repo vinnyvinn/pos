@@ -21,7 +21,7 @@ class CreateSalesTable extends Migration
             $table->integer('unit_conversion_id')->unsigned()->nullable();
             $table->string('stock_name');
             $table->string('code');
-            $table->string('description');
+            $table->string('description')->nullable() ;
             $table->double('quantity');
             $table->double('tax_rate');
             $table->double('unit_tax')->default(0);

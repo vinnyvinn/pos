@@ -1,4 +1,4 @@
-<div class="left side-menu">
+<div class="left side-menu"  id="left-menu">
     <div class="sidebar-inner slimscrollleft">
         <form role="search" class="navbar-form">
         <div class="form-group">

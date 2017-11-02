@@ -3,7 +3,7 @@
         <div class="logo" id="main-logo">
             <h3><a href="{{ url('/') }}">Quick<span>POS</span></a></h3>
         </div>
-        <button class="button-menu-mobile open-left">
+        <button class="button-menu-mobile open-left" id="button-menu-mobile">
             <i class="fa fa-bars"></i>
         </button>
     </div>
