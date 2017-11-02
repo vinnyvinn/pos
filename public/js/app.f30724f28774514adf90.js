@@ -12340,9 +12340,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 conversions.push(_this2.uoms[conversion.converted_unit_id]);
             });
 
-            if (conversions.length) {
-                this.conversionId = conversions[0].id;
-            }
+            //                if (conversions.length) {
+            //                    this.conversionId = conversions[0].id;
+            //                }
 
             return conversions;
         },
@@ -12479,11 +12479,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.orderLines.splice(this.orderLines.indexOf(line), 1);
         },
         editLine: function editLine(line) {
+            console.log(line);
             this.unitExclPrice = line.unitExclPrice;
             this.unitInclPrice = line.unitInclPrice;
             this.itemId = line.itemId;
             this.quantity = line.quantity;
-            this.conversionId = line.conversionId;
+            this.conversionId = parseInt(line.conversionId);
             this.deleteLine(line);
         },
         updateOrder: function updateOrder() {}
@@ -15172,7 +15173,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/home/ngeno/Laravel/standalone-pos/resources/assets/js/components/EditPurchaseOrder.vue"
+Component.options.__file = "/home/kui/dev/office/standalone-pos/resources/assets/js/components/EditPurchaseOrder.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] EditPurchaseOrder.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -15206,7 +15207,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/home/ngeno/Laravel/standalone-pos/resources/assets/js/components/PurchaseOrder.vue"
+Component.options.__file = "/home/kui/dev/office/standalone-pos/resources/assets/js/components/PurchaseOrder.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] PurchaseOrder.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -15240,7 +15241,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/home/ngeno/Laravel/standalone-pos/resources/assets/js/components/PurchaseOrderReceive.vue"
+Component.options.__file = "/home/kui/dev/office/standalone-pos/resources/assets/js/components/PurchaseOrderReceive.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] PurchaseOrderReceive.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -15274,7 +15275,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/home/ngeno/Laravel/standalone-pos/resources/assets/js/components/Settings.vue"
+Component.options.__file = "/home/kui/dev/office/standalone-pos/resources/assets/js/components/Settings.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Settings.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -15308,7 +15309,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/home/ngeno/Laravel/standalone-pos/resources/assets/js/components/ShowPurchaseOrder.vue"
+Component.options.__file = "/home/kui/dev/office/standalone-pos/resources/assets/js/components/ShowPurchaseOrder.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] ShowPurchaseOrder.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -15342,7 +15343,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/home/ngeno/Laravel/standalone-pos/resources/assets/js/components/StockItem.vue"
+Component.options.__file = "/home/kui/dev/office/standalone-pos/resources/assets/js/components/StockItem.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] StockItem.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -15380,7 +15381,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/home/ngeno/Laravel/standalone-pos/resources/assets/js/components/core/loader.vue"
+Component.options.__file = "/home/kui/dev/office/standalone-pos/resources/assets/js/components/core/loader.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] loader.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -15414,7 +15415,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/home/ngeno/Laravel/standalone-pos/resources/assets/js/components/sale.vue"
+Component.options.__file = "/home/kui/dev/office/standalone-pos/resources/assets/js/components/sale.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] sale.vue: functional components are not supported with templates, they should use render functions.")}
 

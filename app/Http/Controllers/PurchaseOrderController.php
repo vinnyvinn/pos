@@ -121,6 +121,7 @@ class PurchaseOrderController extends Controller
                         $line['total_exclusive'] = $line['order_quantity'] * $line['unit_exclusive'];
                         $line['total_inclusive'] = $line['order_quantity'] * $line['unit_inclusive'];
 
+//                        dd($line);
                         unset(
                             $line['itemId'], $line['conversionId'], $line['quantity'], $line['taxId'], $line['taxRate'],
                             $line['unitExclPrice'], $line['unitInclPrice'], $line['totalExcl'], $line['totalIncl'],
