@@ -18,9 +18,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('setting', 'SettingController', ['except' => 'create', 'store']);
     Route::resource('purchaseOrder', 'PurchaseOrderController');
     Route::resource('users', 'UserController');
+    Route::resource('user-group', 'UserGroupController');
     Route::resource('sale', 'SaleController');
     Route::get('goodsReceived/{id}/receive', 'GoodsReceivedController@receive')->name('goodsReceived.receive');
     Route::get('sale/receipt/{id}', 'SaleController@receipt')->name('receipt');
     Route::get('credit', 'SaleController@credit');
     Route::resource('goodsReceived', 'GoodsReceivedController');
+    Route::resource('pettyCashTypes', 'pettyCashTypeController');
+    Route::resource('pettyCash', 'PettyCashController');
 });

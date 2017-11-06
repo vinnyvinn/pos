@@ -30,7 +30,8 @@
                 </span>
             @endif
         </div>
-
+    </div>
+        <div class="col-sm-6">
         <div class="form-group{{ $errors->has('password') ? ' has-error': '' }}">
             <label for="password">Password</label>
             <input class="form-control" type="password" name="password" id="password"{{ isset($user) ? '' : ' required' }}>
@@ -50,13 +51,12 @@
                 </span>
             @endif
         </div>
-
     </div>
 
 
-    <div class="col-sm-6">
-        <h4><strong>Permissions</strong></h4>
-    </div>
+    {{--<div class="col-sm-6">--}}
+        {{--<h4><strong>Permissions</strong></h4>--}}
+    {{--</div>--}}
 
     <div class="col-sm-12">
         <div class="form-group">

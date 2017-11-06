@@ -17,7 +17,7 @@ class UsersTableSeeder extends Seeder
             'full_name' => 'Wizag',
             'email' => 'development@wizag.biz',
             'password' => bcrypt(env('SUPER_PASS')),
-            'permissions' => '[*]',
+//            'permissions' => '[*]',
         ]);
     }
 }
