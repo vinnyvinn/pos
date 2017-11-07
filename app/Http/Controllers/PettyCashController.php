@@ -6,7 +6,7 @@ use App\User;
 use Illuminate\Http\Request;
 use SmoDav\Models\PettyCash;
 use SmoDav\Models\PettyCashType;
-use DB;
+
 class PettyCashController extends Controller
 {
     /**
@@ -26,7 +26,7 @@ class PettyCashController extends Controller
      */
     public function create()
     {
-        return view('petty-cash.create')->with('user', User::all())->with('pettyCashType', PettyCashType::all());
+        return view('petty-cash.create')->with('users', User::all())->with('pettyCashTypes', PettyCashType::all());
     }
 
     /**
@@ -37,7 +37,10 @@ class PettyCashController extends Controller
      */
     public function store(Request $request)
     {
-        PettyCash::create($request->all());
+        $data = $request->all();
+        $data['user_id'] = \Auth::id();
+
+        PettyCash::create($data);
 
         flash('Successfully created a petty cash');
         return redirect()->route('pettyCash.index');
@@ -62,8 +65,10 @@ class PettyCashController extends Controller
      */
     public function edit($id)
     {
-        dd(PettyCash::with('user', 'pettyCashType')->findOrFail($id));
-        return view('petty-cash.edit')->with('pettyCash', PettyCash::with('user', 'pettyCashType')->findOrFail($id));
+        return view('petty-cash.edit', [
+            'pettyCash' => PettyCash::with('user', 'pettyCashType')->findOrFail($id),
+            'pettyCashTypes' => PettyCashType::all()
+        ]);
     }
 
     /**

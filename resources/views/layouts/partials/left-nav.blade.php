@@ -141,7 +141,7 @@
                     </a>
                     <ul>
                         <li>
-                            <a href="{{ route('pettyCashTypes.index') }}">Petty Cash Types</a>
+                            <a href="{{ route('pettyCashType.index') }}">Petty Cash Types</a>
                         </li>
                         <li>
                             <a href="{{ route('pettyCash.index') }}">Petty Cash</a>

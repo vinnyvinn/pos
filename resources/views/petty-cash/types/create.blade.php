@@ -17,7 +17,7 @@
                 </div>
                 <div class="widget-content padding">
                     <br>
-                    <form action="{{ route('pettyCashTypes.store') }}" method="post">
+                    <form action="{{ route('pettyCashType.store') }}" method="post">
                         {{ csrf_field() }}
                         <div class="form-group">
                             <label for="name">Name</label>
@@ -30,7 +30,7 @@
                         </div>
                         <div class="form-group">
                             <input type="submit" class="btn btn-success" value="Save">
-                            <a href="{{ route('pettyCashTypes.index') }}" class="btn btn-danger">Back</a>
+                            <a href="{{ route('pettyCashType.index') }}" class="btn btn-danger">Back</a>
                         </div>
                     </form>
                 </div>

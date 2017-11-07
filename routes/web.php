@@ -1,11 +1,13 @@
 <?php
 
 Auth::routes();
-
 Route::group(['middleware' => 'auth'], function () {
+    Route::get('checkIn', 'CheckInController@index')->name('checkIn');
+    Route::post('checkIn', 'CheckInController@store')->name('checkIn.store');
+});
+Route::group(['middleware' => ['auth', 'checkedIn']], function () {
     Route::get('/', 'HomeController@dashboard');
     Route::get('/home', 'HomeController@index');
-
     Route::resource('tax', 'TaxController');
     Route::resource('unitOfMeasure', 'UnitOfMeasureController');
     Route::resource('unitConversion', 'UnitConversionController');
@@ -24,6 +26,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('sale/receipt/{id}', 'SaleController@receipt')->name('receipt');
     Route::get('credit', 'SaleController@credit');
     Route::resource('goodsReceived', 'GoodsReceivedController');
-    Route::resource('pettyCashTypes', 'pettyCashTypeController');
+    Route::resource('pettyCashType', 'pettyCashTypeController');
     Route::resource('pettyCash', 'PettyCashController');
 });

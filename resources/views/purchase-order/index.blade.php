@@ -37,7 +37,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($ordersF as $order)
+                    @foreach($orders as $order)
                         <tr>
                             <td><a href="{{ route('purchaseOrder.show', $order->id) }}">{{ $order->document_number }}</a></td>
                             <td>{{ $order->supplier->name }}</td>

@@ -16,6 +16,7 @@
                 </div>
                 <div class="widget-content padding">
                     <form action="{{ route('user-group.store') }}" method="post">
+                        {{ csrf_field() }}
                         <div class="form-group">
                             <label for="name">Name</label>
                             <input type="text" name="name" id="name" class="form-control">
@@ -27,7 +28,7 @@
                                     <h5>Users</h5>
                                     <div class="checkbox">
                                     <label>
-                                        <input type="checkbox">
+                                        <input type="checkbox" name="permissions[]" value="0">
                                         Full Access
                                     </label>
                                     </div>
@@ -36,7 +37,7 @@
                                     <h5>Roles</h5>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox">
+                                            <input type="checkbox" name="permissions[]" value="1">
                                             Full Access
                                         </label>
                                     </div>
@@ -45,13 +46,13 @@
                                     <h5>Transaction</h5>
                                     <div class="checkbox">
                                         <label for="">
-                                            <input type="checkbox">
+                                            <input type="checkbox" name="permissions[]" value="2">
                                             Approve
                                         </label>
                                     </div>
                                     <div class="checkbox">
                                         <label for="">
-                                            <input type="checkbox">
+                                            <input type="checkbox" name="permissions[]" value="3">
                                             View
                                         </label>
                                     </div>
@@ -61,18 +62,22 @@
                                 <div class="col-sm-4">
                                     <h5>Petty Cash</h5>
                                     <label for="">
-                                        <input type="checkbox">
+                                        <input type="checkbox" name="permissions[]" value="4">
                                         Full Access
                                     </label>
                                 </div>
                                 <div class="col-sm-4">
                                     <h5>Stall Assignment</h5>
                                     <label for="">
-                                        <input type="checkbox">
+                                        <input type="checkbox" name="permissions[]" value="5">
                                         Full Access
                                     </label>
                                 </div>
                             </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" class="btn btn-success" value="Save">
+                            <a href="{{ route('user-group.index') }}" class="btn btn-danger">Back</a>
                         </div>
                     </form>
                 </div>

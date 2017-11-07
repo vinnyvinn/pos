@@ -23,7 +23,7 @@
                 <div class="widget-header">
                     <h2><strong>Petty Cash Types</strong></h2>
                     <div class="additional-btn">
-                        <a href="{{ route('pettyCashTypes.edit') }}" class="btn btn-primary btn-xs">Create Petty Cash Type</a>
+                        <a href="{{ route('pettyCashType.create') }}" class="btn btn-primary btn-xs">Create Petty Cash Type</a>
                     </div>
                 </div>
                 <div class="widget-content padding">
@@ -40,10 +40,10 @@
                                 <tr>
                                     <td>{{ $types->name }}</td>
                                     <td class="text-center">
-                                        <a href="{{ route('pettyCashTypes.edit', $types->id) }}"
+                                        <a href="{{ route('pettyCashType.edit', $types->id) }}"
                                            class="btn btn-xs btn-info"><i
                                                     class="fa fa-pencil"></i></a>
-                                        <a href="{{ route('pettyCashTypes.destroy', $types->id) }}"
+                                        <a href="{{ route('pettyCashType.destroy', $types->id) }}"
                                            class="btn btn-danger btn-xs" data-method="DELETE"
                                            rel="nofollow"
                                            data-confirm="Are you sure you want to delete this?"

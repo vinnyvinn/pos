@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 
-class Administrator
+class CheckedIn
 {
     /**
      * Handle an incoming request.
@@ -17,9 +17,10 @@ class Administrator
      */
     public function handle($request, Closure $next)
     {
-        if (!session()->has('stall_id')) {
-            return redirect()->route('/');
+        if (! session()->has('stall_id')) {
+            return redirect()->route('checkIn');
         }
+
         return $next($request);
     }
 }

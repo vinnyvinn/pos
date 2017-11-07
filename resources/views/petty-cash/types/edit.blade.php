@@ -17,7 +17,7 @@
                 </div>
                 <div class="widget-content padding">
                     <br>
-                    <form action="{{ route('pettyCashTypes.update', $type->id) }}" method="post">
+                    <form action="{{ route('pettyCashType.update', $type->id) }}" method="post">
                         {{ csrf_field() }}
                         {{ method_field('PUT') }}
                         <div class="form-group">
@@ -31,7 +31,7 @@
                         </div>
                         <div class="form-group">
                             <input type="submit" class="btn btn-success" value="Save">
-                            <a href="{{ route('pettyCashTypes.index') }}" class="btn btn-danger">Back</a>
+                            <a href="{{ route('pettyCashType.index') }}" class="btn btn-danger">Back</a>
                         </div>
                     </form>
                 </div>

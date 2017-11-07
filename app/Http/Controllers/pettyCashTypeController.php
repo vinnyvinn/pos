@@ -14,6 +14,7 @@ class pettyCashTypeController extends Controller
      */
     public function index()
     {
+//        dd(PettyCashType::all());
         return view('petty-cash.types.index')->with('pettyCashTypes', PettyCashType::all());
     }
 
@@ -38,7 +39,7 @@ class pettyCashTypeController extends Controller
         PettyCashType::create($request->all());
 
         flash('Successfully created a new petty cash type');
-        return redirect()->route('pettyCashTypes.index');
+        return redirect()->route('pettyCashType.index');
     }
 
     /**
@@ -79,7 +80,7 @@ class pettyCashTypeController extends Controller
 
         flash('Successfully edited the petty cash type');
 
-        return redirect()->route('pettyCashTypes.index');
+        return redirect()->route('pettyCashType.index');
     }
 
     /**
@@ -93,6 +94,6 @@ class pettyCashTypeController extends Controller
         PettyCashType::findOrFail($id)->delete();
 
         flash('Successfully deleted petty cash type');
-        return redirect()->route('pettyCashTypes.index');
+        return redirect()->route('pettyCashType.index');
     }
 }

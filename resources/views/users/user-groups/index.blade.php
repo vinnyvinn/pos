@@ -41,8 +41,8 @@
                                 <tr>
                                     <td>{{ $user->name }}</td>
                                     <td>
-                                        <a href="{{ route('users.edit', $user->id) }}" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></a>
-                                        <a href="{{ route('users.destroy', $user->id) }}"
+                                        <a href="{{ route('user-group.edit', $user->id) }}" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></a>
+                                        <a href="{{ route('user-group.destroy', $user->id) }}"
                                            class="btn btn-danger btn-xs" data-method="DELETE"
                                            rel="nofollow"
                                            data-confirm="Are you sure you want to delete this?"

@@ -32,6 +32,20 @@
         </div>
     </div>
         <div class="col-sm-6">
+        <div class="form-group">
+            <label for="user_group_id">User Group</label>
+            <select name="user_group_id" id="user_group_id" class="form-control">
+                @foreach($groups as $group)
+                <option value="{{ $group->id }}">{{ $group->name }}</option>
+                @endforeach
+            </select>
+            {{--<input class="form-control" type="text" name="user_group_id" id="password"{{ isset($user) ? '' : ' required' }}>--}}
+            {{--@if($errors->has('password'))--}}
+                {{--<span class="help-block">--}}
+                    {{--{{ $errors->first('password') }}--}}
+                {{--</span>--}}
+            {{--@endif--}}
+        </div>
         <div class="form-group{{ $errors->has('password') ? ' has-error': '' }}">
             <label for="password">Password</label>
             <input class="form-control" type="password" name="password" id="password"{{ isset($user) ? '' : ' required' }}>

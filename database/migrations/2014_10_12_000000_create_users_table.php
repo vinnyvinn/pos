@@ -15,7 +15,7 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
-//            $table->integer('user_group_id');
+            $table->integer('user_group_id')->unsigned();
             $table->string('username')->unique();
             $table->string('full_name');
             $table->string('email')->unique();
@@ -23,6 +23,8 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('user_group_id')->references('id')->on('user_groups');
         });
     }
 
