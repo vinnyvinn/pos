@@ -28,7 +28,7 @@
                                     <h5>Users</h5>
                                     <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="permissions[]" value="0">
+                                        <input type="checkbox" name="permissions[]" value="users_full_access">
                                         Full Access
                                     </label>
                                     </div>
@@ -37,7 +37,7 @@
                                     <h5>Roles</h5>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" name="permissions[]" value="1">
+                                            <input type="checkbox" name="permissions[]" value="roles_full_access">
                                             Full Access
                                         </label>
                                     </div>
@@ -46,13 +46,13 @@
                                     <h5>Transaction</h5>
                                     <div class="checkbox">
                                         <label for="">
-                                            <input type="checkbox" name="permissions[]" value="2">
+                                            <input type="checkbox" name="permissions[]" value="transaction_make">
                                             Approve
                                         </label>
                                     </div>
                                     <div class="checkbox">
                                         <label for="">
-                                            <input type="checkbox" name="permissions[]" value="3">
+                                            <input type="checkbox" name="permissions[]" value="transaction_view">
                                             View
                                         </label>
                                     </div>
@@ -62,14 +62,14 @@
                                 <div class="col-sm-4">
                                     <h5>Petty Cash</h5>
                                     <label for="">
-                                        <input type="checkbox" name="permissions[]" value="4">
+                                        <input type="checkbox" name="permissions[]" value="petty_full_access">
                                         Full Access
                                     </label>
                                 </div>
                                 <div class="col-sm-4">
                                     <h5>Stall Assignment</h5>
                                     <label for="">
-                                        <input type="checkbox" name="permissions[]" value="5">
+                                        <input type="checkbox" name="permissions[]" value="stall_full_access">
                                         Full Access
                                     </label>
                                 </div>

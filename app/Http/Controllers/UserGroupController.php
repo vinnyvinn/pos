@@ -86,6 +86,7 @@ class UserGroupController extends Controller
     public function update(Request $request, $id)
     {
         $permissions = $this->getPermissions($request);
+
         UserGroup::findOrFail($id)->update(['permissions' => $permissions, 'name' => $request->name]);
 
         flash('Successfully edited the user group');
@@ -108,14 +109,6 @@ class UserGroupController extends Controller
 
     public function getPermissions(Request $request)
     {
-        return collect($request->get('permissions'))
-            ->reject(function ($value) {
-                return preg_match('/[0-9]+$/', $value) == 0;
-            })
-            ->map(function ($value) {
-                return (int) $value;
-            })
-            ->values()
-            ->toJson();
+        return json_encode(array_values($request->get('permissions')));
     }
 }
