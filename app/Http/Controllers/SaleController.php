@@ -13,6 +13,7 @@ use SmoDav\Models\Customer;
 use SmoDav\Models\PaymentTypes;
 use SmoDav\Models\Tax;
 use PDF;
+
 class SaleController extends Controller
 {
     public function index()
@@ -20,6 +21,7 @@ class SaleController extends Controller
         return view('sale.index',
         ['sales' => Order::with(['stall', 'customer', 'paymentType'])->where('document_type', Order::INVOICE)->orderBy('id', 'desc')->get()]);
     }
+
     public function create()
     {
       $stallId = 1; // TODO: Change this to use session
@@ -73,6 +75,7 @@ class SaleController extends Controller
           }
 
           $sales[] = [];
+
             $item_in_stock = Stock::where('item_id', $value['id'])->where('stall_id', 1);
             $conversion = UnitConversion::where('stock_item_id', $value['id'])
                               ->where('converted_unit_id', $value['unit_conversion_id'])
@@ -94,6 +97,7 @@ class SaleController extends Controller
                 $new_stock_quantity = 0;
             }
             $item_in_stock->update(['quantity_on_hand' => $new_stock_quantity]);
+
           }
 
             $sales[$index] = [
@@ -121,6 +125,7 @@ class SaleController extends Controller
               return response()->json( [ 'message' => 'Sale Made Successfully!' ]  );
           }
           return response()->json( [ 'error' => 'Could Not Complete Sale!' ]  );
+
     }
 
     public function show($id)
@@ -137,6 +142,14 @@ class SaleController extends Controller
     {
         //
     }
+
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int $id
+     * @return \Illuminate\Http\Response
+     */
 
     public function destroy($id)
     {

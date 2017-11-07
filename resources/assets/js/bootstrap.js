@@ -23,7 +23,7 @@ require('./libs/print.min');
 Messenger.options = {
     extraClasses: 'messenger-fixed messenger-on-top messenger-on-right',
     theme: 'flat'
-}
+};
 
 window.Vue = require('vue');
 

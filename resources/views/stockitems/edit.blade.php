@@ -6,7 +6,7 @@
             fa-shopping-cart
         @endslot
         @slot('header')
-            Stock Items
+            Products
         @endslot
         Manage the items that can be bought and sold within the system.
     @endcomponent

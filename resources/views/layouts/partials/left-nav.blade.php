@@ -65,7 +65,7 @@
                 <li class='has_sub'>
                     <a href='javascript:void(0);'>
                         <i class='icon-bag'></i>
-                        <span>Stock Items</span>
+                        <span>Products</span>
                         <span class="pull-right"><i class="fa fa-angle-down"></i></span>
                     </a>
                     <ul>
