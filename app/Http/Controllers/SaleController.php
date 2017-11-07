@@ -165,7 +165,6 @@ class SaleController extends Controller
     }
     public function credit()
     {
-
         return view('sale.credit-sale-receipt');
     }
 }

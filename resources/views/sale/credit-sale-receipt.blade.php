@@ -8,8 +8,8 @@
   <div class="container">
     <div class="row">
       <div class="text-center">
-        <h3>{{ config('app.name', 'Laravel') }}</h3>
-        <h4>Wise And Agile Solutions Ltd.</h4>
+        <img src="{{ asset('images/logo.png') }}" alt="">
+        <h4>Gardens Grow.</h4>
         <h5>P.O. Box xxxx.</h5>
         <h5>Nairobi.</h5>
       </div>

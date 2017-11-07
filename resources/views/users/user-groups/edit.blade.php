@@ -38,7 +38,7 @@
                                     <h5>Roles</h5>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" name="permissions[]" value="roles_full_access"{{ in_array(1, $userperm) ? " checked" : '' }}>
+                                            <input type="checkbox" name="permissions[]" value="roles_full_access"{{ in_array('roles_full_access', $userperm) ? ' checked' : '' }}>
                                             Full Access
                                         </label>
                                     </div>
@@ -47,13 +47,13 @@
                                     <h5>Transaction</h5>
                                     <div class="checkbox">
                                         <label for="">
-                                            <input type="checkbox" name="permissions[]" value="transaction_make">
+                                            <input type="checkbox" name="permissions[]" value="transaction_make"{{ in_array('transaction_make', $userperm) ? ' checked' : '' }}>
                                             Make
                                         </label>
                                     </div>
                                     <div class="checkbox">
                                         <label for="">
-                                            <input type="checkbox" name="permissions[]" value="transaction_view">
+                                            <input type="checkbox" name="permissions[]" value="transaction_view"{{ in_array('transaction_view', $userperm) ? ' checked' : '' }}>
                                             View
                                         </label>
                                     </div>
@@ -62,17 +62,21 @@
                             <div class="row">
                                 <div class="col-sm-4">
                                     <h5>Petty Cash</h5>
+                                    <div class="checkbox">
                                     <label for="">
-                                        <input type="checkbox" name="permissions[]" value="petty_full_access">
+                                        <input type="checkbox" name="permissions[]" value="petty_full_access"{{ in_array('petty_full_access', $userperm) ? ' checked' : '' }}>
                                         Full Access
                                     </label>
+                                    </div>
                                 </div>
                                 <div class="col-sm-4">
                                     <h5>Stall Assignment</h5>
+                                    <div class="checkbox">
                                     <label for="">
-                                        <input type="checkbox" name="permissions[]" value="stall_full_access">
+                                        <input type="checkbox" name="permissions[]" value="stall_full_access"{{ in_array('stall_full_access', $userperm) ? ' checked' : '' }}>
                                         Full Access
                                     </label>
+                                    </div>
                                 </div>
                             </div>
                         </div>

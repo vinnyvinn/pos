@@ -1,8 +1,8 @@
 <template>
     <div class="row">
       <div class="text-center">
-        <h3>QuickPOS</h3>
-        <h4>Wise And Agile Solutions Ltd.</h4>
+          <img :src="'/images/logo.png'" alt="">
+        <h4>Gardens Grow.</h4>
         <h5>P.O. Box xxxx.</h5>
         <h5>Nairobi.</h5>
       </div>
