@@ -134,6 +134,27 @@
                     </ul>
                 </li>
 
+                <li class="has_sub">
+                    <a href="javascript:void(0);">
+                        <i class="fa fa-dollar"></i>
+                        <span>Reports</span>
+                        <span class="pull-right"><i class="fa fa-angle-down"></i></span>
+                    </a>
+                    <ul>
+                        <li>
+                            <a href="{{route('daily.index')}}">Daily Report</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('weekly.index') }}">Weekly Report</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('monthly.index') }}">Monthly Report</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('custom.index') }}">Custom Report</a>
+                        </li>
+                    </ul>
+                </li>
             </ul>
             <div class="clearfix"></div>
         </div>

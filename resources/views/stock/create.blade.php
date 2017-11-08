@@ -29,17 +29,23 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="item_id">Item ID</label>
-                        <input class="form-control" type="text" name="item_id" id="item_id" required>
+                            <label for="item_id">Item </label>
+                            <select name="item_id" id="item_id" class="form-control">
+                                <label for="item_id">Stall</label>
+                                @foreach($stock_items as $items)
+                                    <option value="{{ $items->id }}"{{ old('item_id') == $items->id ? ' selected' : '' }}>
+                                        {{ $items->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+
                     </div>
+                        <input type="hidden" name="quantity_reserved" id="quantity_reserved">
                     <div class="form-group">
-                        <label for="quantity_on_hand">Quantity on Hand</label>
+                        <label for="quantity_on_hand">Quantity on Received</label>
                             <input class="form-control" type="number" name="quantity_on_hand" id="quantity_on_hand" required>
                     </div>
-                        <div class="form-group">
-                            <label for="quantity_reserved">Quantity Reserved</label>
-                                <input class="form-control" type="number" name="quantity_reserved" id="quantity_reserved" required>
-                        </div>
+
                         <div class="form-group">
                             <input type="submit" class="btn btn-success" value="Create">
                             <a href="{{ route('stock.index') }}" class="btn btn-danger">Cancel</a>

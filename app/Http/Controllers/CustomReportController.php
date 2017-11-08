@@ -3,43 +3,65 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use SmoDav\Models\Stall;
-use SmoDav\Models\Stock;
-use SmoDav\Models\StockItem;
+use DB;
 
-class StockController extends Controller
+class CustomReportController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $stocks=\DB::table('stalls')
-            ->join('stocks','stocks.stall_id','=','stalls.id')
-            ->join('stock_items','stock_items.id','stocks.item_id')
-            ->select('stocks.quantity_on_hand','stalls.name as stall_name','stock_items.name')
+        //custom
+            $sales=DB::table('sales')
+            ->join('stalls','stalls.id','=','sales.stall_id')
             ->get();
 
-        return view('stock.index',compact('stocks'));
+        return view('reports.daily',compact('sales'));   // //
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return \Illuminate\Http\Response
      */
     public function create()
     {
-//        dd(Stock::with('stall')->get());
-
-        $stalls=Stall::all();
-        $stock_items=StockItem::all();
-
-        return view('stock.create',compact('stalls','stock_items'));
+        //
     }
 
+    public function customSummary() {
+
+        Excel::create('Daily Sales Report', function($excel) {
+
+            $excel->sheet('Excel sheet', function($sheet) {
+
+
+                //custom
+
+                $sales=DB::table('sales')
+                    ->join('stalls','stalls.id','=','sales.stall_id')
+                    ->get();
+
+                $arr = array();
+                foreach ($sales as $sale) {
+
+                    $data = array($sale->name, $sale->stock_name, $sale->quantity,
+                        $sale->code, $sale->totalExclPrice,$sale->created_at
+                    );
+                    array_push($arr, $data);
+                }
+
+//set the titles
+                $sheet->fromArray($arr, null, 'A1', false, false)->prependRow(array('STALL', 'PRODUCT', 'QUANTITY',
+                        'CODE', 'TOTAL PRICE','DATE'
+                    )
+                );
+            });
+        })->export('xls');
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -48,14 +70,7 @@ class StockController extends Controller
      */
     public function store(Request $request)
     {
-        $stock = Stock::where('stall_id', $request->get('stall_id'))
-            ->where('item_id', $request->get('item_id'))
-            ->firstOrFail();
-
-        $stock->increment('quantity_on_hand', $request->get('quantity_on_hand'));
-        flash('Successfully created stock');
-
-        return redirect()->route('stock.index');
+        //
     }
 
     /**
