@@ -16,15 +16,6 @@
                                       <option v-for="customer in customers" :value="customer.id">{{customer.name}}</option>
                                   </select>
                               </div>
-                              <div class="form-group">
-                                  <label for="stock_item">Stock Item</label>
-                                  <select class="form-control input-sm" id="stock_item" v-model="stockItem">
-                                      <option value="" selected disabled>select Item</option>
-                                      <option v-if="stock" v-for="stock_item in stock" :value="stock_item.id">
-                                          {{stock_item.code + " " + stock_item.name}}
-                                      </option>
-                                  </select>
-                              </div>
                           </div>
                       <div v-if="!checkout_toggle" class="col-sm-6">
                           <h4 class="text-right"><strong>Total</strong></h4>
@@ -34,7 +25,7 @@
                       <table v-if="!checkout_toggle" class="table table-responsive">
                           <thead>
                           <tr>
-                              <!--<th class="text-nowrap">Stock Item</th>-->
+                              <th class="text-nowrap">Stock Item</th>
                        <th class="text-nowrap">UOM</th>
                        <th class="text-nowrap" width="120px">Quantity</th>
                        <th class="text-nowrap" width="150px">Unit Excl. Price</th>
@@ -47,6 +38,14 @@
                  </thead>
                  <tbody>
                  <tr>
+                     <td>
+                         <select class="form-control input-sm" id="stock_item" v-model="stockItem">
+                             <option value="" selected disabled>select Item</option>
+                             <option v-if="stock" v-for="stock_item in stock" :value="stock_item.id">
+                                 {{stock_item.code + " " + stock_item.name}}
+                             </option>
+                         </select>
+                     </td>
                     <td>
                       <select v-model="conversionId" class="form-control input-sm" name="conversion_id" required>
                         <option value="null" disabled>Select Conversion</option>
@@ -81,7 +80,7 @@
                    <table  v-if="!checkout_toggle" class="table table-responsive">
                        <thead>
                        <tr>
-                           <!--<th class="text-nowrap">Stock Item</th>-->
+                           <th class="text-nowrap">Stock Item</th>
                            <th class="text-nowrap">UOM</th>
                            <th class="text-nowrap text-right" width="120px">Quantity</th>
                            <th class="text-nowrap text-right" width="150px">Unit Excl. Price</th>
@@ -94,7 +93,7 @@
                        </thead>
                        <tbody>
                        <tr v-if="salesLines.length" v-for="sale in salesLines">
-                           <!--<td>{{sale.code+' '+sale.name}}</td>-->
+                           <td>{{sale.code+' '+sale.name}}</td>
                            <td>{{sale.uom}}</td>
                            <td class="text-right">{{sale.quantity}}</td>
                            <td class="text-right">{{sale.unitExclPrice.toLocaleString('en-GB')}}</td>
@@ -192,6 +191,8 @@
               return item;
             });
             this.stock = stock;
+
+            console.log(stock);
          }).catch(response=>{
            console.log(response.data);
          });

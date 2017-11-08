@@ -13238,7 +13238,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -14820,7 +14819,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 
 
@@ -14887,6 +14885,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           return item;
         });
         _this.stock = stock;
+
+        console.log(stock);
       }).catch(function (response) {
         console.log(response.data);
       });
@@ -18024,7 +18024,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "text-center"
   }, [_c('img', {
     attrs: {
-      "src": '/images/logo.png',
+      "src": '/images/garden_grow.png',
       "alt": ""
     }
   }), _vm._v(" "), _c('h4', [_vm._v("Gardens Grow.")]), _vm._v(" "), _c('h5', [_vm._v("P.O. Box xxxx.")]), _vm._v(" "), _c('h5', [_vm._v("Nairobi.")])]), _vm._v(" "), _c('div', {
@@ -18253,13 +18253,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "value": customer.id
       }
     }, [_vm._v(_vm._s(customer.name))])
-  }))]), _vm._v(" "), _c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "stock_item"
-    }
-  }, [_vm._v("Stock Item")]), _vm._v(" "), _c('select', {
+  }))])]) : _vm._e(), _vm._v(" "), (!_vm.checkout_toggle) ? _c('div', {
+    staticClass: "col-sm-6"
+  }, [_vm._m(0), _vm._v(" "), _c('h2', {
+    staticClass: "text-right"
+  }, [_vm._v(_vm._s(_vm.total_inclusive.toLocaleString('en-GB')))])]) : _vm._e(), _vm._v(" "), _c('br'), _vm._v(" "), (!_vm.checkout_toggle) ? _c('table', {
+    staticClass: "table table-responsive"
+  }, [_vm._m(1), _vm._v(" "), _c('tbody', [_c('tr', [_c('td', [_c('select', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -18292,14 +18292,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       domProps: {
         "value": stock_item.id
       }
-    }, [_vm._v("\n                                          " + _vm._s(stock_item.code + " " + stock_item.name) + "\n                                      ")]) : _vm._e()
-  })], 2)])]) : _vm._e(), _vm._v(" "), (!_vm.checkout_toggle) ? _c('div', {
-    staticClass: "col-sm-6"
-  }, [_vm._m(0), _vm._v(" "), _c('h2', {
-    staticClass: "text-right"
-  }, [_vm._v(_vm._s(_vm.total_inclusive.toLocaleString('en-GB')))])]) : _vm._e(), _vm._v(" "), _c('br'), _vm._v(" "), (!_vm.checkout_toggle) ? _c('table', {
-    staticClass: "table table-responsive"
-  }, [_vm._m(1), _vm._v(" "), _c('tbody', [_c('tr', [_c('td', [_c('select', {
+    }, [_vm._v("\n                                 " + _vm._s(stock_item.code + " " + stock_item.name) + "\n                             ")]) : _vm._e()
+  })], 2)]), _vm._v(" "), _c('td', [_c('select', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -18379,7 +18373,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   })])])])])]) : _vm._e(), _vm._v(" "), _c('br'), _vm._v(" "), (!_vm.checkout_toggle) ? _c('table', {
     staticClass: "table table-responsive"
   }, [_vm._m(2), _vm._v(" "), _c('tbody', [_vm._l((_vm.salesLines), function(sale) {
-    return (_vm.salesLines.length) ? _c('tr', [_c('td', [_vm._v(_vm._s(sale.uom))]), _vm._v(" "), _c('td', {
+    return (_vm.salesLines.length) ? _c('tr', [_c('td', [_vm._v(_vm._s(sale.code + ' ' + sale.name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(sale.uom))]), _vm._v(" "), _c('td', {
       staticClass: "text-right"
     }, [_vm._v(_vm._s(sale.quantity))]), _vm._v(" "), _c('td', {
       staticClass: "text-right"
@@ -18447,6 +18441,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('thead', [_c('tr', [_c('th', {
     staticClass: "text-nowrap"
+  }, [_vm._v("Stock Item")]), _vm._v(" "), _c('th', {
+    staticClass: "text-nowrap"
   }, [_vm._v("UOM")]), _vm._v(" "), _c('th', {
     staticClass: "text-nowrap",
     attrs: {
@@ -18471,6 +18467,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._v("Total Inclusive")])])])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('thead', [_c('tr', [_c('th', {
+    staticClass: "text-nowrap"
+  }, [_vm._v("Stock Item")]), _vm._v(" "), _c('th', {
     staticClass: "text-nowrap"
   }, [_vm._v("UOM")]), _vm._v(" "), _c('th', {
     staticClass: "text-nowrap text-right",
@@ -20314,42 +20312,41 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "widget-header"
   }, [_c('h2', [_c('strong', [_vm._v("Purchase Order")])])])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('thead', [_c('tr', [_c('th', {
-    staticClass: "text-nowrap"
-  }, [_vm._v("Stock Item")]), _vm._v(" "), _c('th', {
-    staticClass: "text-nowrap"
-  }, [_vm._v("UOM")]), _vm._v(" "), _c('th', {
-    staticClass: "text-nowrap text-right",
+  return _c('thead', [_c('tr', [_c('th', [_vm._v("Stock Item")]), _vm._v(" "), _c('th', [_vm._v("UOM")]), _vm._v(" "), _c('th', {
+    staticClass: "text-right",
     attrs: {
-      "width": "120px"
+      "width": "10%"
     }
   }, [_vm._v("Order Qty.")]), _vm._v(" "), _c('th', {
-    staticClass: "text-nowrap text-right",
+    staticClass: "text-right",
     attrs: {
-      "width": "120px"
+      "width": "10%"
     }
   }, [_vm._v("Remaining Qty.")]), _vm._v(" "), _c('th', {
-    staticClass: "text-nowrap text-right",
+    staticClass: "text-right",
     attrs: {
-      "width": "120px"
+      "width": "10%"
     }
   }, [_vm._v("Quantity Received")]), _vm._v(" "), _c('th', {
-    staticClass: "text-nowrap text-right",
+    staticClass: "text-right",
     attrs: {
-      "width": "150px"
+      "width": "10%"
     }
   }, [_vm._v("Unit Excl. Price")]), _vm._v(" "), _c('th', {
-    staticClass: "text-nowrap text-right",
+    staticClass: "text-right",
     attrs: {
-      "width": "150px"
+      "width": "10%"
     }
   }, [_vm._v("Unit Incl. Price")]), _vm._v(" "), _c('th', {
-    staticClass: "text-nowrap text-right"
+    staticClass: "text-right",
+    attrs: {
+      "width": "10%"
+    }
   }, [_vm._v("Total Exclusive")]), _vm._v(" "), _c('th', {
-    staticClass: "text-nowrap text-right"
+    staticClass: "text-right"
   }, [_vm._v("Total Tax")]), _vm._v(" "), _c('th', {
-    staticClass: "text-nowrap text-right"
-  }, [_vm._v("Total Inclusive")]), _vm._v(" "), _c('th')])])
+    staticClass: "text-right"
+  }, [_vm._v("Total Inclusive")])])])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "pull-right",
