@@ -18,7 +18,7 @@
         <div class="col-md-12">
             <div class="widget">
                 <div class="widget-header">
-                    <h2><strong>Stock Items</strong></h2>
+                    <h2><strong>{{ $title }} Stock Items</strong></h2>
 
                     <div class="additional-btn">
                         <a href="{{ route('stockItem.create') }}" class="pull-right btn btn-primary btn-xs">

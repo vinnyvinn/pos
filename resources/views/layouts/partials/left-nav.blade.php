@@ -71,8 +71,8 @@
                     <ul>
                         <li><a href='{{ route('stockItem.create') }}'><span>Add New</span></a></li>
                         <li><a href='{{ route('stockItem.index') }}'><span>View All</span></a></li>
-                        <li><a href='{{ route('stockItem.index', ['status' => '1']) }}'><span>View Active</span></a></li>
-                        <li><a href='{{ route('stockItem.index', ['status' => '0']) }}'><span>View Inactive</span></a></li>
+                        <li><a href='{{ route('stockItem.index', ['status' => 'active']) }}'><span>View Active</span></a></li>
+                        <li><a href='{{ route('stockItem.index', ['status' => 'inactive']) }}'><span>View Inactive</span></a></li>
                     </ul>
                 </li>
                 <li class="has_sub">
@@ -115,7 +115,7 @@
                         <li>
 {{--                            <a href="{{ route('users.index') }}">View All</a>--}}
                             <a href="{{ route('users.index') }}">Users</a>
-                            <a href="{{ route('user-group.index') }}">User Groups</a>
+{{--                            <a href="{{ route('user-group.index') }}">User Groups</a>--}}
                         </li>
                     </ul>
                 </li>

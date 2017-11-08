@@ -21,7 +21,7 @@ class CreateStockItemsTable extends Migration
             $table->boolean('has_conversions')->default(false);
             $table->integer('stocking_uom')->unsigned()->nullable()->index();
             $table->integer('selling_uom')->unsigned()->nullable()->index();
-            $table->string('code')->unique()->nullable();
+            $table->string('code')->unique();
             $table->string('barcode')->nullable();
             $table->string('name');
             $table->text('description')->nullable();
