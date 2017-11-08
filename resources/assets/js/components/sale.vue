@@ -1,5 +1,5 @@
 <template>
-    <div id="parent">
+    <div id="parent" >
         <div class="row" id="sale">
             <div class="col-sm-12">
                 <div class="container">
@@ -21,21 +21,10 @@
                                         </select>
                                     </div>
                                     <div>
-                                        <label>
-                                            <!--<select-->
-                                            <!--class="form-control input-sm"-->
-                                            <!--id="stock_item"-->
-                                            <!--v-model="stockItem">-->
-                                            <!--<option value="">select Item</option>-->
-                                            <!--<option
-                                            v-if="stock" v-for="stock_item in stock"-->
-                                            <!--:value="stock_item.id">{{stock_item.code + " " + stock_item.name}}-->
-                                            <!--</option>-->
-                                            <!--</select>-->
+                                        <v-select v-model="selected"
+                                                  :on-change="changedProduct"
+                                                  :options="multiselctopts"></v-select>
 
-                                            <input type="text" v-model="searchitem" placeholder="Search item"
-                                                   class="form-control">
-                                        </label>
                                     </div>
                                 </div>
                                 <div v-if="!checkout_toggle" class="col-sm-6">
@@ -151,6 +140,7 @@
     import checkout from './checkout.vue';
     import receipt from './credit-receipt.vue';
     import Multiselect from 'vue-multiselect'
+    import vSelect from 'vue-select'
 
     export default {
         data() {
@@ -178,6 +168,8 @@
                 searchitem: '',
                 products: [],
                 uomvals: [],
+                multiselctopts: [],
+                selected: ''
 
 
             }
@@ -192,12 +184,14 @@
         watch: {
             searchitem() {
                 this.filterProducts();
-
             }
 
         },
 
         methods: {
+            changedProduct(obj) {
+                this.stockItem = obj.value;
+            },
             setCheckout() {
                 if (!this.customer_id) {
                     Messenger().post({
@@ -219,22 +213,28 @@
 
             },
             getStock() {
-                axios.get('/sale/create').then(response => {
-                    this.uoms = response.data.uoms;
-                    this.customers = response.data.customers;
-                    this.payment_types = response.data.payment_types;
-                    this.taxes = response.data.taxes;
-                    let stock = response.data.stock;
-                    stock = stock.map(item => {
-                        item.stock = item.stock[0].quantity_on_hand;
-                        item.selling_tax = item.selling_tax.rate;
-                        return item;
-                    });
-                    this.stock = stock;
-                    this.products = response.data.products;
-
-                }).catch(response => {
-                    console.log(response.data);
+                axios.get('/sale/create').then(
+                    (response) => {
+                        this.uoms = response.data.uoms;
+                        this.customers = response.data.customers;
+                        this.payment_types = response.data.payment_types;
+                        this.taxes = response.data.taxes;
+                        let stock = response.data.stock;
+                        stock = stock.map(item => {
+                            item.stock = (item.stock[0]) ? item.stock[0].quantity_on_hand : null;
+                            item.selling_tax = (item.selling_tax) ? item.selling_tax.rate : null;
+                            return item;
+                        });
+                        this.stock = stock;
+                        console.log(response);
+                        this.products = response.data.products;
+                        this.multiselctopts = [];
+                        stock.forEach((val) => {
+                            this.multiselctopts.push({label: val.name, value: val.id})
+                        });
+                    }
+                ).catch((err) => {
+                    console.log(err);
                 });
             },
             filterProducts() {
@@ -244,6 +244,7 @@
                         prod = val;
                     }
                 });
+
                 this.stockItem = prod.id;
 
             },
@@ -587,8 +588,9 @@
         components: {
             checkout,
             receipt,
+            vSelect
 //            Multiselect,
         }
     }
-    </script>
+</script>
 

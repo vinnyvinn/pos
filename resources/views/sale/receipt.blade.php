@@ -1,13 +1,13 @@
 <html>
 <head>
   <link href="{{ public_path().'/assets/libs/bootstrap/css/bootstrap.min.css' }}" rel="stylesheet" />
-  {{-- <link href="{{ asset('assets/libs/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" /> --}}
-  {{-- <link href="{{ public_path().'/assets/libs/font-awesome/css/font-awesome.min.css' }}" rel="stylesheet" /> --}}
+   <link href="{{ asset('assets/libs/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" />
+   <link href="{{ public_path().'/assets/libs/font-awesome/css/font-awesome.min.css' }}" rel="stylesheet" />
 </head>
 <body>
     <div class="row">
       <div class="text-center">
-        <img src="{{ asset('images/logo.png') }}" alt="">
+        <img src="{{ asset('images/garden_grow.png') }}" alt="">
         <h4>Gardens Grow.</h4>
         <h5>P.O. Box xxxx.</h5>
         <h5>Nairobi.</h5>
@@ -86,7 +86,7 @@
 </div>
   <script src="{{ public_path().'/assets/libs/jquery/jquery-1.11.1.min.js' }}"></script>
   <script src="{{ public_path().'/assets/libs/bootstrap/js/bootstrap.min.js' }}"></script>
-  {{-- <script src="{{ asset('assets/libs/jquery/jquery-1.11.1.min.js') }}"></script> --}}
-  {{-- <script src="{{ asset('assets/libs/bootstrap/js/bootstrap.min.js') }}"></script> --}}
+   <script src="{{ asset('assets/libs/jquery/jquery-1.11.1.min.js') }}"></script>
+   <script src="{{ asset('assets/libs/bootstrap/js/bootstrap.min.js') }}"></script>
 </body>
 </html>
