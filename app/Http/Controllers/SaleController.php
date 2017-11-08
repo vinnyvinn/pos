@@ -24,16 +24,17 @@ class SaleController extends Controller
 
     public function create()
     {
-      $stallId = 1; // TODO: Change this to use session
+      $stallId =\Auth::user()->id; // TODO: Change this to use session
 
-      if (request()->ajax()) {
+       if (request()->ajax()) {
           $stockItems = StockItem::forSale($stallId);
           return response()->json([
             'stock'=> $stockItems,
             'uoms' => UnitOfMeasure::active()->get(['id', 'name'])->keyBy('id'),
             'customers'=> Customer::get(['name', 'account_balance', 'account_number', 'credit_limit', 'id', 'is_credit']),
             'payment_types'=> PaymentTypes::get(['name', 'slug', 'id', 'is_credit']),
-            'taxes' => Tax::active()->get(['id', 'code', 'rate'])
+            'taxes' => Tax::active()->get(['id', 'code', 'rate']),
+              "products"=>StockItem::all()
           ]);
       }
       return view('sale.create');
@@ -166,5 +167,10 @@ class SaleController extends Controller
     public function credit()
     {
         return view('sale.credit-sale-receipt');
+    }
+
+    public  function  test()
+    {
+        return view('');
     }
 }

@@ -143,18 +143,41 @@
                             @endif
                     </ul>
                 </li>
+
+                <li class="has_sub">
+                    <a href="javascript:void(0);">
+                        <i class="fa fa-dollar"></i>
+                        <span>Reports</span>
+                        <span class="pull-right"><i class="fa fa-angle-down"></i></span>
+                    </a>
+                    <ul>
+                        <li>
+                            <a href="{{route('daily.index')}}">Daily Report</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('weekly.index') }}">Weekly Report</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('monthly.index') }}">Monthly Report</a>
+                        </li>
+                    </ul>
+                </li>
+
                 <li>
                     <a href="javascript:void(0);"><i class="fa fa-dollar"></i>
                         Petty Cash
+
                         <span class="pull-right"><i class="fa fa-angle-down"></i></span>
                     </a>
                     <ul>
                         @if(SmoDav\Models\UserGroup::PERM_PETTY_CASH_FULL_ACCESS)
                         <li>
+                    <li>
                             <a href="{{ route('pettyCashType.index') }}">Petty Cash Types</a>
                         </li>
                         <li>
                             <a href="{{ route('pettyCash.index') }}">Petty Cash</a>
+
                         </li>
                         @endif
                     </ul>

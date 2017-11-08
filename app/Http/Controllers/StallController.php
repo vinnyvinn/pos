@@ -15,6 +15,7 @@ class StallController extends Controller
      */
     public function index()
     {
+
         return view('stall.index')->with('stalls', Stall::all());
     }
 

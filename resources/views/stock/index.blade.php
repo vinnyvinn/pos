@@ -29,16 +29,18 @@
                         <thead>
                         <tr>
                             <th>Stall</th>
-                            <th>Item Id</th>
+                            <th>Item </th>
                             <th>Quantity Received</th>
                         </tr>
                         </thead>
                         <tbody>
                         @foreach($stocks as $stock)
                             <tr>
-                                <td>{{ $stock->stall->name }}</td>
-                                <td>{{ $stock->item_id }}</td>
-                                <td>{{ $stock->quantity_on_hand }}</td>
+
+                                <td>{{ $stock->stall_name }}</td>
+                                <td>{{ $stock->name }}</td>
+
+                                  <td>{{ $stock->quantity_on_hand }}</td>
                             </tr>
                         @endforeach
                         </tbody>

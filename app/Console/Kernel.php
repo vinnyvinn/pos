@@ -3,7 +3,9 @@
 namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
+use Log;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+
 
 class Kernel extends ConsoleKernel
 {
@@ -13,6 +15,9 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
+
+        Commands\SendSalesNotifications::class,
+        '\App\Console\Commands\CronJob',
         //
     ];
 
@@ -24,8 +29,13 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+       // Log::info("cron job running");
+//         $schedule->command('inspire')
+//                  ->hourly();
+//        $schedule->command('demo:cron')
+//            ->everyMinute();
+        $schedule->command('CronJob:cronjob')
+            ->dailyAt('12:48');
     }
 
     /**

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use SmoDav\Models\Stall;
 use SmoDav\Models\Stock;
+use SmoDav\Models\StockItem;
 
 class StockController extends Controller
 {
@@ -15,7 +16,13 @@ class StockController extends Controller
      */
     public function index()
     {
-        return view('stock.index')->with('stocks', Stock::with('stall')->get());
+        $stocks=\DB::table('stalls')
+            ->join('stocks','stocks.stall_id','=','stalls.id')
+            ->join('stock_items','stock_items.id','stocks.item_id')
+            ->select('stocks.quantity_on_hand','stalls.name as stall_name','stock_items.name')
+            ->get();
+
+        return view('stock.index',compact('stocks'));
     }
 
     /**
@@ -26,7 +33,11 @@ class StockController extends Controller
     public function create()
     {
 //        dd(Stock::with('stall')->get());
-        return view('stock.create')->with('stalls', Stall::all());
+
+        $stalls=Stall::all();
+        $stock_items=StockItem::all();
+
+        return view('stock.create',compact('stalls','stock_items'));
     }
 
     /**
@@ -37,7 +48,11 @@ class StockController extends Controller
      */
     public function store(Request $request)
     {
-        Stock::create($request->all());
+        $stock = Stock::where('stall_id', $request->get('stall_id'))
+            ->where('item_id', $request->get('item_id'))
+            ->firstOrFail();
+
+        $stock->increment('quantity_on_hand', $request->get('quantity_on_hand'));
         flash('Successfully created stock');
 
         return redirect()->route('stock.index');
