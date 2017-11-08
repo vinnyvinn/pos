@@ -40,18 +40,23 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="account_number">Account Number</label>
-                            <h4>{{ $customer->account_number }}</h4>
+                            <input type="text" class="form-control" name="account_number" id="account_number" value="{{ $customer->account_number }}">
                         </div>
 
                         <div class="form-group">
                             <label for="account_balance">Account Balance</label>
-                            <h4>{{ number_format($customer->account_balance, 2) }}</h4>
+                            <input type="text" class="form-control" name="account_balance" id="account_balance" value="{{ number_format($customer->account_balance, 2) }}">
+                            <h4></h4>
                         </div>
 
                         @if($customer->is_system)
                             <div class="form-group">
                                 <label for="is_credit" class="control-label">Customer Type</label>
-                                <h4>{{ $customer->is_credit ? 'Credit Customer' : 'Cash Customer' }}</h4>
+                                <select name="is_credit" id="is_credit" class="form-control">
+                                    <option value="0"{{ $customer->is_credit ? ' selected' : ''}}>Cash Customer</option>
+                                    <option value="1"{{ $customer->is_credit ? ' selected' : '' }}>Credit Customer</option>
+                                </select>
+                            </div>
                             </div>
                         @else
                             <div class="form-group">

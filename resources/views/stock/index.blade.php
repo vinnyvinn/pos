@@ -19,7 +19,14 @@
     <div class="col-sm-12">
         <div class="widget">
             <div class="widget-header">
-                <h2><strong>Stock</strong></h2>
+                <div class="col-sm-9">
+                    <h2><strong>Stock</strong></h2>
+                </div>
+                <div class="col-sm-3 clearfix" style="padding-top: 16px">
+                    <div class="form-group">
+                        <input type="file" name="Import" id="" class="form-control">
+                    </div>
+                </div>
             </div>
             <div class="widget-content padding">
                 <div class="table-responsive">
@@ -34,9 +41,11 @@
                         <tbody>
                         @foreach($stocks as $stock)
                             <tr>
+
                                 <td>{{ $stock->stall_name }}</td>
                                 <td>{{ $stock->name }}</td>
-                                <td>{{ $stock->quantity_on_hand }}</td>
+
+                                  <td>{{ $stock->quantity_on_hand }}</td>
                             </tr>
                         @endforeach
                         </tbody>

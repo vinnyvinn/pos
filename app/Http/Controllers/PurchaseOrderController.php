@@ -76,7 +76,7 @@ class PurchaseOrderController extends Controller
         return view('purchase-order.create');
     }
 
-  
+
     public function store(Request $request)
     {
         $data = $request->all();
@@ -85,6 +85,7 @@ class PurchaseOrderController extends Controller
         $data['user_id'] = Auth::id();
         $data['document_type'] = Order::PURCHASE_ORDER;
         $data['document_status'] = Order::STATUS_UNPROCESSED;
+
 
         $data['total_exclusive'] = 0;
         $data['total_inclusive'] = 0;

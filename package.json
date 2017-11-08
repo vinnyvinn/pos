@@ -20,6 +20,8 @@
   "dependencies": {
     "eslint-plugin-html": "^3.0.0",
     "print.js": "^1.0.18",
-    "vue-multiselect": "^2.0.6"
+
+    "select2": "^4.0.6-rc.0"
+
   }
 }

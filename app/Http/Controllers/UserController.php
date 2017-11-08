@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserRequest;
 use App\User;
 use Illuminate\Http\Request;
+use SmoDav\Models\UserGroup;
 
 class UserController extends Controller
 {
@@ -28,7 +29,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('users.create');
+        return view('users.create')->with('groups', UserGroup::all(['id', 'name']));
     }
 
     /**
@@ -41,7 +42,7 @@ class UserController extends Controller
     {
         $data = $request->all();
         $data['password'] = bcrypt($data['password']);
-        $data['permissions'] = '[]'; //TODO: change this
+//        $data['permissions'] = '[]'; //TODO: change this
 
         User::create($data);
 
@@ -69,7 +70,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return view('users.edit')->with('user', $user);
+        return view('users.edit')->with('user', $user)->with('groups', UserGroup::all(['id', 'name']) );
     }
 
     /**

@@ -13,11 +13,11 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         User::create([
+            'user_group_id' => 1,
             'username' => 'superuser',
             'full_name' => 'Wizag',
             'email' => 'development@wizag.biz',
             'password' => bcrypt(env('SUPER_PASS')),
-            'permissions' => '[*]',
         ]);
     }
 }

@@ -71,8 +71,8 @@
                     <ul>
                         <li><a href='{{ route('stockItem.create') }}'><span>Add New</span></a></li>
                         <li><a href='{{ route('stockItem.index') }}'><span>View All</span></a></li>
-                        <li><a href='{{ route('stockItem.index', ['status' => '1']) }}'><span>View Active</span></a></li>
-                        <li><a href='{{ route('stockItem.index', ['status' => '0']) }}'><span>View Inactive</span></a></li>
+                        <li><a href='{{ route('stockItem.index', ['status' => 'active']) }}'><span>View Active</span></a></li>
+                        <li><a href='{{ route('stockItem.index', ['status' => 'inactive']) }}'><span>View Inactive</span></a></li>
                     </ul>
                 </li>
                 <li class="has_sub">
@@ -113,8 +113,9 @@
                     </a>
                     <ul>
                         <li>
-                            <a href="{{ route('users.index') }}">View All</a>
-                            <a href="{{ route('users.create') }}">Create</a>
+{{--                            <a href="{{ route('users.index') }}">View All</a>--}}
+                            <a href="{{ route('users.index') }}">Users</a>
+{{--                            <a href="{{ route('user-group.index') }}">User Groups</a>--}}
                         </li>
                     </ul>
                 </li>
@@ -150,8 +151,22 @@
                         <li>
                             <a href="{{ route('monthly.index') }}">Monthly Report</a>
                         </li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="javascript:void(0);"><i class="fa fa-dollar"></i>
+                        Petty Cash
+
+                        <span class="pull-right"><i class="fa fa-angle-down"></i></span>
+                    </a>
+                    <ul>
+                    <li>
+                            <a href="{{ route('pettyCashType.index') }}">Petty Cash Types</a>
+                        </li>
                         <li>
-                            <a href="{{ route('custom.index') }}">Custom Report</a>
+                            <a href="{{ route('pettyCash.index') }}">Petty Cash</a>
+
                         </li>
                     </ul>
                 </li>

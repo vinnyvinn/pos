@@ -19,10 +19,24 @@ class StockItemController extends Controller
      */
     public function index()
     {
+        switch (request('status')) {
+            case 'active':
+                $products = StockItem::where('is_active', 1)->get();
+                $title = 'Active';
+                break;
+            case 'inactive':
+                $products = StockItem::where('is_active', 0)->get();
+                $title = 'Inactive';
+                break;
+            default:
+                $products = StockItem::all([
+                    'id', 'unit_cost', 'code', 'barcode', 'name', 'is_active', 'stocking_uom', 'has_conversions'
+                ]);
+                $title = 'All';
+                break;
+        }
         return view('stockitems.index')
-            ->with('items', StockItem::all([
-                'id', 'unit_cost', 'code', 'barcode', 'name', 'is_active', 'stocking_uom', 'has_conversions'
-            ]));
+            ->with('items', $products)->with('title', $title);
     }
 
     /**
