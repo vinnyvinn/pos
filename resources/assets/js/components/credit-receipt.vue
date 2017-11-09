@@ -1,11 +1,10 @@
 <template>
     <div class="row">
       <div class="text-center">
-
+          <img :src="imgurl" style="width:20%" alt="">
         <h4>Gardens Grow ff.</h4>
         <h5>P.O. Box xxxx.</h5>
         <h5>Nairobi.</h5>
-          <img :src="imgurl" style="width:20%" alt="">
       </div>
       <div class="col-xs-12">
   <table class="table">
