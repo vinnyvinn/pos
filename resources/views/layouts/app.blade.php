@@ -7,7 +7,13 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'Laravel') }}</title>
     <meta name="apple-mobile-web-app-capable" content="yes" />
-
+    <style>
+        @media print {
+            .content-page {
+                margin-left: 0 !important;
+            }
+        }
+    </style>
     @include('layouts.partials.content.css')
 
     @yield('header')

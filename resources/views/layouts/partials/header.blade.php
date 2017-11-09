@@ -1,4 +1,4 @@
-<div class="topbar">
+<div class="topbar hidden-print">
     <div class="topbar-left">
         <div class="logo" id="main-logo">
             <h3><a href="{{ url('/') }}">Quick<span>POS</span></a></h3>
