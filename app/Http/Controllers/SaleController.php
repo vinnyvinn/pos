@@ -141,8 +141,6 @@ class SaleController extends Controller
             return response()->json(['message' => 'Sale Made Successfully!']);
         }
 
-        return response()->json(['error' => 'Could Not Complete Sale!']);
-
     }
 
     public function show($id)
