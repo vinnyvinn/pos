@@ -24,7 +24,7 @@ class SaleController extends Controller
 
     public function create()
     {
-      $stallId =\Auth::user()->id; // TODO: Change this to use session
+      $stallId =session()->get('stall_id'); // TODO: Change this to use session
 
        if (request()->ajax()) {
           $stockItems = StockItem::forSale($stallId);
@@ -57,7 +57,7 @@ class SaleController extends Controller
         $sale = Order::create([
           'user_id'=> \Auth::user()->id,
           'account_id' => $request->customer_id,
-          'stall_id' => 1,
+          'stall_id' => session()->get('stall_id'),
           'description' => $request->description,
           'document_type' => Order::INVOICE,
           'total_exclusive' => $request->total_exclusive,
@@ -115,9 +115,11 @@ class SaleController extends Controller
               'totalInclPrice' => $value['totalIncl'],
               'totalExclPrice' => $value['totalExcl'],
               'total_tax' => $value['totalTax'],
+                'stall_id' => session()->get('stall_id'),
               'created_at' => Carbon::now()
             ];
         }
+        //dd($sales);
         Sale::insert($sales);
         return $sale;
       });
