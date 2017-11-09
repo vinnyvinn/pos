@@ -160,6 +160,9 @@
                         <li>
                             <a href="{{ route('monthly.index') }}">Monthly Report</a>
                         </li>
+                        <li>
+                            <a href="{{ route('custom.index') }}">Custom Report</a>
+                        </li>
                     </ul>
                 </li>
 
