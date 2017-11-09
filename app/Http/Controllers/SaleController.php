@@ -40,7 +40,7 @@ class SaleController extends Controller
                     'stock'         => $stockItems,
                     'uoms'          => UnitOfMeasure::active()->get(['id', 'name'])->keyBy('id'),
                     'customers'     => Customer::get(
-                        ['name', 'account_balance', 'account_number', 'credit_limit', 'id', 'is_credit']),
+                                    ['name', 'account_balance', 'account_number', 'credit_limit', 'id', 'is_credit']),
                     'payment_types' => PaymentTypes::get(['name', 'slug', 'id', 'is_credit']),
                     'taxes'         => Tax::active()->get(['id', 'code', 'rate']),
                     "products"      => StockItem::all()
