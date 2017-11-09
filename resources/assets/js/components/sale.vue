@@ -76,7 +76,6 @@
                                             {{ totalIncl.toLocaleString('en-GB') }}
                                         </td>
                                         <td>
-
                                             <button @click.prevent="validateSaline" class="btn btn-success btn-xs"><i
                                                     class="fa fa-plus"></i></button>
                                         </td>

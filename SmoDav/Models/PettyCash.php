@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class PettyCash extends Model
 {
 
-    protected $fillable = ['petty_cash_type_id', 'user_id', 'amount'];
+    protected $fillable = ['petty_cash_type_id', 'user_id', 'amount', 'reference', 'remarks'];
 
     public function user()
     {

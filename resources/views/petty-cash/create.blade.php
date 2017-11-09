@@ -40,6 +40,15 @@
                             <input class="form-control" type="number" name="amount" id="amount" required value="{{ old('amount') }}">
                         </div>
                         <div class="form-group">
+                            <label for="reference">Reference</label>
+                            <input class="form-control" type="text" name="reference" id="reference" required value="{{ old('reference') }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="remarks">Remark</label>
+                            <textarea class="form-control" name="remarks" id="remarks" cols="10" rows="10"></textarea>
+                            {{--<input class="form-control" type="number" name="remarks" id="remarks" required value="{{ old('remarks') }}">--}}
+                        </div>
+                        <div class="form-group">
                             <input type="submit" class="btn btn-success" value="Save">
                             <a href="{{ route('pettyCashType.index') }}" class="btn btn-danger">Back</a>
                         </div>
