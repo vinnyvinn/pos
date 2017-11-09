@@ -52,6 +52,7 @@ class SaleController extends Controller
 
     public function store(Request $request)
     {
+
         // return response()->json($request->all());
         // TODO: Change this to use session
         $customer = Customer::findOrfail($request->customer_id);
@@ -64,7 +65,11 @@ class SaleController extends Controller
                     $customer->update(['account_balance' => $balance]);
                 }
 
-                $sale = Order::create(
+
+                //return "hvhv";
+                //dd($request->session()->get('stall_id'));
+
+               $sale = Order::create(
                     [
                         'user_id'         => \Auth::user()->id,
                         'account_id'      => $request->customer_id,
@@ -81,6 +86,7 @@ class SaleController extends Controller
                         'notes'           => $request->notes
                     ]);
 //                $sale_id = $sale->id;
+
                 foreach ($request->salesLines as $index => $value) {
                     if (! $value['quantity']) {
                         return response()->json(['error' => 'please Input Valid quantity!']);
@@ -113,6 +119,7 @@ class SaleController extends Controller
 
                     }
 
+
                     $sales[$index] = [
                         'sale_id'            => $sale->id,
                         'unit_conversion_id' => $value['unit_conversion_id'],
@@ -138,7 +145,7 @@ class SaleController extends Controller
             });
 
         if (isset($customer) && isset($sale)) {
-            return response()->json(['message' => 'Sale Made Successfully!']);
+         return response()->json(['message' => 'Sale Made Successfully!']);
         }
 
     }

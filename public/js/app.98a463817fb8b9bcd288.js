@@ -14500,6 +14500,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
   methods: {
     paymentType: function paymentType(e) {
+      console.log("testing...");
+      return;
       if (!e.target.id) {
         console.log(this.payment_types[1]);
         localStorage.setItem('payment_method', this.payment_types[1].id);
@@ -14660,11 +14662,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      today: new Date()
+      today: new Date(),
+      imgurl: 'http://localhost:8000/images/garden_grow.png'
     };
   },
 
@@ -18075,15 +18079,15 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "row"
   }, [_c('div', {
     staticClass: "text-center"
-  }, [_c('img', {
+  }, [_c('h4', [_vm._v("Gardens Grow ff.")]), _vm._v(" "), _c('h5', [_vm._v("P.O. Box xxxx.")]), _vm._v(" "), _c('h5', [_vm._v("Nairobi.")]), _vm._v(" "), _c('img', {
     staticStyle: {
       "width": "20%"
     },
     attrs: {
-      "src": '/images/garden_grow.png',
+      "src": _vm.imgurl,
       "alt": ""
     }
-  }), _vm._v(" "), _c('h4', [_vm._v("Gardens Grow.")]), _vm._v(" "), _c('h5', [_vm._v("P.O. Box xxxx.")]), _vm._v(" "), _c('h5', [_vm._v("Nairobi.")])]), _vm._v(" "), _c('div', {
+  })]), _vm._v(" "), _c('div', {
     staticClass: "col-xs-12"
   }, [_c('table', {
     staticClass: "table"

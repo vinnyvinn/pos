@@ -144,6 +144,8 @@ export default {
 
   methods: {
     paymentType(e) {
+        console.log("testing...");
+        return;
         if (!e.target.id){
           console.log(this.payment_types[1]);
             localStorage.setItem('payment_method', this.payment_types[1].id);
