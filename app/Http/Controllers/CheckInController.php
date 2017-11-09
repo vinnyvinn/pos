@@ -21,6 +21,7 @@ class CheckInController extends Controller
     {
         session()->put('stall_id', $request->get('stall_id'));
 
+//        dd($request->session()->pull('stall_id', $request->get('stall_id')));
         return redirect('/sale/create');
     }
 }

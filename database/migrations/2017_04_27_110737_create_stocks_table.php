@@ -17,7 +17,7 @@ class CreateStocksTable extends Migration
             $table->bigIncrements('id');
             $table->integer('stall_id')->unsigned()->index();
             $table->integer('item_id')->unsigned();
-            $table->double('quantity_on_hand');
+            $table->double('quantity_on_hand')->default(0);
             $table->double('quantity_reserved');
             $table->timestamps();
 

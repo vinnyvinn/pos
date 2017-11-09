@@ -17,6 +17,7 @@ use PDF;
 
 class SaleController extends Controller
 {
+
     public function index()
     {
         return view(
@@ -24,12 +25,12 @@ class SaleController extends Controller
             ['sales' => Order::with(['stall', 'customer', 'paymentType'])
                 ->where('document_type', Order::INVOICE)
                 ->orderBy('id', 'desc')
-                ->get()]);
+                ->get(), 'stall_id' => session()->get('stall_id')]);
     }
 
     public function create()
     {
-        $stallId = \Auth::user()->id; // TODO: Change this to use session
+        $stallId =  session()->get('stall_id');  // TODO: Change this to use session
 
         if (request()->ajax()) {
             $stockItems = StockItem::forSale($stallId);
@@ -57,7 +58,6 @@ class SaleController extends Controller
         $sale_id = null;
         $sale = \DB::transaction(
             function () use ($request, $customer) {
-
                 if ($customer->is_credit == 1) {
                     $balance = $request->credit;
                     $balance += $customer->account_balance;
@@ -68,7 +68,7 @@ class SaleController extends Controller
                     [
                         'user_id'         => \Auth::user()->id,
                         'account_id'      => $request->customer_id,
-                        'stall_id'        => 1,
+                        'stall_id'        => session()->get('stall_id'),
                         'description'     => $request->description,
                         'document_type'   => Order::INVOICE,
                         'total_exclusive' => $request->total_exclusive,
@@ -80,7 +80,7 @@ class SaleController extends Controller
                         'balance'         => $request->balance,
                         'notes'           => $request->notes
                     ]);
-                $sale_id = $sale->id;
+//                $sale_id = $sale->id;
                 foreach ($request->salesLines as $index => $value) {
                     if (! $value['quantity']) {
                         return response()->json(['error' => 'please Input Valid quantity!']);
@@ -127,9 +127,11 @@ class SaleController extends Controller
                         'totalInclPrice'     => $value['totalIncl'],
                         'totalExclPrice'     => $value['totalExcl'],
                         'total_tax'          => $value['totalTax'],
+                        'stall_id'           => session()->get('stall_id'),
                         'created_at'         => Carbon::now()
                     ];
                 }
+
                 Sale::insert($sales);
 
                 return $sale;
