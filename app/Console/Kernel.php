@@ -35,7 +35,7 @@ class Kernel extends ConsoleKernel
 //        $schedule->command('demo:cron')
 //            ->everyMinute();
         $schedule->command('CronJob:cronjob')
-            ->dailyAt('9:20');
+            ->everyMinute();
     }
 
     /**
