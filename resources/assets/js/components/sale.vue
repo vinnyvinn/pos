@@ -421,17 +421,22 @@
                     credit: this.credit,
                     notes: this.notes,
                     mpesa: this.mpesa,
-                    balance: this.balance
+                    balance: this.balance,
                 }).then(response => {
                     if (response.data.message) {
                         this.preparePrint();
                         this.customer_id = 1;
 
-                        window.print();
-                        this.restorePrint();
+                        setTimeout(
+                            ()=>{
+                                console.log("testing....");
+                                 window.print();
+                                this.restorePrint();
+                                this.finishPrint();
+                            },500
+                        );
                     }
-                }).then(r => {
-
+                })/*.then((r) => {
                     this.receipt = false;
                     this.salesLines = [];
                     this.checkout_toggle = !this.checkout_toggle;
@@ -442,11 +447,26 @@
                     this.balance = 0;
                     this.quantity_check = [];
                     this.quantity = 1;
-                }).catch(response => {
+
+                })*/.catch(response => {
 
                 });
 
             },
+            finishPrint(){
+                this.receipt = false;
+                this.salesLines = [];
+                this.checkout_toggle = !this.checkout_toggle;
+                this.cash = 0;
+                this.credit = 0;
+                this.notes = "",
+                    this.mpesa = [];
+                this.balance = 0;
+                this.quantity_check = [];
+                this.quantity = 1;
+
+            },
+
             addQuantity(sale, quantity) {
                 let stock = this.quantity_check.filter(stock => {
                     return stock.id == sale.id
