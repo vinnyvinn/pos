@@ -4,17 +4,13 @@
             <div class="col-sm-12">
                 <div class="container">
                     <div class="widget">
-                        <div v-if="!checkout_toggle" class="widget-header" style="margin-left:25px; margin-top:20px">
-                            <button type="submit" class="btn btn-info btn-sm" @click.prevent="setCheckout">Checkout
-                            </button>
-                        </div>
                         <form @submit.prevent="validateForm">
                             <div class="widget-content padding">
                                 <div v-if="!checkout_toggle" class="col-sm-6">
                                     <div class="form-group">
                                         <label for="customer_id">Customers</label>
                                         <select class="form-control input-sm" v-model="customer_id" name="customer_id"
-                                                id="customer_id" required>
+                                                id="customer_id" value="" required>
                                             <option v-for="customer in customers" :value="customer.id">
                                                 {{customer.name}}
                                             </option>
@@ -125,6 +121,10 @@
                                           @paymentType="validateForm" @toggleCheckout="setCheckout"></checkout>
                             </div>
                         </form>
+                        <div v-if="!checkout_toggle" class="widget-header" style="margin-left:25px; margin-top:20px">
+                            <button type="submit" class="btn btn-info btn-sm" @click.prevent="setCheckout">Checkout
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -147,7 +147,7 @@
             return {
                 receipt: false,
                 stock: [],
-                customer_id: null,
+                customer_id: 1,
                 description: "",
                 customers: [],
                 salesLines: [],
@@ -425,6 +425,8 @@
                 }).then(response => {
                     if (response.data.message) {
                         this.preparePrint();
+                        this.customer_id = 1;
+
                         window.print();
                         this.restorePrint();
                     }

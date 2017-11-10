@@ -14848,7 +14848,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return {
             receipt: false,
             stock: [],
-            customer_id: null,
+            customer_id: 1,
             description: "",
             customers: [],
             salesLines: [],
@@ -15117,6 +15117,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }).then(function (response) {
                 if (response.data.message) {
                     _this5.preparePrint();
+                    _this5.customer_id = 1;
+
                     window.print();
                     _this5.restorePrint();
                 }
@@ -16690,34 +16692,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "row main"
   }, [_c('div', {
     staticClass: "col-md-12"
-  }, [_c('div', {
-    staticClass: "pull-left",
-    staticStyle: {
-      "margin-left": "20px"
-    }
-  }, [_c('button', {
-    staticClass: "btn btn-sm btn-danger",
-    attrs: {
-      "type": "button"
-    },
-    on: {
-      "click": function($event) {
-        $event.preventDefault();
-        _vm.back($event)
-      }
-    }
-  }, [_vm._v("Back")]), _vm._v(" "), _c('button', {
-    staticClass: "btn btn-sm btn-info",
-    attrs: {
-      "type": "button"
-    },
-    on: {
-      "click": function($event) {
-        $event.preventDefault();
-        _vm.completeSale()
-      }
-    }
-  }, [_vm._v("Complete Sale")])])]), _vm._v(" "), _c('div', {
+  }), _vm._v(" "), _c('div', {
     staticClass: "col-md-12"
   }, [_c('table', {
     staticStyle: {
@@ -16905,7 +16880,34 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, [_c('i', {
       staticClass: "fa fa-minus"
     })]) : _vm._e()])])
-  }))])])])])])
+  }))])])])]), _vm._v(" "), _c('div', {
+    staticClass: "pull-right",
+    staticStyle: {
+      "margin-right": "10px"
+    }
+  }, [_c('button', {
+    staticClass: "btn btn-sm btn-danger",
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.back($event)
+      }
+    }
+  }, [_vm._v("Back")]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-sm btn-info",
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.completeSale()
+      }
+    }
+  }, [_vm._v("Complete Sale")])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('thead', [_c('tr', [_c('th', {
     staticClass: "text-nowrap"
@@ -17376,7 +17378,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "form-control",
     attrs: {
       "name": "buying_tax",
-      "id": "buying_tax"
+      "id": "buying_tax",
+      "required": ""
     },
     on: {
       "change": function($event) {
@@ -17412,7 +17415,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "form-control",
     attrs: {
       "name": "selling_tax",
-      "id": "selling_tax"
+      "id": "selling_tax",
+      "required": ""
     },
     on: {
       "change": function($event) {
@@ -17448,7 +17452,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "form-control",
     attrs: {
       "name": "credit_note_tax",
-      "id": "credit_note_tax"
+      "id": "credit_note_tax",
+      "required": ""
     },
     on: {
       "change": function($event) {
@@ -17484,7 +17489,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "form-control",
     attrs: {
       "name": "stocking_uom",
-      "id": "stocking_uom"
+      "id": "stocking_uom",
+      "required": ""
     },
     on: {
       "change": function($event) {
@@ -18248,24 +18254,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "container"
   }, [_c('div', {
     staticClass: "widget"
-  }, [(!_vm.checkout_toggle) ? _c('div', {
-    staticClass: "widget-header",
-    staticStyle: {
-      "margin-left": "25px",
-      "margin-top": "20px"
-    }
-  }, [_c('button', {
-    staticClass: "btn btn-info btn-sm",
-    attrs: {
-      "type": "submit"
-    },
-    on: {
-      "click": function($event) {
-        $event.preventDefault();
-        _vm.setCheckout($event)
-      }
-    }
-  }, [_vm._v("Checkout\n                        ")])]) : _vm._e(), _vm._v(" "), _c('form', {
+  }, [_c('form', {
     on: {
       "submit": function($event) {
         $event.preventDefault();
@@ -18293,6 +18282,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "name": "customer_id",
       "id": "customer_id",
+      "value": "",
       "required": ""
     },
     on: {
@@ -18455,7 +18445,24 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "paymentType": _vm.validateForm,
       "toggleCheckout": _vm.setCheckout
     }
-  }) : _vm._e()], 1)])])])])]), _vm._v(" "), (_vm.receipt) ? _c('div', {
+  }) : _vm._e()], 1)]), _vm._v(" "), (!_vm.checkout_toggle) ? _c('div', {
+    staticClass: "widget-header",
+    staticStyle: {
+      "margin-left": "25px",
+      "margin-top": "20px"
+    }
+  }, [_c('button', {
+    staticClass: "btn btn-info btn-sm",
+    attrs: {
+      "type": "submit"
+    },
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.setCheckout($event)
+      }
+    }
+  }, [_vm._v("Checkout\n                        ")])]) : _vm._e()])])])]), _vm._v(" "), (_vm.receipt) ? _c('div', {
     attrs: {
       "id": "receipt"
     }
