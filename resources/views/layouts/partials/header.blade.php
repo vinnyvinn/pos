@@ -51,11 +51,11 @@
                             <i class="fa fa-caret-down"></i>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">My Profile</a></li>
-                            <li><a href="#">Change Password</a></li>
-                            <li><a href="#">System Setting</a></li>
-                            <li class="divider"></li>
-                            <li><a href="#"><i class="icon-help-2"></i> Help</a></li>
+                            {{--<li><a href="#">My Profile</a></li>--}}
+                            {{--<li><a href="#">Change Password</a></li>--}}
+                            {{--<li><a href="#">System Setting</a></li>--}}
+                            {{--<li class="divider"></li>--}}
+                            {{--<li><a href="#"><i class="icon-help-2"></i> Help</a></li>--}}
                             <li>
                                 <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                     <i class="icon-logout-1"></i> Logout
