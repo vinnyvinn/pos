@@ -433,7 +433,7 @@
                                  window.print();
                                 this.restorePrint();
                                 this.finishPrint();
-                            },500
+                            },1500
                         );
                     }
                 })/*.then((r) => {
