@@ -41,7 +41,7 @@ class CronJob extends Command
      */
     public function handle()
     {
-        Mail::to("c.wangui@wizag.biz")
+        Mail::to("kituyiv@gmail.com")
 
         ->send(new OrderShipped());
     }
