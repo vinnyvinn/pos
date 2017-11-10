@@ -16407,7 +16407,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "text-center"
   }, [_c('img', {
     attrs: {
-      "src": '/images/logo.png',
+      "src": '/images/garden_grow.png',
       "alt": ""
     }
   }), _vm._v(" "), _c('h4', [_vm._v("Gardens Grow.")]), _vm._v(" "), _c('h5', [_vm._v("P.O. Box xxxx.")]), _vm._v(" "), _c('h5', [_vm._v("Nairobi.")])]), _vm._v(" "), _c('div', {
@@ -17629,8 +17629,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }],
       staticClass: "form-control input-sm text-right",
       staticStyle: {
-        "width": "200px",
-        "margin-right": "50px"
+        "width": "110px",
+        "margin-right": "20px"
       },
       attrs: {
         "type": "text",
@@ -17656,7 +17656,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }],
       staticClass: "form-control input-sm text-right",
       staticStyle: {
-        "width": "150px",
+        "width": "110px",
         "margin-right": "20px"
       },
       attrs: {
@@ -19427,41 +19427,37 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "widget-header"
   }, [_c('h2', [_c('strong', [_vm._v("Purchase Order")])])])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('thead', [_c('tr', [_c('th', {
-    staticClass: "text-nowrap"
-  }, [_vm._v("Stock Item")]), _vm._v(" "), _c('th', {
-    staticClass: "text-nowrap"
-  }, [_vm._v("UOM")]), _vm._v(" "), _c('th', {
-    staticClass: "text-nowrap text-right",
+  return _c('thead', [_c('tr', [_c('th', {}, [_vm._v("Stock Item")]), _vm._v(" "), _c('th', {}, [_vm._v("UOM")]), _vm._v(" "), _c('th', {
+    staticClass: "text-right",
     attrs: {
       "width": "120px"
     }
   }, [_vm._v("Order Qty.")]), _vm._v(" "), _c('th', {
-    staticClass: "text-nowrap text-right",
+    staticClass: " text-right",
     attrs: {
       "width": "120px"
     }
   }, [_vm._v("Remaining Qty.")]), _vm._v(" "), _c('th', {
-    staticClass: "text-nowrap text-right",
+    staticClass: " text-right",
     attrs: {
       "width": "120px"
     }
   }, [_vm._v("Quantity Received")]), _vm._v(" "), _c('th', {
-    staticClass: "text-nowrap text-right",
+    staticClass: " text-right",
     attrs: {
       "width": "150px"
     }
   }, [_vm._v("Unit Excl. Price")]), _vm._v(" "), _c('th', {
-    staticClass: "text-nowrap text-right",
+    staticClass: "text-right",
     attrs: {
       "width": "150px"
     }
   }, [_vm._v("Unit Incl. Price")]), _vm._v(" "), _c('th', {
-    staticClass: "text-nowrap text-right"
+    staticClass: "text-right"
   }, [_vm._v("Total Exclusive")]), _vm._v(" "), _c('th', {
-    staticClass: "text-nowrap text-right"
+    staticClass: "text-right"
   }, [_vm._v("Total Tax")]), _vm._v(" "), _c('th', {
-    staticClass: "text-nowrap text-right"
+    staticClass: "text-right"
   }, [_vm._v("Total Inclusive")]), _vm._v(" "), _c('th')])])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {

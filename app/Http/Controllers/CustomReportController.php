@@ -34,7 +34,7 @@ class CustomReportController extends Controller
 
     public function customSummary() {
 
-        Excel::create('Daily Sales Report', function($excel) {
+        Excel::create('Custom Sales Report', function($excel) {
 
             $excel->sheet('Excel sheet', function($sheet) {
 

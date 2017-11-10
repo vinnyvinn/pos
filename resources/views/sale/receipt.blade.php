@@ -5,9 +5,9 @@
     <link href="{{ public_path().'/assets/libs/font-awesome/css/font-awesome.min.css' }}" rel="stylesheet"/>
 </head>
 <body>
-<div class="row">
-    <div class="text-center">
-        <img src="{{ asset('images/garden_grow.png') }}" alt="">
+    <div class="row">
+      <div class="text-center">
+        <img src="{{ asset('images/garden_grow.png') }}" width="20%" alt="">
         <h4>Gardens Grow.</h4>
         <h5>P.O. Box xxxx.</h5>
         <h5>Nairobi.</h5>
