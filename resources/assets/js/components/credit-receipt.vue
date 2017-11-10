@@ -85,6 +85,9 @@
       </tbody>
   </table>
 </div>
+            <div style="position: fixed; bottom: 0;">
+                Powered by Tikone Solutions Limited
+            </div>
 </div>
 </template>
 <style scoped>

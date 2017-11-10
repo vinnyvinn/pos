@@ -96,6 +96,9 @@
         </table>
     </div>
 </div>
+<div class="row">
+    <p>Powered by Tikone Solutions Limited</p>
+</div>
 <script src="{{ public_path().'/assets/libs/jquery/jquery-1.11.1.min.js' }}"></script>
 <script src="{{ public_path().'/assets/libs/bootstrap/js/bootstrap.min.js' }}"></script>
 <script src="{{ asset('assets/libs/jquery/jquery-1.11.1.min.js') }}"></script>
