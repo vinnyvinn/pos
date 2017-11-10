@@ -61,21 +61,24 @@
                             </div>
                             <div class="row">
                                 <div class="col-sm-4">
-                                    <h5>Petty Cash</h5>
                                     <div class="checkbox">
-                                    <label for="">
-                                        <input type="checkbox" name="permissions[]" value="petty_full_access"{{ in_array('petty_full_access', $userperm) ? ' checked' : '' }}>
-                                        Full Access
-                                    </label>
+                                        <h5>Petty Cash</h5>
+                                        <div class="checkbox">
+                                            <label for="">
+                                                <input type="checkbox" name="permissions[]" value="petty_full_access"{{ in_array('petty_full_access', $userperm) ? ' checked' : '' }}>
+                                                Full Access
+                                            </label>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
                                     <h5>Stall Assignment</h5>
                                     <div class="checkbox">
-                                    <label for="">
-                                        <input type="checkbox" name="permissions[]" value="stall_full_access"{{ in_array('stall_full_access', $userperm) ? ' checked' : '' }}>
-                                        Full Access
-                                    </label>
+                                        <label for="">
+                                            <input type="checkbox" name="permissions[]"
+                                                   value="stall_full_access"{{ in_array('stall_full_access', $userperm) ? ' checked' : '' }}>
+                                            Full Access
+                                        </label>
                                     </div>
                                 </div>
                             </div>

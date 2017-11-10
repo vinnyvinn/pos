@@ -60,18 +60,22 @@
                             </div>
                             <div class="row">
                                 <div class="col-sm-4">
-                                    <h5>Petty Cash</h5>
-                                    <label for="">
-                                        <input type="checkbox" name="permissions[]" value="petty_full_access">
-                                        Full Access
-                                    </label>
+                                    <div class="checkbox">
+                                        <h5>Petty Cash</h5>
+                                        <label for="">
+                                            <input type="checkbox" name="permissions[]" value="petty_full_access">
+                                            Full Access
+                                        </label>
+                                    </div>
                                 </div>
                                 <div class="col-sm-4">
-                                    <h5>Stall Assignment</h5>
-                                    <label for="">
-                                        <input type="checkbox" name="permissions[]" value="stall_full_access">
-                                        Full Access
-                                    </label>
+                                    <div class="checkbox">
+                                        <h5>Stall Assignment</h5>
+                                        <label for="">
+                                            <input type="checkbox" name="permissions[]" value="stall_full_access">
+                                            Full Access
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
