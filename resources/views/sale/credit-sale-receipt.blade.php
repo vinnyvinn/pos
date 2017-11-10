@@ -8,7 +8,7 @@
   <div class="container">
     <div class="row">
       <div class="text-center">
-        <img src="{{ asset('images/logo.png') }}" alt="">
+        <img src="{{ asset('images/garden_grow.png') }}" alt="">
         <h4>Gardens Grow.</h4>
         <h5>P.O. Box xxxx.</h5>
         <h5>Nairobi.</h5>

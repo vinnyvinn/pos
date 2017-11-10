@@ -53,16 +53,16 @@
                             <table class="table table-responsive">
                                 <thead>
                                 <tr>
-                                    <th class="text-nowrap">Stock Item</th>
-                                    <th class="text-nowrap">UOM</th>
-                                    <th class="text-nowrap text-right" width="120px">Order Qty.</th>
-                                    <th class="text-nowrap text-right" width="120px">Remaining Qty.</th>
-                                    <th class="text-nowrap text-right" width="120px">Quantity Received</th>
-                                    <th class="text-nowrap text-right" width="150px">Unit Excl. Price</th>
-                                    <th class="text-nowrap text-right" width="150px">Unit Incl. Price</th>
-                                    <th class="text-nowrap text-right">Total Exclusive</th>
-                                    <th class="text-nowrap text-right">Total Tax</th>
-                                    <th class="text-nowrap text-right">Total Inclusive</th>
+                                    <th class="">Stock Item</th>
+                                    <th class="">UOM</th>
+                                    <th class="text-right" width="120px">Order Qty.</th>
+                                    <th class=" text-right" width="120px">Remaining Qty.</th>
+                                    <th class=" text-right" width="120px">Quantity Received</th>
+                                    <th class=" text-right" width="150px">Unit Excl. Price</th>
+                                    <th class="text-right" width="150px">Unit Incl. Price</th>
+                                    <th class="text-right">Total Exclusive</th>
+                                    <th class="text-right">Total Tax</th>
+                                    <th class="text-right">Total Inclusive</th>
                                     <th></th>
                                 </tr>
                                 </thead>

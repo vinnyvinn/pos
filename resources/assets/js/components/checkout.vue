@@ -67,11 +67,11 @@
                           <div style="display:flex;" v-for="row in rows">
                             <div class="form-group">
                               <label v-if="parseInt(row.default) == 1">Code</label>
-                              <input v-model="row.m_pesa_code" type="text" onfocus="this.select()" class="form-control input-sm text-right" style="width:200px; margin-right: 50px;"/>
+                              <input v-model="row.m_pesa_code" type="text" onfocus="this.select()" class="form-control input-sm text-right" style="width:110px; margin-right:20px;"/>
                             </div>
                             <div class="form-group">
                               <label v-if="parseInt(row.default) == 1">Amount :</label>
-                               <input v-model="row.m_pesa_amount" type="number" onfocus="this.select()" min="0" class="form-control input-sm text-right" style="width:150px; margin-right: 20px;"/>
+                               <input v-model="row.m_pesa_amount" type="number" onfocus="this.select()" min="0" class="form-control input-sm text-right" style="width:110px; margin-right: 20px;"/>
                              </div>
 
                            <div class="form-group">
