@@ -71,6 +71,7 @@ class PurchaseOrderController extends Controller
                     'suppliers' => Supplier::active()->get(['id', 'name', 'account_number']),
                     'stalls'    => Stall::all()
                 ]);
+            dd();
         }
 
         return view('purchase-order.create');
