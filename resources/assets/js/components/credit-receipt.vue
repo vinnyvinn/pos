@@ -102,7 +102,7 @@ export default {
   data(){
     return {
       today: new Date(),
-        imgurl:'http://localhost:8000/images/garden_grow.png'
+        imgurl:'http://spos.wizag.biz/images/garden_grow.png'
     }
   },
 
