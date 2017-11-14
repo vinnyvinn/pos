@@ -36,7 +36,8 @@ class Kernel extends ConsoleKernel
 //            ->everyMinute();
         $schedule->command('CronJob:cronjob')
             ->everyMinute();
-//        Log::info("called");
+        Log::info("called");
+
     }
 
     /**
