@@ -1,7 +1,7 @@
 <template>
     <div class="row">
       <div class="text-center">
-          <img :src="'/images/garden_grow.png'" alt="">
+          <img :src="imgurl" style="width:20%" alt="">
         <h4>Gardens Grow.</h4>
         <h5>P.O. Box xxxx.</h5>
         <h5>Nairobi.</h5>
@@ -98,7 +98,8 @@
 export default {
   data(){
     return {
-      today: new Date()
+      today: new Date(),
+        imgurl:'http://localhost:8000/images/garden_grow.png'
     }
   },
 

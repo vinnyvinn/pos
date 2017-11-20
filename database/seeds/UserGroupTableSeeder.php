@@ -13,6 +13,8 @@ class UserGroupTableSeeder extends Seeder
      */
     public function run()
     {
+        $now = Carbon::now();
+
         UserGroup::create([
             'name' => 'default User',
             'permissions' => '[]',

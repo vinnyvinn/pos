@@ -53,17 +53,16 @@
                             <table class="table table-responsive">
                                 <thead>
                                 <tr>
-                                    <th class="">Stock Item</th>
-                                    <th class="">UOM</th>
-                                    <th class="text-right" width="120px">Order Qty.</th>
-                                    <th class=" text-right" width="120px">Remaining Qty.</th>
-                                    <th class=" text-right" width="120px">Quantity Received</th>
-                                    <th class=" text-right" width="150px">Unit Excl. Price</th>
-                                    <th class="text-right" width="150px">Unit Incl. Price</th>
-                                    <th class="text-right">Total Exclusive</th>
+                                    <th>Stock Item</th>
+                                    <th>UOM</th>
+                                    <th class="text-right" width="10%">Order Qty.</th>
+                                    <th class="text-right" width="10%">Remaining Qty.</th>
+                                    <th class="text-right" width="10%">Quantity Received</th>
+                                    <th class="text-right" width="10%">Unit Excl. Price</th>
+                                    <th class="text-right" width="10%">Unit Incl. Price</th>
+                                    <th class="text-right" width="10%">Total Exclusive</th>
                                     <th class="text-right">Total Tax</th>
                                     <th class="text-right">Total Inclusive</th>
-                                    <th></th>
                                 </tr>
                                 </thead>
                                 <tbody>

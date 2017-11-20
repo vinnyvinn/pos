@@ -18,9 +18,9 @@ class CheckInController extends Controller
     }
 
     public function store(Request $request)
-            {
-               // dd($request->all());
-                 session()->put('stall_id', $request->get('stall_id'));
+    {
+        // dd($request->all());
+        $request->session()->put('stall_id', $request->get('stall_id'));
 
         return redirect('/sale/create');
     }

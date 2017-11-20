@@ -48,6 +48,7 @@ class StockController extends Controller
      */
     public function store(Request $request)
     {
+        //dd($request->all());
         $stock = Stock::where('stall_id', $request->get('stall_id'))
             ->where('item_id', $request->get('item_id'))
             ->firstOrFail();
