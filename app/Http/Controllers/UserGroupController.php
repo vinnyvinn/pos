@@ -36,6 +36,10 @@ class UserGroupController extends Controller
      */
     public function store(Request $request)
     {
+        if (!$request->get('permissions')) {
+            flash('Please Select at least 1 permission for your user group');
+            return redirect()->back();
+        }
         $permissions = $this->getPermissions($request);
 //        $userGroup = UserGroup::create($request->all());
 
