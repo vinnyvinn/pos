@@ -4,6 +4,7 @@ Auth::routes();
 Route::group(['middleware' => 'auth'], function () {
     Route::get('checkIn', 'CheckInController@index')->name('checkIn');
     Route::post('checkIn', 'CheckInController@store')->name('checkIn.store');
+    Route::get('openStall', 'CheckInController@openStall')->name('openStall');
 });
 Route::group(['middleware' => ['auth', 'checkedIn']], function () {
     Route::get('/', 'HomeController@dashboard');

@@ -24,4 +24,9 @@ class CheckInController extends Controller
 
         return redirect('/sale/create');
     }
+
+    public function openStall()
+    {
+        return view('openStall');
+    }
 }

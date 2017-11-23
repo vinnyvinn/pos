@@ -17315,7 +17315,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "form-control",
     attrs: {
       "type": "text",
-      "placeholder": "6161105421078",
+      "placeholder": "Leave blank to autogenerate",
       "id": "barcode",
       "name": "barcode"
     },
@@ -18510,7 +18510,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "width": "120px"
     }
-  }, [_vm._v("Quantity")]), _vm._v(" "), _c('th', {
+  }, [_vm._v("Weight")]), _vm._v(" "), _c('th', {
     staticClass: "text-nowrap text-right",
     attrs: {
       "width": "150px"

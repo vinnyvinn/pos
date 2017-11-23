@@ -67,6 +67,7 @@ class StockItemController extends Controller
      */
     public function store(Request $request)
     {
+        $stock
         StockItemFactory::create($request);
 
         flash('Successfully added new stock item.', 'success');

@@ -15,7 +15,7 @@
 
                     <div class="form-group">
                         <label for="barcode" class="control-label">Barcode</label>
-                        <input type="text" placeholder="6161105421078" class="form-control" id="barcode" name="barcode" v-model="item.barcode">
+                        <input type="text" placeholder="Leave blank to autogenerate" class="form-control" id="barcode" name="barcode" v-model="item.barcode">
                     </div>
 
                     <div class="form-group">
