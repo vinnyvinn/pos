@@ -45,28 +45,30 @@
                     <li class="dropdown iconify hide-phone">
                         <a href="#" onclick="javascript:toggle_fullscreen()"><i class="icon-resize-full-2"></i></a>
                     </li>
-                    <li class="dropdown topbar-profile">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            {{ Auth::user()->full_name }}
-                            <i class="fa fa-caret-down"></i>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">My Profile</a></li>
-                            <li><a href="#">Change Password</a></li>
-                            <li><a href="#">System Setting</a></li>
-                            <li class="divider"></li>
-                            <li><a href="#"><i class="icon-help-2"></i> Help</a></li>
-                            <li>
-                                <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                    <i class="icon-logout-1"></i> Logout
-                                </a>
+                    @if(Auth::user())
+                        <li class="dropdown topbar-profile">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                {{ Auth::user()->full_name }}
+                                <i class="fa fa-caret-down"></i>
+                            </a>
+                            <ul class="dropdown-menu">
+                                {{--<li><a href="#">My Profile</a></li>--}}
+                                {{--<li><a href="#">Change Password</a></li>--}}
+                                {{--<li><a href="#">System Setting</a></li>--}}
+                                {{--<li class="divider"></li>--}}
+                                {{--<li><a href="#"><i class="icon-help-2"></i> Help</a></li>--}}
+                                <li>
+                                    <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                        <i class="icon-logout-1"></i> Logout
+                                    </a>
 
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                    {{ csrf_field() }}
-                                </form>
-                            </li>
-                        </ul>
-                    </li>
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                        {{ csrf_field() }}
+                                    </form>
+                                </li>
+                            </ul>
+                        </li>
+                        @endif
                     {{--<li class="right-opener">--}}
                         {{--<a href="javascript:;" class="open-right"><i class="fa fa-cogs"></i></a>--}}
                     {{--</li>--}}

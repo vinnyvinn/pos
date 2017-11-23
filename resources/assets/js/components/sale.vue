@@ -4,17 +4,13 @@
             <div class="col-sm-12">
                 <div class="container">
                     <div class="widget">
-                        <div v-if="!checkout_toggle" class="widget-header" style="margin-left:25px; margin-top:20px">
-                            <button type="submit" class="btn btn-info btn-sm" @click.prevent="setCheckout">Checkout
-                            </button>
-                        </div>
                         <form @submit.prevent="validateForm">
                             <div class="widget-content padding">
                                 <div v-if="!checkout_toggle" class="col-sm-6">
                                     <div class="form-group">
                                         <label for="customer_id">Customers</label>
                                         <select class="form-control input-sm" v-model="customer_id" name="customer_id"
-                                                id="customer_id" required>
+                                                id="customer_id" value="" required>
                                             <option v-for="customer in customers" :value="customer.id">
                                                 {{customer.name}}
                                             </option>
@@ -125,6 +121,10 @@
                                           @paymentType="validateForm" @toggleCheckout="setCheckout"></checkout>
                             </div>
                         </form>
+                        <div v-if="!checkout_toggle" class="widget-header" style="margin-left:25px; margin-top:20px">
+                            <button type="submit" class="btn btn-info btn-sm" @click.prevent="setCheckout">Checkout
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -147,7 +147,7 @@
             return {
                 receipt: false,
                 stock: [],
-                customer_id: null,
+                customer_id: 1,
                 description: "",
                 customers: [],
                 salesLines: [],
@@ -421,15 +421,22 @@
                     credit: this.credit,
                     notes: this.notes,
                     mpesa: this.mpesa,
-                    balance: this.balance
+                    balance: this.balance,
                 }).then(response => {
                     if (response.data.message) {
                         this.preparePrint();
-                        window.print();
-                        this.restorePrint();
-                    }
-                }).then(r => {
+                        this.customer_id = 1;
 
+                        setTimeout(
+                            ()=>{
+                                console.log("testing....");
+                                 window.print();
+                                this.restorePrint();
+                                this.finishPrint();
+                            },1500
+                        );
+                    }
+                })/*.then((r) => {
                     this.receipt = false;
                     this.salesLines = [];
                     this.checkout_toggle = !this.checkout_toggle;
@@ -440,11 +447,26 @@
                     this.balance = 0;
                     this.quantity_check = [];
                     this.quantity = 1;
-                }).catch(response => {
+
+                })*/.catch(response => {
 
                 });
 
             },
+            finishPrint(){
+                this.receipt = false;
+                this.salesLines = [];
+                this.checkout_toggle = !this.checkout_toggle;
+                this.cash = 0;
+                this.credit = 0;
+                this.notes = "",
+                    this.mpesa = [];
+                this.balance = 0;
+                this.quantity_check = [];
+                this.quantity = 1;
+
+            },
+
             addQuantity(sale, quantity) {
                 let stock = this.quantity_check.filter(stock => {
                     return stock.id == sale.id

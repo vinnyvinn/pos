@@ -1,7 +1,7 @@
 <template>
     <div class="row">
       <div class="text-center">
-          <img :src="imgurl" style="width:20%" alt="">
+          <img src="/images/garden_grow.png" width="20%" alt="">
         <h4>Gardens Grow.</h4>
         <h5>P.O. Box xxxx.</h5>
         <h5>Nairobi.</h5>
@@ -85,6 +85,9 @@
       </tbody>
   </table>
 </div>
+            <div style="position: fixed; bottom: 0;">
+                Powered by Tikone Solutions Limited
+            </div>
 </div>
 </template>
 <style scoped>
@@ -99,7 +102,7 @@ export default {
   data(){
     return {
       today: new Date(),
-        imgurl:'http://localhost:8000/images/garden_grow.png'
+        imgurl:'/images/garden_grow.png'
     }
   },
 

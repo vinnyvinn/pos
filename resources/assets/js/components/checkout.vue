@@ -1,10 +1,6 @@
  <template>
   <div class="row main">
     <div class="col-md-12">
-      <div class="pull-left" style="margin-left:20px">
-        <button type="button" class="btn btn-sm btn-danger" @click.prevent="back">Back</button>
-          <button type="button" class="btn btn-sm btn-info" @click.prevent="completeSale()">Complete Sale</button>
-      </div>
     </div>
       <div class="col-md-12">
         <table style="border-style:none;">
@@ -84,6 +80,10 @@
                     </tbody>
                   </table>
             </div>
+      <div class="pull-right" style="margin-right: 10px;">
+          <button type="button" class="btn btn-sm btn-danger" @click.prevent="back">Back</button>
+          <button type="button" class="btn btn-sm btn-info" @click.prevent="completeSale()">Complete Sale</button>
+      </div>
           </div>
 </template>
 <style scoped>

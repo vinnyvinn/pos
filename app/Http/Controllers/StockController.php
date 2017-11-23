@@ -52,9 +52,14 @@ class StockController extends Controller
         $stock = Stock::where('stall_id', $request->get('stall_id'))
             ->where('item_id', $request->get('item_id'))
             ->firstOrFail();
-
-        $stock->increment('quantity_on_hand', $request->get('quantity_on_hand'));
+        if(!$stock)
+        {
+          Stock::create();
+        }
+        dd($stock);
+          $stock->increment('quantity_on_hand', $request->get('quantity_on_hand'));
         flash('Successfully created stock');
+
 
         return redirect()->route('stock.index');
     }

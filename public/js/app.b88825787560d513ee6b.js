@@ -14662,12 +14662,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       today: new Date(),
-      imgurl: 'http://localhost:8000/images/garden_grow.png'
+      imgurl: '/images/garden_grow.png'
     };
   },
 
@@ -14848,7 +14851,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return {
             receipt: false,
             stock: [],
-            customer_id: null,
+            customer_id: 1,
             description: "",
             customers: [],
             salesLines: [],
@@ -15117,21 +15120,38 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }).then(function (response) {
                 if (response.data.message) {
                     _this5.preparePrint();
-                    window.print();
-                    _this5.restorePrint();
-                }
-            }).then(function (r) {
+                    _this5.customer_id = 1;
 
-                _this5.receipt = false;
-                _this5.salesLines = [];
-                _this5.checkout_toggle = !_this5.checkout_toggle;
-                _this5.cash = 0;
-                _this5.credit = 0;
-                _this5.notes = "", _this5.mpesa = [];
-                _this5.balance = 0;
-                _this5.quantity_check = [];
-                _this5.quantity = 1;
-            }).catch(function (response) {});
+                    setTimeout(function () {
+                        console.log("testing....");
+                        window.print();
+                        _this5.restorePrint();
+                        _this5.finishPrint();
+                    }, 1500);
+                }
+            }) /*.then((r) => {
+                 this.receipt = false;
+                 this.salesLines = [];
+                 this.checkout_toggle = !this.checkout_toggle;
+                 this.cash = 0;
+                 this.credit = 0;
+                 this.notes = "",
+                     this.mpesa = [];
+                 this.balance = 0;
+                 this.quantity_check = [];
+                 this.quantity = 1;
+               })*/.catch(function (response) {});
+        },
+        finishPrint: function finishPrint() {
+            this.receipt = false;
+            this.salesLines = [];
+            this.checkout_toggle = !this.checkout_toggle;
+            this.cash = 0;
+            this.credit = 0;
+            this.notes = "", this.mpesa = [];
+            this.balance = 0;
+            this.quantity_check = [];
+            this.quantity = 1;
         },
         addQuantity: function addQuantity(sale, quantity) {
             var stock = this.quantity_check.filter(function (stock) {
@@ -16690,34 +16710,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "row main"
   }, [_c('div', {
     staticClass: "col-md-12"
-  }, [_c('div', {
-    staticClass: "pull-left",
-    staticStyle: {
-      "margin-left": "20px"
-    }
-  }, [_c('button', {
-    staticClass: "btn btn-sm btn-danger",
-    attrs: {
-      "type": "button"
-    },
-    on: {
-      "click": function($event) {
-        $event.preventDefault();
-        _vm.back($event)
-      }
-    }
-  }, [_vm._v("Back")]), _vm._v(" "), _c('button', {
-    staticClass: "btn btn-sm btn-info",
-    attrs: {
-      "type": "button"
-    },
-    on: {
-      "click": function($event) {
-        $event.preventDefault();
-        _vm.completeSale()
-      }
-    }
-  }, [_vm._v("Complete Sale")])])]), _vm._v(" "), _c('div', {
+  }), _vm._v(" "), _c('div', {
     staticClass: "col-md-12"
   }, [_c('table', {
     staticStyle: {
@@ -16905,7 +16898,34 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, [_c('i', {
       staticClass: "fa fa-minus"
     })]) : _vm._e()])])
-  }))])])])])])
+  }))])])])]), _vm._v(" "), _c('div', {
+    staticClass: "pull-right",
+    staticStyle: {
+      "margin-right": "10px"
+    }
+  }, [_c('button', {
+    staticClass: "btn btn-sm btn-danger",
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.back($event)
+      }
+    }
+  }, [_vm._v("Back")]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-sm btn-info",
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.completeSale()
+      }
+    }
+  }, [_vm._v("Complete Sale")])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('thead', [_c('tr', [_c('th', {
     staticClass: "text-nowrap"
@@ -17376,7 +17396,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "form-control",
     attrs: {
       "name": "buying_tax",
-      "id": "buying_tax"
+      "id": "buying_tax",
+      "required": ""
     },
     on: {
       "change": function($event) {
@@ -17412,7 +17433,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "form-control",
     attrs: {
       "name": "selling_tax",
-      "id": "selling_tax"
+      "id": "selling_tax",
+      "required": ""
     },
     on: {
       "change": function($event) {
@@ -17448,7 +17470,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "form-control",
     attrs: {
       "name": "credit_note_tax",
-      "id": "credit_note_tax"
+      "id": "credit_note_tax",
+      "required": ""
     },
     on: {
       "change": function($event) {
@@ -17484,7 +17507,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "form-control",
     attrs: {
       "name": "stocking_uom",
-      "id": "stocking_uom"
+      "id": "stocking_uom",
+      "required": ""
     },
     on: {
       "change": function($event) {
@@ -18076,17 +18100,7 @@ if (false) {
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "row"
-  }, [_c('div', {
-    staticClass: "text-center"
-  }, [_c('img', {
-    staticStyle: {
-      "width": "20%"
-    },
-    attrs: {
-      "src": _vm.imgurl,
-      "alt": ""
-    }
-  }), _vm._v(" "), _c('h4', [_vm._v("Gardens Grow.")]), _vm._v(" "), _c('h5', [_vm._v("P.O. Box xxxx.")]), _vm._v(" "), _c('h5', [_vm._v("Nairobi.")])]), _vm._v(" "), _c('div', {
+  }, [_vm._m(0), _vm._v(" "), _c('div', {
     staticClass: "col-xs-12"
   }, [_c('table', {
     staticClass: "table"
@@ -18107,7 +18121,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "colspan": "3"
     }
-  }, [_c('h5', [_vm._v(_vm._s(_vm.today.toLocaleDateString() + " " + _vm.today.toLocaleTimeString('en-GB')))])])]), _vm._v(" "), _vm._m(0), _vm._v(" "), _vm._l((_vm.saleLines), function(saleline) {
+  }, [_c('h5', [_vm._v(_vm._s(_vm.today.toLocaleDateString() + " " + _vm.today.toLocaleTimeString('en-GB')))])])]), _vm._v(" "), _vm._m(1), _vm._v(" "), _vm._l((_vm.saleLines), function(saleline) {
     return _c('tr', [_c('td', {
       staticStyle: {
         "padding-left": "-10px",
@@ -18125,7 +18139,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "text-align": "right"
       }
     }, [_vm._v(_vm._s((saleline.totalIncl.toFixed(2)).toLocaleString('en-GB')))])])
-  }), _vm._v(" "), _c('tr', [_vm._m(1), _vm._v(" "), _c('td', {
+  }), _vm._v(" "), _c('tr', [_vm._m(2), _vm._v(" "), _c('td', {
     staticStyle: {
       "padding-right": "20px",
       "text-align": "right",
@@ -18169,7 +18183,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_vm._v(" TOTAL ITEMS: " + _vm._s(_vm.saleLines.length) + " ")])])], 2)]), _vm._v(" "), _c('table', {
     staticClass: "table"
-  }, [_vm._m(2), _vm._v(" "), _c('tbody', _vm._l((_vm.taxes), function(tax) {
+  }, [_vm._m(3), _vm._v(" "), _c('tbody', _vm._l((_vm.taxes), function(tax) {
     return (_vm.taxes.length) ? _c('tr', [_c('td', [_vm._v(_vm._s(tax.code))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(tax.rate) + "%")]), _vm._v(" "), _c('td', {
       staticClass: "text-right"
     }, [_vm._v(_vm._s(parseFloat(tax.rate) > 0 ? ((((parseFloat(100) - parseFloat(tax.rate)) / parseFloat(100)) * parseFloat(_vm.total_inclusive)).toFixed(2)).toLocaleString('en-GB') : 0))]), _vm._v(" "), _c('td', {
@@ -18177,8 +18191,23 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, [_vm._v(_vm._s(parseFloat(tax.rate) > 0 ? (((parseFloat(_vm.total_inclusive) - (((parseFloat(100) - parseFloat(tax.rate)) / parseFloat(100)) * parseFloat(_vm.total_inclusive)))).toFixed(2)).toLocaleString('en-GB') : 0))]), _vm._v(" "), _c('td', {
       staticClass: "text-right"
     }, [_vm._v(_vm._s(parseFloat(tax.rate) > 0 ? (_vm.total_inclusive.toFixed(2)).toLocaleString('en-GB') : 0))])]) : _vm._e()
-  }))])])])
+  }))])]), _vm._v(" "), _c('div', {
+    staticStyle: {
+      "position": "fixed",
+      "bottom": "0"
+    }
+  }, [_vm._v("\n                Powered by Tikone Solutions Limited\n            ")])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "text-center"
+  }, [_c('img', {
+    attrs: {
+      "src": "/images/garden_grow.png",
+      "width": "20%",
+      "alt": ""
+    }
+  }), _vm._v(" "), _c('h4', [_vm._v("Gardens Grow.")]), _vm._v(" "), _c('h5', [_vm._v("P.O. Box xxxx.")]), _vm._v(" "), _c('h5', [_vm._v("Nairobi.")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('tr', [_c('th', {
     staticStyle: {
       "padding-left": "-10px",
@@ -18248,24 +18277,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "container"
   }, [_c('div', {
     staticClass: "widget"
-  }, [(!_vm.checkout_toggle) ? _c('div', {
-    staticClass: "widget-header",
-    staticStyle: {
-      "margin-left": "25px",
-      "margin-top": "20px"
-    }
-  }, [_c('button', {
-    staticClass: "btn btn-info btn-sm",
-    attrs: {
-      "type": "submit"
-    },
-    on: {
-      "click": function($event) {
-        $event.preventDefault();
-        _vm.setCheckout($event)
-      }
-    }
-  }, [_vm._v("Checkout\n                        ")])]) : _vm._e(), _vm._v(" "), _c('form', {
+  }, [_c('form', {
     on: {
       "submit": function($event) {
         $event.preventDefault();
@@ -18293,6 +18305,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "name": "customer_id",
       "id": "customer_id",
+      "value": "",
       "required": ""
     },
     on: {
@@ -18455,7 +18468,24 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "paymentType": _vm.validateForm,
       "toggleCheckout": _vm.setCheckout
     }
-  }) : _vm._e()], 1)])])])])]), _vm._v(" "), (_vm.receipt) ? _c('div', {
+  }) : _vm._e()], 1)]), _vm._v(" "), (!_vm.checkout_toggle) ? _c('div', {
+    staticClass: "widget-header",
+    staticStyle: {
+      "margin-left": "25px",
+      "margin-top": "20px"
+    }
+  }, [_c('button', {
+    staticClass: "btn btn-info btn-sm",
+    attrs: {
+      "type": "submit"
+    },
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.setCheckout($event)
+      }
+    }
+  }, [_vm._v("Checkout\n                        ")])]) : _vm._e()])])])]), _vm._v(" "), (_vm.receipt) ? _c('div', {
     attrs: {
       "id": "receipt"
     }
