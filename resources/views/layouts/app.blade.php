@@ -19,6 +19,7 @@
     @yield('header')
 
     <link href="{{ asset(mix('css/app.css')) }}" rel="stylesheet">
+
     <script>
         window.Laravel = {!! json_encode([
             'csrfToken' => csrf_token(),
@@ -27,7 +28,12 @@
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.1/bootstrap3-typeahead.min.js"></script>
+    {{--<!--<script src="{{ asset('assets/libs/jquery/jquery-1.11.1.min.js') }}"></script>-->--}}
+
     <![endif]-->
+
+
     @include('layouts.partials.content.icons')
 </head>
 <body class="fixed-left">
@@ -66,7 +72,7 @@
     @include('layouts.partials.content.js')
 
 
-    <script src="{{ asset(mix('js/app.js')) }}"></script>
+    {{--<script src="{{ asset(mix('js/app.js')) }}"></script>--}}
 
     @yield('footer')
 

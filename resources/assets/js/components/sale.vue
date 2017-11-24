@@ -88,7 +88,7 @@
                                     <tr>
                                         <th class="text-nowrap">Stock Item</th>
                                         <th class="text-nowrap">UOM</th>
-                                        <th class="text-nowrap text-right" width="120px">Quantity</th>
+                                        <th class="text-nowrap text-right" width="120px">Weight</th>
                                         <th class="text-nowrap text-right" width="150px">Unit Excl. Price</th>
                                         <th class="text-nowrap text-right" width="150px">Unit Incl. Price</th>
                                         <th class="text-nowrap text-right">Total Exclusive</th>
