@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserGroupRequest;
 use App\User;
 use Illuminate\Http\Request;
 use SmoDav\Models\UserGroup;
@@ -34,7 +35,7 @@ class UserGroupController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UserGroupRequest $request)
     {
         if (!$request->get('permissions')) {
             flash('Please Select at least 1 permission for your user group');
@@ -87,7 +88,7 @@ class UserGroupController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UserGroupRequest $request, $id)
     {
         $permissions = $this->getPermissions($request);
 
@@ -111,7 +112,7 @@ class UserGroupController extends Controller
         return redirect()->route('user-group.index');
     }
 
-    public function getPermissions(Request $request)
+    public function getPermissions(UserGroupRequest $request)
     {
         return json_encode(array_values($request->get('permissions')));
     }

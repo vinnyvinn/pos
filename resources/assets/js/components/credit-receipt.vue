@@ -18,7 +18,7 @@
       </td>
       </tr>
       <tr>
-          <th style="padding-left:-10px; text-align: left"> Item </th><th class="text-right"> QTY </th><th> UOM </th><th class="text-right">Price</th><th class="text-right">VAT</th><th style="padding-right:20px; text-align: right">Amount Icl</th>
+          <th style="padding-left:-10px; text-align: left"> Item </th><th class="text-right"> Weight </th><th> UOM </th><th class="text-right">Price</th><th class="text-right">VAT</th><th style="padding-right:20px; text-align: right">Amount Icl</th>
       </tr>
       <tr v-for="saleline in saleLines">
           <td style="padding-left:-10px; text-align: left">{{ saleline.name }}</td>
@@ -36,7 +36,7 @@
         </td>
         <td colspan="5" style="padding-right: 20px; text-align: right; border-bottom-style: dotted;">
           <h6>{{ (total_inclusive.toFixed(2)).toLocaleString('en-GB') }}</h6>
-          <h6>0.00</h6>
+          <h6>{{ discount }}</h6>
           <h4>{{ (total_inclusive.toFixed(2)).toLocaleString('en-GB') }}</h4>
         </td>
       </tr>
@@ -106,7 +106,7 @@ export default {
     }
   },
 
-  props: [ 'taxes', 'total_inclusive', 'balance', 'credit', 'cash', 'customer', 'saleLines', 'mpesa' ],
+  props: [ 'taxes', 'total_inclusive', 'balance', 'credit', 'cash', 'customer', 'saleLines', 'mpesa', 'discount' ],
 
   computed: {
     totalAmountMpesa(){

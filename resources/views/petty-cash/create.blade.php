@@ -5,15 +5,15 @@
             fa fa-building
         @endslot
         @slot('header')
-            Petty Cash
+            Expense
         @endslot
-        Manage the Petty Cash.
+        Manage the Expenses.
     @endcomponent
     <div class="row">
         <div class="col-sm-12">
             <div class="widget">
                 <div class="widget-header">
-                    <h2><strong>Petty Cash Details</strong></h2>
+                    <h2><strong>Expense Details</strong></h2>
                 </div>
                 <div class="widget-content padding">
                     <br>
@@ -28,7 +28,7 @@
                             {{--</select>--}}
                         {{--</div>--}}
                         <div class="form-group">
-                            <label for="petty_cash_type_id">Petty Cash Type</label>
+                            <label for="petty_cash_type_id">Expense Type</label>
                             <select class="form-control" name="petty_cash_type_id" id="petty_cash_type_id" required>
                             @foreach($pettyCashTypes as $type)
                                     <option value="{{ $type->id }}" {{ old('petty_cash_type_id') == $type->id ? ' selected' : '' }}>{{ $type->name }}</option>
@@ -50,7 +50,7 @@
                         </div>
                         <div class="form-group">
                             <input type="submit" class="btn btn-success" value="Save">
-                            <a href="{{ route('pettyCashType.index') }}" class="btn btn-danger">Back</a>
+                            <a href="{{ route('pettyCash.index') }}" class="btn btn-danger">Back</a>
                         </div>
                     </form>
                 </div>

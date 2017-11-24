@@ -183,17 +183,16 @@
                 @if(hasPermission(SmoDav\Models\UserGroup::PERM_PETTY_CASH_FULL_ACCESS))
                     <li>
                         <a href="javascript:void(0);"><i class="fa fa-dollar"></i>
-                            Petty Cash
-
+                            <span>Expense</span>
                             <span class="pull-right"><i class="fa fa-angle-down"></i></span>
                         </a>
                         <ul>
                             <li>
                             <li>
-                                <a href="{{ route('pettyCashType.index') }}">Petty Cash Types</a>
+                                <a href="{{ route('pettyCashType.index') }}">Expense Types</a>
                             </li>
                             <li>
-                                <a href="{{ route('pettyCash.index') }}">Petty Cash</a>
+                                <a href="{{ route('pettyCash.index') }}">Expense</a>
 
                             </li>
                         </ul>

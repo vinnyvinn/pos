@@ -25,13 +25,13 @@ class StockItem extends Model
             self::createStock($item);
         });
         self::creating(function ($model) {
-            $model->code = strtoupper($model->barcode);
+            $model->barcode = strtoupper($model->barcode);
 
             return $model;
         });
 
         self::updating(function ($model) {
-            $model->code = strtoupper($model->barcode);
+            $model->barcode = strtoupper($model->barcode);
 
             return $model;
         });

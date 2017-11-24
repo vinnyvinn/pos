@@ -5,7 +5,7 @@
             fa fa-building
         @endslot
         @slot('header')
-            Petty Cash Types
+            Expense Types
         @endslot
         Manage the Types.
     @endcomponent
@@ -13,7 +13,7 @@
         <div class="col-sm-12">
             <div class="widget">
                 <div class="widget-header">
-                    <h2><strong>Petty Cash Types Details</strong></h2>
+                    <h2><strong>Expense Types Details</strong></h2>
                 </div>
                 <div class="widget-content padding">
                     <br>

@@ -20,6 +20,13 @@
                                         <v-select v-model="selected"
                                                   :on-change="changedProduct"
                                                   :options="multiselctopts"></v-select>
+                                        <div class="form-group">
+                                            <label for="discount">Discount</label>
+                                            <input type="number" class="form-control" name="discount" id="discount"
+                                                   value="" v-model="discount" placeholder="0.00"
+                                                   onfocus="this.select()"
+                                            >
+                                        </div>
 
                                     </div>
                                 </div>
@@ -32,7 +39,8 @@
                                     <thead>
                                     <tr>
                                         <th class="text-nowrap">UOM</th>
-                                        <th class="text-nowrap" width="120px">Quantity</th>
+                                        <th class="text-nowrap" width="120px">Weight
+                                        </th>
                                         <th class="text-nowrap" width="150px">Unit Excl. Price</th>
                                         <th class="text-nowrap" width="150px">Unit Incl. Price</th>
                                         <th class="text-nowrap text-right">Total Exclusive</th>
@@ -118,7 +126,9 @@
                                 </table>
                                 <checkout v-if="checkout_toggle" :taxes=taxes :saleLines=salesLines :customer=customer
                                           :payment_types=payment_types :total_inclusive=total_inclusive
-                                          @paymentType="validateForm" @toggleCheckout="setCheckout"></checkout>
+                                          @paymentType="validateForm" @toggleCheckout="setCheckout"
+                                          :discount="discount"
+                                ></checkout>
                             </div>
                         </form>
                         <div v-if="!checkout_toggle" class="widget-header" style="margin-left:25px; margin-top:20px">
@@ -131,7 +141,7 @@
 
         </div>
         <div id="receipt" v-if="receipt">
-            <receipt :total_inclusive=total_inclusive :taxes=taxes :balance=balance :credit=credit :cash=cash
+            <receipt :total_inclusive=total_inclusive :taxes=taxes :balance=balance :credit=credit :cash=cash :discount=discount
                      :mpesa=mpesa :customer=customer :saleLines=salesLines></receipt>
         </div>
     </div>
@@ -163,6 +173,8 @@
                 mpesa: "",
                 balance: "",
                 taxes: null,
+                payment_types: [],
+                discount: 0,
 
                 //extra
                 searchitem: '',
@@ -174,20 +186,16 @@
 
             }
         },
-
         created() {
             this.getStock();
 
         },
-
-
         watch: {
             searchitem() {
                 this.filterProducts();
             }
 
         },
-
         methods: {
             changedProduct(obj) {
                 this.stockItem = obj.value;
@@ -502,7 +510,6 @@
                 return quantity_to_add;
             }
         },
-
         computed: {
             customer() {
                 if (!this.customer_id) return null;
@@ -583,17 +590,25 @@
                 let total = this.salesLines.map(t => {
                     return t.totalIncl;
                 }).reduce((s, t) => {
-                    return parseFloat(s) + parseFloat(t);
-                });
-                return total;
+                    s = isNaN(parseFloat(s)) ? 0 : parseFloat(s);
+                    t = isNaN(parseFloat(t)) ? 0 : parseFloat(t);
+
+                    return s + t;
+                }, 0);
+                let discount = parseFloat(this.discount);
+                discount = isNaN(discount) ? 0 : discount;
+                return total - discount;
             },
             total_exclusive() {
                 if (!this.salesLines.length) return 0;
                 let total = this.salesLines.map(t => {
                     return t.totalExcl;
                 }).reduce((s, t) => {
-                    return parseFloat(s) + parseFloat(t);
-                });
+                    s = isNaN(parseFloat(s)) ? 0 : parseFloat(s);
+                    t = isNaN(parseFloat(t)) ? 0 : parseFloat(t);
+
+                    return s + t;
+                }, 0);
                 return total;
             },
             sale_total_tax() {
@@ -601,8 +616,11 @@
                 let total = this.salesLines.map(t => {
                     return t.totalTax;
                 }).reduce((s, t) => {
-                    return parseFloat(s) + parseFloat(t);
-                });
+                    s = isNaN(parseFloat(s)) ? 0 : parseFloat(s);
+                    t = isNaN(parseFloat(t)) ? 0 : parseFloat(t);
+
+                    return s + t;
+                }, 0);
                 return total;
             }
 

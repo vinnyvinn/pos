@@ -67,8 +67,12 @@ class StockItemController extends Controller
      */
     public function store(Request $request)
     {
-        $stockItem = StockItemFactory::create($request);
-
+        if (!$request->get('barcode')) {
+            $request->merge([
+                'barcode' => str_random(8)
+            ]);
+        }
+        StockItemFactory::create($request);
 
         flash('Successfully added new stock item.', 'success');
 
@@ -116,6 +120,11 @@ class StockItemController extends Controller
      */
     public function update(Request $request, StockItem $stockItem)
     {
+        if (!$request->get('barcode')) {
+            $request->merge([
+                'barcode' => str_random(8)
+            ]);
+        }
         StockItemFactory::update($stockItem, $request);
 
         flash('Successfully edited stock item.', 'success');

@@ -13,17 +13,17 @@
             fa fa-building
         @endslot
         @slot('header')
-            Petty Cash
+            Expenses
         @endslot
-        Manage the Petty Cash.
+        Manage the Expenses.
     @endcomponent
     <div class="row">
         <div class="col-sm-12">
             <div class="widget">
                 <div class="widget-header">
-                    <h2><strong>Petty Cash</strong></h2>
+                    <h2><strong>Expense</strong></h2>
                     <div class="additional-btn">
-                        <a href="{{ route('pettyCash.create') }}" class="btn btn-primary btn-xs">Create Petty Cash</a>
+                        <a href="{{ route('pettyCash.create') }}" class="btn btn-primary btn-xs">Create Expenses</a>
                     </div>
                 </div>
                 <div class="widget-content padding">

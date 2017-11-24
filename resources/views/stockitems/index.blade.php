@@ -26,6 +26,11 @@
                             New Stock Item
                         </a>
                     </div>
+                    <div class="pull-right">
+                        <form action="" method="post" enctype="multipart/form-data">
+                            <input type="file" name="" id="">
+                        </form>
+                    </div>
                 </div>
                 <div class="widget-content padding">
                     <br>

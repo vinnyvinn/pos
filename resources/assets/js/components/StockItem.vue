@@ -27,7 +27,7 @@
                     <div class="form-group">
                         <label for="buying_tax" class="control-label">Purchasing Tax Type</label>
 
-                        <select name="buying_tax" id="buying_tax" class="form-control" v-model="item.buying_tax" required>
+                        <select name="buying_tax" id="buying_tax" class="form-control" v-model="item.buying_tax">
                             <option v-for="tax in taxes" :value="tax.id">{{ tax.code }} - {{ tax.rate }}%</option>
                         </select>
                     </div>
@@ -35,7 +35,7 @@
                     <div class="form-group">
                         <label for="selling_tax" class="control-label">Invoice & Orders Tax Type</label>
 
-                        <select name="selling_tax" id="selling_tax" class="form-control" v-model="item.selling_tax" required>
+                        <select name="selling_tax" id="selling_tax" class="form-control" v-model="item.selling_tax">
                             <option v-for="tax in taxes" :value="tax.id">{{ tax.code }} - {{ tax.rate }}%</option>
                         </select>
                     </div>
@@ -43,7 +43,7 @@
                     <div class="form-group">
                         <label for="credit_note_tax" class="control-label">Credit Note Tax Type</label>
 
-                        <select name="credit_note_tax" id="credit_note_tax" class="form-control" v-model="item.credit_note_tax" required>
+                        <select name="credit_note_tax" id="credit_note_tax" class="form-control" v-model="item.credit_note_tax">
                             <option v-for="tax in taxes" :value="tax.id">{{ tax.code }} - {{ tax.rate }}%</option>
                         </select>
                     </div>
@@ -51,7 +51,7 @@
                     <div class="form-group">
                         <label for="stocking_uom" class="control-label">Stocking Unit of Measure</label>
 
-                        <select v-model="item.stocking_uom" name="stocking_uom" id="stocking_uom" class="form-control" required>
+                        <select v-model="item.stocking_uom" name="stocking_uom" id="stocking_uom" class="form-control">
                             <option v-for="uom in uoms" :value="uom.id">{{ uom.name }}</option>
                         </select>
                     </div>

@@ -14454,87 +14454,147 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  data: function data() {
-    return {
-      cash_amount: 0,
-      credit_amount: this.customer.is_credit == 1 ? 0 : "",
-      notes: "",
-      transaction_codes: "",
-      rows: [{
-        m_pesa_code: "",
-        m_pesa_amount: 0,
-        default: 1
-      }]
-    };
-  },
-
-  watch: {},
-  computed: {
-    balance: function balance() {
-      var m_pesa_total = this.rows.map(function (row) {
-        return row.m_pesa_amount;
-      }).reduce(function (a, b) {
-        return parseFloat(a) + parseFloat(b);
-      });
-      if (!parseFloat(m_pesa_total)) m_pesa_total = 0;
-      if (!parseFloat(this.credit_amount)) this.credit_amount = 0;
-      var balance = parseFloat(m_pesa_total) + parseFloat(this.cash_amount) + parseFloat(this.credit_amount) - parseFloat(this.total_inclusive);
-      // if(parseFloat(balance) < 0) return "Amount Is Not Enough!";
-      return balance < 0 ? 0 : balance;
+    data: function data() {
+        return {
+            cash_amount: 0,
+            credit_amount: this.customer.is_credit == 1 ? 0 : "",
+            notes: "",
+            transaction_codes: "",
+            rows: [{
+                m_pesa_code: "",
+                m_pesa_amount: 0,
+                default: 1
+            }]
+        };
     },
-    validateCompletion: function validateCompletion() {
-      var m_pesa_total = this.rows.map(function (row) {
-        return row.m_pesa_amount;
-      }).reduce(function (a, b) {
-        return parseFloat(a) + parseFloat(b);
-      });
-      if (!parseFloat(m_pesa_total)) m_pesa_total = 0;
-      if (!parseFloat(this.credit_amount)) this.credit_amount = 0;
-      var balance = parseFloat(m_pesa_total) + parseFloat(this.cash_amount) + parseFloat(this.credit_amount) - parseFloat(this.total_inclusive);
-      // if(parseFloat(balance) < 0) return "Amount Is Not Enough!";
-      return balance < 0 ? false : true;
+
+    watch: {},
+    computed: {
+        balance: function balance() {
+            var discount = parseFloat(this.discount);
+            discount = isNaN(discount) ? 0 : discount;
+
+            var total = parseFloat(this.total_inclusive) - discount;
+
+            var m_pesa_total = this.rows.map(function (row) {
+                return row.m_pesa_amount;
+            }).reduce(function (a, b) {
+                return parseFloat(a) + parseFloat(b);
+            });
+            if (!parseFloat(m_pesa_total)) m_pesa_total = 0;
+            if (!parseFloat(this.credit_amount)) this.credit_amount = 0;
+            var balance = parseFloat(m_pesa_total) + parseFloat(this.cash_amount) + parseFloat(this.credit_amount) - parseFloat(total);
+            // if(parseFloat(balance) < 0) return "Amount Is Not Enough!";
+            return balance < 0 ? 0 : balance;
+        },
+        validateCompletion: function validateCompletion() {
+            var m_pesa_total = this.rows.map(function (row) {
+                return row.m_pesa_amount;
+            }).reduce(function (a, b) {
+                return parseFloat(a) + parseFloat(b);
+            });
+            if (!parseFloat(m_pesa_total)) m_pesa_total = 0;
+            if (!parseFloat(this.credit_amount)) this.credit_amount = 0;
+            var balance = parseFloat(m_pesa_total) + parseFloat(this.cash_amount) + parseFloat(this.credit_amount) - parseFloat(this.total_inclusive);
+            // if(parseFloat(balance) < 0) return "Amount Is Not Enough!";
+            return balance < 0 ? false : true;
+        }
+    },
+
+    methods: {
+        paymentType: function paymentType(e) {
+            console.log("testing...");
+            return;
+            if (!e.target.id) {
+                console.log(this.payment_types[1]);
+                localStorage.setItem('payment_method', this.payment_types[1].id);
+                return this.payment_types[1];
+            }
+            var payment_method = this.payment_types.filter(function (payment_method) {
+                return parseInt(payment_method.id) == parseInt(e.target.id);
+            })[0];
+
+            this.payment_method = payment_method;
+        },
+        completeSale: function completeSale() {
+            if (!this.validateCompletion) {
+                Messenger().post({
+                    message: "Please Complete Payment!",
+                    type: 'error',
+                    showCloseButton: true
+                });
+                return;
+            }
+            this.$emit('paymentType', this.cash_amount, this.rows, this.credit_amount, this.balance, this.notes);
+        },
+        back: function back() {
+            this.$emit('toggleCheckout');
+        },
+        addMpesaField: function addMpesaField() {
+            return this.rows.push({ m_pesa_code: "", m_pesa_amount: 0, default: 0 });
+        },
+        removeMpesaField: function removeMpesaField(row) {
+            return this.rows.splice(row, 1);
+        }
+    },
+    props: {
+        total_inclusive: {
+            type: Number,
+            default: 0
+        },
+        payment_types: {
+            type: Array,
+            default: function _default() {
+                return [];
+            }
+        },
+        customer: {
+            type: Object,
+            default: function _default() {
+                return {};
+            }
+        },
+        taxes: {
+            type: Array,
+            default: function _default() {
+                return [];
+            }
+        },
+        saleLines: {
+            type: Array,
+            default: function _default() {
+                return [];
+            }
+        },
+        discount: {
+            type: Number,
+            default: 0
+        }
     }
-  },
-
-  methods: {
-    paymentType: function paymentType(e) {
-      console.log("testing...");
-      return;
-      if (!e.target.id) {
-        console.log(this.payment_types[1]);
-        localStorage.setItem('payment_method', this.payment_types[1].id);
-        return this.payment_types[1];
-      }
-      var payment_method = this.payment_types.filter(function (payment_method) {
-        return parseInt(payment_method.id) == parseInt(e.target.id);
-      })[0];
-
-      this.payment_method = payment_method;
-    },
-    completeSale: function completeSale() {
-      if (!this.validateCompletion) {
-        Messenger().post({
-          message: "Please Complete Payment!",
-          type: 'error',
-          showCloseButton: true
-        });
-        return;
-      }
-      this.$emit('paymentType', this.cash_amount, this.rows, this.credit_amount, this.balance, this.notes);
-    },
-    back: function back() {
-      this.$emit('toggleCheckout');
-    },
-    addMpesaField: function addMpesaField() {
-      return this.rows.push({ m_pesa_code: "", m_pesa_amount: 0, default: 0 });
-    },
-    removeMpesaField: function removeMpesaField(row) {
-      return this.rows.splice(row, 1);
-    }
-  },
-  props: ['total_inclusive', 'payment_types', 'customer', 'taxes', 'saleLines']
 });
 
 /***/ }),
@@ -14675,7 +14735,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   },
 
 
-  props: ['taxes', 'total_inclusive', 'balance', 'credit', 'cash', 'customer', 'saleLines', 'mpesa'],
+  props: ['taxes', 'total_inclusive', 'balance', 'credit', 'cash', 'customer', 'saleLines', 'mpesa', 'discount'],
 
   computed: {
     totalAmountMpesa: function totalAmountMpesa() {
@@ -14702,6 +14762,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_multiselect___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_vue_multiselect__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_select__ = __webpack_require__(74);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_select___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_vue_select__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -14867,6 +14937,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             mpesa: "",
             balance: "",
             taxes: null,
+            payment_types: [],
+            discount: 0,
 
             //extra
             searchitem: '',
@@ -14881,13 +14953,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.getStock();
     },
 
-
     watch: {
         searchitem: function searchitem() {
             this.filterProducts();
         }
     },
-
     methods: {
         changedProduct: function changedProduct(obj) {
             this.stockItem = obj.value;
@@ -15187,7 +15257,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             return quantity_to_add;
         }
     },
-
     computed: {
         customer: function customer() {
             var _this6 = this;
@@ -15274,17 +15343,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var total = this.salesLines.map(function (t) {
                 return t.totalIncl;
             }).reduce(function (s, t) {
-                return parseFloat(s) + parseFloat(t);
-            });
-            return total;
+                s = isNaN(parseFloat(s)) ? 0 : parseFloat(s);
+                t = isNaN(parseFloat(t)) ? 0 : parseFloat(t);
+
+                return s + t;
+            }, 0);
+            var discount = parseFloat(this.discount);
+            discount = isNaN(discount) ? 0 : discount;
+            return total - discount;
         },
         total_exclusive: function total_exclusive() {
             if (!this.salesLines.length) return 0;
             var total = this.salesLines.map(function (t) {
                 return t.totalExcl;
             }).reduce(function (s, t) {
-                return parseFloat(s) + parseFloat(t);
-            });
+                s = isNaN(parseFloat(s)) ? 0 : parseFloat(s);
+                t = isNaN(parseFloat(t)) ? 0 : parseFloat(t);
+
+                return s + t;
+            }, 0);
             return total;
         },
         sale_total_tax: function sale_total_tax() {
@@ -15292,8 +15369,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var total = this.salesLines.map(function (t) {
                 return t.totalTax;
             }).reduce(function (s, t) {
-                return parseFloat(s) + parseFloat(t);
-            });
+                s = isNaN(parseFloat(s)) ? 0 : parseFloat(s);
+                t = isNaN(parseFloat(t)) ? 0 : parseFloat(t);
+
+                return s + t;
+            }, 0);
             return total;
         }
     },
@@ -16081,7 +16161,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(5)();
-exports.push([module.i, "\n.main[data-v-1bb8c8c6] {\n   margin-top:-50px\n}\n.payment-form[data-v-1bb8c8c6] {\n   margin-top:35px\n}\n", ""]);
+exports.push([module.i, "\n.main[data-v-1bb8c8c6] {\n    margin-top: -50px\n}\n.payment-form[data-v-1bb8c8c6] {\n    margin-top: 35px\n}\n", ""]);
 
 /***/ }),
 /* 49 */
@@ -16709,30 +16789,25 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   return _c('div', {
     staticClass: "row main"
   }, [_c('div', {
-    staticClass: "col-md-12"
-  }), _vm._v(" "), _c('div', {
-    staticClass: "col-md-12"
-  }, [_c('table', {
-    staticStyle: {
-      "border-style": "none"
-    }
-  }, [_c('tbody', [_c('tr', [_c('td', [_c('h5', [_vm._v("Customer Name:  " + _vm._s(_vm.customer.name))])])]), _vm._v(" "), _c('tr', [_c('td', [_c('h5', [_vm._v("Account Bal.: " + _vm._s(_vm.customer.account_balance))])])])])]), _vm._v(" "), _c('div', {
-    staticClass: "pull-right",
-    staticStyle: {
-      "margin-top": "-50px"
-    }
-  }, [_c('h5', [_vm._v("Total Amount: " + _vm._s(_vm.total_inclusive))]), _vm._v(" "), _c('h5', [_c('strong', [_vm._v("Balance : " + _vm._s(_vm.balance))])])])]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-6"
+  }, [_c('h5', [_vm._v("Customer Name:  " + _vm._s(_vm.customer.name))]), _vm._v(" "), _c('h5', [_vm._v("Account Bal.: " + _vm._s(_vm.customer.account_balance))])]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-6"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_vm._m(0), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-4 text-right"
+  }, [_c('h5', [_vm._v(_vm._s(_vm.total_inclusive))]), _vm._v(" "), _c('h5', [_vm._v(_vm._s(_vm.discount))]), _vm._v(" "), _c('h4', [_c('strong', [_vm._v(_vm._s(parseFloat(_vm.total_inclusive) - parseFloat(_vm.discount)))])]), _vm._v(" "), _c('h4', [_c('strong', [_vm._v(_vm._s(_vm.balance))])])])])]), _vm._v(" "), _c('div', {
     staticClass: "col-md-6"
   }, [_c('table', {
     staticClass: "table"
-  }, [_vm._m(0), _vm._v(" "), _c('tbody', _vm._l((_vm.taxes), function(tax) {
+  }, [_vm._m(1), _vm._v(" "), _c('tbody', _vm._l((_vm.taxes), function(tax) {
     return (_vm.taxes.length) ? _c('tr', [_c('td', [_vm._v(_vm._s(tax.code))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(tax.rate) + "%")]), _vm._v(" "), _c('td', {
       staticClass: "text-right"
-    }, [_vm._v(_vm._s(parseFloat(tax.rate) > 0 ? Math.round(((parseFloat(100) - parseFloat(tax.rate)) / parseFloat(100)) * parseFloat(_vm.total_inclusive)).toLocaleString('en-GB') : 0))]), _vm._v(" "), _c('td', {
+    }, [_vm._v("\n                    " + _vm._s(parseFloat(tax.rate) > 0 ? Math.round(((parseFloat(100) - parseFloat(tax.rate)) / parseFloat(100)) * parseFloat(_vm.total_inclusive)).toLocaleString('en-GB') : 0) + "\n                ")]), _vm._v(" "), _c('td', {
       staticClass: "text-right"
-    }, [_vm._v(_vm._s(parseFloat(tax.rate) > 0 ? Math.round((parseFloat(_vm.total_inclusive) - (((parseFloat(100) - parseFloat(tax.rate)) / parseFloat(100)) * parseFloat(_vm.total_inclusive)))) : 0))]), _vm._v(" "), _c('td', {
+    }, [_vm._v("\n                    " + _vm._s(parseFloat(tax.rate) > 0 ? Math.round((parseFloat(_vm.total_inclusive) - (((parseFloat(100) - parseFloat(tax.rate)) / parseFloat(100)) * parseFloat(_vm.total_inclusive)))) : 0) + "\n                ")]), _vm._v(" "), _c('td', {
       staticClass: "text-right"
-    }, [_vm._v(_vm._s(parseFloat(tax.rate) > 0 ? _vm.total_inclusive.toLocaleString('en-GB') : 0))])]) : _vm._e()
+    }, [_vm._v(_vm._s(parseFloat(tax.rate) > 0 ? _vm.total_inclusive.toLocaleString('en-GB') : 0) + "\n                ")])]) : _vm._e()
   }))]), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('label', {
@@ -16927,6 +17002,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_vm._v("Complete Sale")])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "col-sm-8 text-right"
+  }, [_c('h5', [_vm._v("Sub-Total")]), _vm._v(" "), _c('h5', [_vm._v("Discount")]), _vm._v(" "), _c('h4', [_c('strong', [_vm._v("Total")])]), _vm._v(" "), _c('h4', [_c('strong', [_vm._v("Change")])])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('thead', [_c('tr', [_c('th', {
     staticClass: "text-nowrap"
   }, [_vm._v("Code")]), _vm._v(" "), _c('th', {
@@ -17396,8 +17475,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "form-control",
     attrs: {
       "name": "buying_tax",
-      "id": "buying_tax",
-      "required": ""
+      "id": "buying_tax"
     },
     on: {
       "change": function($event) {
@@ -17433,8 +17511,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "form-control",
     attrs: {
       "name": "selling_tax",
-      "id": "selling_tax",
-      "required": ""
+      "id": "selling_tax"
     },
     on: {
       "change": function($event) {
@@ -17470,8 +17547,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "form-control",
     attrs: {
       "name": "credit_note_tax",
-      "id": "credit_note_tax",
-      "required": ""
+      "id": "credit_note_tax"
     },
     on: {
       "change": function($event) {
@@ -17507,8 +17583,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "form-control",
     attrs: {
       "name": "stocking_uom",
-      "id": "stocking_uom",
-      "required": ""
+      "id": "stocking_uom"
     },
     on: {
       "change": function($event) {
@@ -18148,7 +18223,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "colspan": "5"
     }
-  }, [_c('h6', [_vm._v(_vm._s((_vm.total_inclusive.toFixed(2)).toLocaleString('en-GB')))]), _vm._v(" "), _c('h6', [_vm._v("0.00")]), _vm._v(" "), _c('h4', [_vm._v(_vm._s((_vm.total_inclusive.toFixed(2)).toLocaleString('en-GB')))])])]), _vm._v(" "), _c('tr', [_c('td', {
+  }, [_c('h6', [_vm._v(_vm._s((_vm.total_inclusive.toFixed(2)).toLocaleString('en-GB')))]), _vm._v(" "), _c('h6', [_vm._v(_vm._s(_vm.discount))]), _vm._v(" "), _c('h4', [_vm._v(_vm._s((_vm.total_inclusive.toFixed(2)).toLocaleString('en-GB')))])])]), _vm._v(" "), _c('tr', [_c('td', {
     staticStyle: {
       "padding-left": "-10px",
       "text-align": "left",
@@ -18215,7 +18290,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_vm._v(" Item ")]), _c('th', {
     staticClass: "text-right"
-  }, [_vm._v(" QTY ")]), _c('th', [_vm._v(" UOM ")]), _c('th', {
+  }, [_vm._v(" Weight ")]), _c('th', [_vm._v(" UOM ")]), _c('th', {
     staticClass: "text-right"
   }, [_vm._v("Price")]), _c('th', {
     staticClass: "text-right"
@@ -18337,7 +18412,38 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       },
       expression: "selected"
     }
-  })], 1)]) : _vm._e(), _vm._v(" "), (!_vm.checkout_toggle) ? _c('div', {
+  }), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "discount"
+    }
+  }, [_vm._v("Discount")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.discount),
+      expression: "discount"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "type": "number",
+      "name": "discount",
+      "id": "discount",
+      "value": "",
+      "placeholder": "0.00",
+      "onfocus": "this.select()"
+    },
+    domProps: {
+      "value": (_vm.discount)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.discount = $event.target.value
+      }
+    }
+  })])], 1)]) : _vm._e(), _vm._v(" "), (!_vm.checkout_toggle) ? _c('div', {
     staticClass: "col-sm-6"
   }, [_vm._m(0), _vm._v(" "), _c('h2', {
     staticClass: "text-right"
@@ -18462,7 +18568,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "saleLines": _vm.salesLines,
       "customer": _vm.customer,
       "payment_types": _vm.payment_types,
-      "total_inclusive": _vm.total_inclusive
+      "total_inclusive": _vm.total_inclusive,
+      "discount": _vm.discount
     },
     on: {
       "paymentType": _vm.validateForm,
@@ -18496,6 +18603,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "balance": _vm.balance,
       "credit": _vm.credit,
       "cash": _vm.cash,
+      "discount": _vm.discount,
       "mpesa": _vm.mpesa,
       "customer": _vm.customer,
       "saleLines": _vm.salesLines
@@ -18513,7 +18621,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "width": "120px"
     }
-  }, [_vm._v("Quantity")]), _vm._v(" "), _c('th', {
+  }, [_vm._v("Weight\n                                    ")]), _vm._v(" "), _c('th', {
     staticClass: "text-nowrap",
     attrs: {
       "width": "150px"
