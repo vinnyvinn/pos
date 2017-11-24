@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use DB;
+use Excel;
+use SmoDav\Models\Sale;
 
 class CustomReportController extends Controller
 {
@@ -19,7 +21,19 @@ class CustomReportController extends Controller
             ->join('stalls','stalls.id','=','sales.stall_id')
             ->get();
 
-        return view('reports.daily',compact('sales'));   // //
+            $pay=DB::table('sales')
+                ->join('transaction_types','transaction_types.id','=','sales.transaction_type_id')
+                ->groupBy('sales.transaction_type_id')
+                ->get();
+        $selectedRole = Sale::first()->transaction_type_id;
+            //dd($selectedRole);
+        $product=DB::table('sales')
+            ->join('stock_items','stock_items.id','=','sales.stock_item_id')
+            ->groupBy('sales.stock_item_id')
+            ->get();
+            $selectedProduct = Sale::first()->stock_item_id;
+        //dd($selectedProduct);
+        return view('reports.custom',compact('sales','pay','selectedRole','product','selectedProduct'));   // //
     }
 
     /**
@@ -57,6 +71,74 @@ class CustomReportController extends Controller
 //set the titles
                 $sheet->fromArray($arr, null, 'A1', false, false)->prependRow(array('STALL', 'PRODUCT', 'QUANTITY',
                         'CODE', 'TOTAL PRICE','DATE'
+                    )
+                );
+            });
+        })->export('xls');
+    }
+
+    public function customSummaryType($id) {
+
+        Excel::create('Custom Sales Report', function($excel) use ($id) {
+
+            $excel->sheet('Excel sheet', function($sheet) use ($id){
+
+
+                //custom
+
+                $sales=DB::table('sales')
+                    ->join('stalls','stalls.id','=','sales.stall_id')
+                    ->leftJoin('transaction_types','transaction_types.id','=','sales.transaction_type_id')
+                    ->where('sales.transaction_type_id','=',$id)
+                    ->get();
+
+                $arr = array();
+                foreach ($sales as $sale) {
+
+                    $data = array($sale->name, $sale->stock_name, $sale->quantity,
+                        $sale->code, $sale->totalExclPrice,$sale->mop,$sale->created_at
+                    );
+                    array_push($arr, $data);
+                }
+
+//set the titles
+                $sheet->fromArray($arr, null, 'A1', false, false)->prependRow(array('STALL', 'PRODUCT', 'QUANTITY',
+                        'CODE', 'TOTAL PRICE','PAYMENT MODE','DATE'
+                    )
+                );
+            });
+        })->export('xls');
+    }
+
+    public function customSummaryProduct($id) {
+
+        Excel::create('Custom Sales Report', function($excel) use ($id) {
+
+            $excel->sheet('Excel sheet', function($sheet) use ($id){
+
+
+                //custom
+
+                $sales=DB::table('sales')
+                    ->join('stalls','stalls.id','=','sales.stall_id')
+                    ->leftJoin('transaction_types','transaction_types.id','=','sales.transaction_type_id')
+                    ->leftJoin('stock_items','stock_items.id','=','sales.stock_item_id')
+                    ->select('stalls.name','sales.stock_name','sales.totalExclPrice','sales.code','sales.created_at','sales.quantity','transaction_types.mop')
+                    ->where('sales.stock_item_id','=',$id)
+                    ->get();
+
+                $arr = array();
+                foreach ($sales as $sale) {
+
+                    $data = array($sale->name, $sale->stock_name, $sale->quantity,
+                        $sale->code, $sale->totalExclPrice,$sale->mop,$sale->created_at
+                    );
+                    array_push($arr, $data);
+                }
+
+//set the titles
+                $sheet->fromArray($arr, null, 'A1', false, false)->prependRow(array('STALL', 'PRODUCT', 'QUANTITY',
+                        'CODE', 'TOTAL PRICE','PAYMENT MODE','DATE'
                     )
                 );
             });

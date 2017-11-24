@@ -19,20 +19,20 @@
                 <div class="widget green-1 animated fadeInDown">
                     <div class="widget-content padding">
                         <div class="widget-icon">
-                            <i class="icon-globe-inv"></i>
+                            <i class="fa fa-users"></i>
                         </div>
                         <div class="text-box">
-                            <p class="maindata">TOTAL <b>VISITORS</b></p>
-                            <h2><span class="animate-number" data-value="25153" data-duration="3000">0</span></h2>
+                            <p class="maindata">TOTAL <b>CUSTOMERS</b></p>
+                            <h2><span>{{number_format($customers)}}</span></h2>
                             <div class="clearfix"></div>
                         </div>
                     </div>
                     <div class="widget-footer">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <i class="fa fa-caret-up rel-change"></i> <b>39%</b> increase in traffic
-                            </div>
-                        </div>
+                        {{--<div class="row">--}}
+                            {{--<div class="col-sm-12">--}}
+                                {{--<i class="fa fa-caret-up rel-change"></i> <b>39%</b> increase in traffic--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
                         <div class="clearfix"></div>
                     </div>
                 </div>
@@ -45,18 +45,18 @@
                             <i class="icon-bag"></i>
                         </div>
                         <div class="text-box">
-                            <p class="maindata">TOTAL <b>SALES</b></p>
-                            <h2><span class="animate-number" data-value="6399" data-duration="3000">0</span></h2>
+                            <p class="maindata">TOTAL <b>SALES THIS WEEK</b></p>
+                            <h2><span>{{number_format($sales)}}</span>
 
                             <div class="clearfix"></div>
                         </div>
                     </div>
                     <div class="widget-footer">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <i class="fa fa-caret-down rel-change"></i> <b>11%</b> decrease in sales
-                            </div>
-                        </div>
+                        {{--<div class="row">--}}
+                            {{--<div class="col-sm-12">--}}
+                                {{--<i class="fa fa-caret-down rel-change"></i> <b>11%</b> decrease in sales--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
                         <div class="clearfix"></div>
                     </div>
                 </div>
@@ -75,11 +75,11 @@
                         </div>
                     </div>
                     <div class="widget-footer">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <i class="fa fa-caret-down rel-change"></i> <b>7%</b> decrease in income
-                            </div>
-                        </div>
+                        {{--<div class="row">--}}
+                            {{--<div class="col-sm-12">--}}
+                                {{--<i class="fa fa-caret-down rel-change"></i> <b>7%</b> decrease in income--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
                         <div class="clearfix"></div>
                     </div>
                 </div>
@@ -92,17 +92,17 @@
                             <i class="fa fa-users"></i>
                         </div>
                         <div class="text-box">
-                            <p class="maindata">TOTAL <b>USERS</b></p>
-                            <h2><span class="animate-number" data-value="18648" data-duration="3000">0</span></h2>
+                            <p class="maindata">TOTAL <b>LOGINS THIS WEEK</b></p>
+                            <h2><span>{{number_format($days)}}</span></h2>
                             <div class="clearfix"></div>
                         </div>
                     </div>
                     <div class="widget-footer">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <i class="fa fa-caret-up rel-change"></i> <b>6%</b> increase in users
-                            </div>
-                        </div>
+                        {{--<div class="row">--}}
+                            {{--<div class="col-sm-12">--}}
+                                {{--<i class="fa fa-caret-up rel-change"></i> <b>6%</b> increase in users--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
                         <div class="clearfix"></div>
                     </div>
                 </div>
@@ -598,16 +598,20 @@
                                     <h2>S&P</h2>
                                 </div>
                                 <div class="col-xs-6">
+
                                     <label id="sp-status" class="stock-status"></label>
                                 </div>
                             </div>
                         </div>
                         <div id="home-chart-3"></div>
                     </div>
+
                     <div class="widget-footer">
                     </div>
-                </div>
-            </div>
+                 </div>
+           </div>
+            <b>Most Selling Product:</b> {{$max}}<br>
+            <b>Least Selling Product:</b> {{$min}}<br>
         </div>
 
         <!-- Footer Start -->

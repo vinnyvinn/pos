@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use SmoDav\Models\Stall;
+use Log;
+use DB;
 
 class CheckInController extends Controller
 {
@@ -14,6 +16,12 @@ class CheckInController extends Controller
      */
     public function index()
     {
+        DB::table('logs')->insert(array(
+                'name' => \Auth::user()->username,
+                'email' => \Auth::user()->email,
+                'login_at' => date('Y-m-d H:i:s')
+            )
+        );
         return view('checkin')->with('stalls', Stall::all(['id', 'name']));
     }
 
