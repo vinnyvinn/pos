@@ -17,6 +17,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
 
         Commands\SendSalesNotifications::class,
+
         '\App\Console\Commands\CronJob',
         //
     ];

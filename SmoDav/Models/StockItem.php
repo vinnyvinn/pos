@@ -24,6 +24,17 @@ class StockItem extends Model
         self::created(function ($item) {
             self::createStock($item);
         });
+        self::creating(function ($model) {
+            $model->code = strtoupper($model->barcode);
+
+            return $model;
+        });
+
+        self::updating(function ($model) {
+            $model->code = strtoupper($model->barcode);
+
+            return $model;
+        });
     }
 
     private static function createStock($item)

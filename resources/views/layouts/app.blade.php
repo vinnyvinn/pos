@@ -44,10 +44,11 @@
 
         <div id="wrapper">
             @include('layouts.partials.header')
+            @if(Auth::user())
+                @include('layouts.partials.left-nav')
+                @endif
 
-            @include('layouts.partials.left-nav')
-
-            @include('layouts.partials.rigth-nav')
+{{--            @include('layouts.partials.right-nav')--}}
 
             <div class="content-page">
                 <div class="content">

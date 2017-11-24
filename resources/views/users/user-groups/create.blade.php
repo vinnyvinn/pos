@@ -19,10 +19,97 @@
                         {{ csrf_field() }}
                         <div class="form-group">
                             <label for="name">Name</label>
-                            <input type="text" name="name" id="name" class="form-control">
+                            <input type="text" name="name" id="name" class="form-control" value="{{ old('name') }}" required>
                         </div>
                         <div class="form-group">
                             <h4>Permissions</h4>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <h5>Dashboard</h5>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="permissions[]" value="dashboard_view">
+                                            View
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <h5>Configuration</h5>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="permissions[]" value="configuration_full_access">
+                                            Full Access
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="checkbox">
+                                        <h5>Stall Assignment</h5>
+                                        <label for="">
+                                            <input type="checkbox" name="permissions[]" value="stall_full_access">
+                                            Full Access
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <h5>Customers</h5>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="permissions[]" value="customers_full_access">
+                                            Full Access
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <h5>Suppliers</h5>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="permissions[]" value="suppliers_full_access">
+                                            Full Access
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <h5>Products</h5>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="permissions[]" value="products_full_access">
+                                            Full Access
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <h5>Inventory</h5>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="permissions[]" value="inventory_full_access">
+                                            Full Access
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <h5>Purchase Order</h5>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="permissions[]" value="purchaseOrder_full_access">
+                                            Full Access
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <h5>Reports</h5>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="permissions[]" value="reports_full_access">
+                                            Full Access
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="row">
                                 <div class="col-sm-4">
                                     <h5>Users</h5>
@@ -43,35 +130,24 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
-                                    <h5>Transaction</h5>
+                                    <h5>Sale</h5>
                                     <div class="checkbox">
                                         <label for="">
-                                            <input type="checkbox" name="permissions[]" value="transaction_make">
-                                            Approve
-                                        </label>
-                                    </div>
-                                    <div class="checkbox">
-                                        <label for="">
-                                            <input type="checkbox" name="permissions[]" value="transaction_view">
-                                            View
+                                            <input type="checkbox" name="permissions[]" value="sale_full_access">
+                                            Full Access
                                         </label>
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-sm-4">
-                                    <h5>Petty Cash</h5>
-                                    <label for="">
-                                        <input type="checkbox" name="permissions[]" value="petty_full_access">
-                                        Full Access
-                                    </label>
-                                </div>
-                                <div class="col-sm-4">
-                                    <h5>Stall Assignment</h5>
-                                    <label for="">
-                                        <input type="checkbox" name="permissions[]" value="stall_full_access">
-                                        Full Access
-                                    </label>
+                                    <div class="checkbox">
+                                        <h5>Petty Cash</h5>
+                                        <label for="">
+                                            <input type="checkbox" name="permissions[]" value="petty_full_access">
+                                            Full Access
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
                         </div>

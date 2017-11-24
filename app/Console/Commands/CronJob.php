@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use App\Mail\OrderShipped;
 use Mail;
 use DB;
+use Log;
 class CronJob extends Command
 {
     /**
@@ -30,8 +31,6 @@ class CronJob extends Command
     public function __construct()
     {
         parent::__construct();
-
-
     }
 
     /**
