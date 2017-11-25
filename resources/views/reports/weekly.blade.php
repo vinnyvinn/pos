@@ -46,26 +46,21 @@ padding: 1px; width: 100px">Query</button>
                         <form action="{{url('storeWeeklyProduct')}}" method="post">
                             {{csrf_field()}}
                             <b>Search by product name</b>
-                            <div class="form-group">
-                                {!! Form::text('name', null, array('placeholder' => 'Search Text','class' => 'form-control','id'=>'search_text')) !!}
-                            </div>
-                            {{--<select class="form-control" name="stock_item_id" style="width: 35% !important;">--}}
+                            <select class="form-control" name="stock_item_id" style="width: 35% !important;">
 
-                            {{--@if ($product->count())--}}
-                                {{--@foreach($product as $products)--}}
-                                    {{--<option value="{{ $products->id }}" {{ $selectedProduct == $products->id ? 'selected="selected"' : '' }}>{{ $products->name }}</option>--}}
+                            @if ($product->count())
+                                @foreach($product as $products)
+                                    <option value="{{ $products->id }}" {{ $selectedProduct == $products->id ? 'selected="selected"' : '' }}>{{ $products->name }}</option>
 
-                                {{--@endforeach--}}
-                            {{--@endif--}}
+                                @endforeach
+                            @endif
 
-                            {{--</select>--}}
+                            </select>
 
                             <button type="submit" value="search" class="btn btn-info" style="margin-left: 30px;margin-top: 3px;
 padding: 1px; width: 100px">Query</button>
                         </form>
-                        <div class="form-group">
-                            {!! Form::text('term', null, array('placeholder' => 'Search Text','class' => 'form-control','id'=>'search_text')) !!}
-                        </div>
+
                     </div>
                 </div>
                 <div class="widget-content padding">
@@ -106,19 +101,10 @@ padding: 1px; width: 100px">Query</button>
 
                 <script>
                     $(document).ready(function() {
-                        $('#sales_table').dataTable();
+
                         $('#wah').select2();
                     });
                 </script>
-                <script type="text/javascript">
-                    var url = "{{ url('LoadWeekly') }}";
-                    $('#search_text').typeahead({
-                        source:  function (query, process) {
-                            return $.get(url, { query: query }, function (data) {
-                                return process(data);
-                            });
-                        }
-                    });
-                </script>
+
 
 @endsection

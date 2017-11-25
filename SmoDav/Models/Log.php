@@ -4,9 +4,9 @@ namespace SmoDav\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class TransactionType extends Model
+class Log extends Model
 {
     protected $fillable = [
-        'id', 'mop',
-    ];//
+        'name', 'login_at', 'email'
+    ];  //
 }

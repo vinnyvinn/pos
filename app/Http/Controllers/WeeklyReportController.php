@@ -35,7 +35,7 @@ class WeeklyReportController extends Controller
                 $search=\Request::get('name');
                 $product=DB::table('sales')
                     ->join('stock_items','stock_items.id','=','sales.stock_item_id')
-                   ->where('stock_items.name','like'.'%'.$search.'%')
+//                   ->where('stock_items.name','like'.'%'.$search.'%')
                     ->groupBy('sales.stock_item_id')
                     ->get();
                 //return response()->json($product);
