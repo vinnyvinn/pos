@@ -24,3 +24,4 @@
 <script src="{{ asset('assets/libs/bootstrap-datepicker/js/bootstrap-datepicker.js') }}"></script>
 <script src="{{ asset('assets/libs/jquery-icheck/icheck.min.js') }}"></script>
 <script src="{{ asset('assets/js/init.js') }}"></script>
+<script src="{{ asset(mix('js/app.js')) }}"></script>

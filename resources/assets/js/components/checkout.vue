@@ -98,6 +98,35 @@
                         </div>
                     </td>
                 </tr>
+                <tr>
+                    <td>Credit Card</td>
+                    <td>
+                        <div style="display:flex;" v-for="row in rows">
+                            <div class="form-group">
+                                <label v-if="parseInt(row.default) == 1">Code</label>
+                                <input v-model="row.m_pesa_code" type="text" onfocus="this.select()"
+                                       class="form-control input-sm text-right"
+                                       style="width:110px; margin-right: 20px;"/>
+                            </div>
+                            <div class="form-group">
+                                <label v-if="parseInt(row.default) == 1">Amount :</label>
+                                <input v-model="row.m_pesa_amount" type="number" onfocus="this.select()" min="0"
+                                       class="form-control input-sm text-right"
+                                       style="width:110px; margin-right: 20px;"/>
+                            </div>
+
+                            <div class="form-group">
+                                <button v-if="parseInt(row.default) == 1" @click.prevent="addMpesaField"
+                                        class="btn btn-success btn-xs" style="margin-top:25px;"><i
+                                        class="fa fa-plus"></i></button>
+                                <button v-if="parseInt(row.default) == 0"
+                                        @click.prevent="removeMpesaField(rows.indexOf(row))"
+                                        class="btn btn-danger btn-xs" style="margin-top:5px;"><i
+                                        class="fa fa-minus"></i></button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
                 </tbody>
             </table>
         </div>

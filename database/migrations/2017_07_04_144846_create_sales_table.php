@@ -31,7 +31,6 @@ class CreateSalesTable extends Migration
             $table->string('totalInclPrice');
             $table->string('totalExclPrice');
             $table->string('total_tax');
-            $table->double('discount')->nullable();
             $table->timestamps();
         });
     }

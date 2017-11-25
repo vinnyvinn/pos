@@ -233,13 +233,19 @@
                             item.selling_tax = (item.selling_tax) ? item.selling_tax.rate : null;
                             return item;
                         });
+                        console.log("stock is", response.data);
                         this.stock = stock;
                         console.log(response);
                         this.products = response.data.products;
                         this.multiselctopts = [];
-                        stock.forEach((val) => {
-                            this.multiselctopts.push({label: val.name, value: val.id})
-                        });
+
+                        if(response.data.products.length >0){
+                            this.multiselctopts=[];
+                            response.data.products.forEach((val) => {
+                                this.multiselctopts.push({label:(val.name + " - "+ val.barcode), value: val.id})
+                            })
+                        }
+                      ;
                     }
                 ).catch((err) => {
                     console.log(err);

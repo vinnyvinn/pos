@@ -21,8 +21,7 @@ class Sale extends Model
             'unitInclPrice',
             'totalInclPrice',
             'totalExclPrice',
-            'total_tax',
-              'discount'
+            'total_tax'
             ];
   public function stock()
   {
