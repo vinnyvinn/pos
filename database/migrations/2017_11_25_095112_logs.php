@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTransctionTypesTable extends Migration
+class Logs extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,14 @@ class CreateTransctionTypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('transaction_types', function (Blueprint $table) {
+        Schema::create('logs', function (Blueprint $table) {
             //
             $table->increments('id');
-            $table->string('mop');
+            $table->string('name');
+            $table->string('email');
+            $table->string('login_at');
             $table->timestamps();
-        });
+        });  //
     }
 
     /**
@@ -28,6 +30,6 @@ class CreateTransctionTypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('transaction_types');
+        Schema::dropIfExists('logs');
     }
 }

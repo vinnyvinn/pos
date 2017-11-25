@@ -6,6 +6,7 @@ use SmoDav\Models\PriceList;
 use SmoDav\Models\PriceListName;
 use SmoDav\Models\Stall;
 use SmoDav\Models\Tax;
+use SmoDav\Models\TransactionType;
 
 class DefaultsSeeder extends Seeder
 {
@@ -23,6 +24,8 @@ class DefaultsSeeder extends Seeder
         $this->setupCustomer();
 
         $this->setupStall();
+
+        $this->setupTransactionmode();
     }
 
     private function setupTax()
@@ -75,6 +78,21 @@ class DefaultsSeeder extends Seeder
         Stall::create([
             'name' => 'Head Office',
             'location' => '',
+        ]);
+    }
+    private function setupTransactionmode()
+    {
+        TransactionType::create([
+            'mop' => 'MPESA',
+
+        ]);
+        TransactionType::create([
+            'mop' => 'CREDIT CARD',
+
+        ]);
+        TransactionType::create([
+            'mop' => 'CASH',
+
         ]);
     }
 }
