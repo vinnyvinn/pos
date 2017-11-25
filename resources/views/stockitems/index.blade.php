@@ -26,12 +26,12 @@
                             New Stock Item
                         </a>
                     </div>
-                    <div class="pull-right">
-                        <form action="" method="post" enctype="multipart/form-data">
-                            <input type="file" name="" id="">
-                        </form>
-                        <a href="{{ asset('Products.xlsx') }}">Download Template</a>
-                    </div>
+                    {{--<div class="pull-right">--}}
+                        {{--<form action="" method="post" enctype="multipart/form-data">--}}
+                            {{--<input type="file" name="" id="">--}}
+                        {{--</form>--}}
+                        {{--<a href="{{ asset('Products.xlsx') }}">Download Template</a>--}}
+                    {{--</div>--}}
                 </div>
                 <div class="widget-content padding">
                     <br>
