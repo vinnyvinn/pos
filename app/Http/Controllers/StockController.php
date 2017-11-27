@@ -56,7 +56,7 @@ class StockController extends Controller
         {
           Stock::create();
         }
-        dd($stock);
+//        dd($stock);
           $stock->increment('quantity_on_hand', $request->get('quantity_on_hand'));
         flash('Successfully created stock');
 

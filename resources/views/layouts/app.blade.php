@@ -73,7 +73,6 @@
     @include('layouts.partials.content.js')
 
 
-    <script src="{{ asset(mix('js/app.js')) }}"></script>
 
     @yield('footer')
 
