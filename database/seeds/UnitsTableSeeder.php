@@ -13,7 +13,7 @@ class UnitsTableSeeder extends Seeder
     {
         DB::table('unit_of_measures')->insert([
             'description' => "Default Unit of Measure",
-            'name' => 'Unit',
+            'name' => 'kilogram',
             'is_active' => true,
             'system_install' => true,
         ]);
