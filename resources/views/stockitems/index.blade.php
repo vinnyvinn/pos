@@ -1,7 +1,8 @@
 @extends('layouts.app')
 
 @section('header')
-    <link href="{{ asset('assets/libs/jquery-datatables/css/dataTables.bootstrap.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/libs/jquery-datatables/css/dataTables.bootstrap.css') }}" rel="stylesheet"
+          type="text/css"/>
 @endsection
 
 @section('content')
@@ -26,12 +27,18 @@
                             New Stock Item
                         </a>
                     </div>
-                    {{--<div class="pull-right">--}}
-                        {{--<form action="" method="post" enctype="multipart/form-data">--}}
-                            {{--<input type="file" name="" id="">--}}
-                        {{--</form>--}}
-                        {{--<a href="{{ asset('Products.xlsx') }}">Download Template</a>--}}
-                    {{--</div>--}}
+                    <div class="pull-right" style="width: 400px; margin-right:10px">
+                        <form action="{{ route('import') }}" method="post" enctype="multipart/form-data">
+                            {{ csrf_field() }}
+                            <div class="input-group">
+                                <input type="file" name="products" id="products" accept=".xlsx, .xls" class="form-control">
+                                <div class="input-group-btn">
+                                    <input type="submit" class="btn btn-primary" value="Import from Excel">
+                                </div>
+                            </div>
+                        </form>
+                        <a href="{{ asset('Products.xlsx') }}">Download Template</a>
+                    </div>
                 </div>
                 <div class="widget-content padding">
                     <br>
@@ -79,7 +86,9 @@
                                         <td class="text-center"><span class="btn btn-xs btn-danger">Inactive</span></td>
                                     @endif
                                     <td class="text-center">
-                                        <a href="{{ route('stockItem.edit', $item->id) }}" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></a>
+                                        <a href="{{ route('stockItem.edit', $item->id) }}"
+                                           class="btn btn-xs btn-info"><i
+                                                    class="fa fa-pencil"></i></a>
                                         <a href="{{ route('stockItem.destroy', $item->id) }}"
                                            class="btn btn-danger btn-xs" data-method="DELETE"
                                            rel="nofollow"

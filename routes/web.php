@@ -57,6 +57,8 @@ Route::group(['middleware' => ['auth', 'checkedIn']], function () {
     Route::post('storeProduct','TransactionTypesController@storeProduct');
     Route::get('LoadJs','TransactionTypesController@LoadJs');
 
+    Route::post('import', 'StockItemController@importExcel')->name('import');
+
     Route::resource('pettyCashType', 'pettyCashTypeController');
     Route::resource('pettyCash', 'PettyCashController');
 });

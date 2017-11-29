@@ -14,7 +14,7 @@
                 </div>
                 <div class="col-sm-4 text-right">
                     <h5>{{ total_inclusive }}</h5>
-                    <h5>{{ discount }}</h5>
+                    <h5>{{ isNaN(discount) ? 0 : discount }}</h5>
                     <h4><strong>{{ parseFloat(total_inclusive) - parseFloat(discount) }}</strong></h4>
                     <h4><strong>{{ balance }}</strong></h4>
                 </div>
@@ -101,26 +101,26 @@
                 <tr>
                     <td>Credit Card</td>
                     <td>
-                        <div style="display:flex;" v-for="row in rows">
+                        <div style="display:flex;" v-for="creditRow in creditRows">
                             <div class="form-group">
-                                <label v-if="parseInt(row.default) == 1">Code</label>
-                                <input v-model="row.m_pesa_code" type="text" onfocus="this.select()"
+                                <label v-if="parseInt(creditRow.credit_default) == 1">Code</label>
+                                <input v-model="creditRow.credit_card_code" type="text" onfocus="this.select()"
                                        class="form-control input-sm text-right"
                                        style="width:110px; margin-right: 20px;"/>
                             </div>
                             <div class="form-group">
-                                <label v-if="parseInt(row.default) == 1">Amount :</label>
-                                <input v-model="row.m_pesa_amount" type="number" onfocus="this.select()" min="0"
+                                <label v-if="parseInt(creditRow.credit_default) == 1">Amount :</label>
+                                <input v-model="creditRow.credit_card_amount" type="number" onfocus="this.select()" min="0"
                                        class="form-control input-sm text-right"
                                        style="width:110px; margin-right: 20px;"/>
                             </div>
 
                             <div class="form-group">
-                                <button v-if="parseInt(row.default) == 1" @click.prevent="addMpesaField"
+                                <button v-if="parseInt(creditRow.credit_default) == 1" @click.prevent="addCreditField"
                                         class="btn btn-success btn-xs" style="margin-top:25px;"><i
                                         class="fa fa-plus"></i></button>
-                                <button v-if="parseInt(row.default) == 0"
-                                        @click.prevent="removeMpesaField(rows.indexOf(row))"
+                                <button v-if="parseInt(creditRow.credit_default) == 0"
+                                        @click.prevent="removeCreditField(creditRows.indexOf(creditRow))"
                                         class="btn btn-danger btn-xs" style="margin-top:5px;"><i
                                         class="fa fa-minus"></i></button>
                             </div>
@@ -161,7 +161,15 @@
                             m_pesa_amount: 0,
                             default: 1
                         }
-                    ]
+                    ],
+                creditRows:
+                [
+                    {
+                        credit_card_code: "",
+                        credit_card_amount: 0,
+                        credit_default: 1
+                    }
+                ]
             }
         },
         watch: {},
@@ -169,18 +177,34 @@
             balance() {
                 let discount = parseFloat(this.discount);
                 discount = isNaN(discount) ? 0 : discount;
-
                 let total = parseFloat(this.total_inclusive) - discount;
 
-                let m_pesa_total = this.rows.map(row => {
+                let mpesa = this.rows.map(row => {
                     return row.m_pesa_amount;
-                }).reduce((a, b) => {
-                    return parseFloat(a) + parseFloat(b);
-                });
-                if (!parseFloat(m_pesa_total)) m_pesa_total = 0;
-                if (!parseFloat(this.credit_amount)) this.credit_amount = 0;
-                let balance = (parseFloat(m_pesa_total) + parseFloat(this.cash_amount) + parseFloat(this.credit_amount)) - parseFloat(total);
-                // if(parseFloat(balance) < 0) return "Amount Is Not Enough!";
+                }).reduce((prev, nex) => {
+                    nex = parseFloat(nex);
+                    nex = isNaN(nex) ? 0 : nex;
+
+                    return prev + nex;
+                }, 0);
+
+                let creditCard = this.creditRows.map(creditRow => {
+                    return creditRow.credit_card_amount;
+                }).reduce((prev, nex) => {
+                    nex = parseFloat(nex);
+                    nex = isNaN(nex) ? 0 : nex;
+
+                    return prev + nex;
+                }, 0);
+
+                let credit = parseFloat(this.credit_amount);
+                let cash = parseFloat(this.cash_amount);
+                credit = isNaN(credit) ? 0 : credit;
+                cash = isNaN(cash) ? 0 : cash;
+
+                let paid = credit + cash + mpesa + creditCard;
+                let balance = paid - total;
+
                 return balance < 0 ? 0 : balance;
             },
             validateCompletion() {
@@ -221,7 +245,7 @@
                     });
                     return;
                 }
-                this.$emit('paymentType', this.cash_amount, this.rows, this.credit_amount, this.balance, this.notes);
+                this.$emit('paymentType', this.cash_amount, this.rows, this.credit_amount, this.balance, this.notes, this.creditRows);
             },
             back() {
                 this.$emit('toggleCheckout');
@@ -233,6 +257,14 @@
 
             removeMpesaField(row) {
                 return this.rows.splice(row, 1);
+            },
+
+            addCreditField() {
+                return this.creditRows.push({credit_code: "", credit_amount: 0, credit_default: 0});
+            },
+
+            removeCreditField(creditRow) {
+                return this.creditRows.splice(creditRow, 1)
             }
 
         },

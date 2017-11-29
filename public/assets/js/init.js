@@ -236,7 +236,7 @@ $('.selectpicker').selectpicker();
 
 
 //FILE INPUT
-$('input[type=file]').bootstrapFileInput();
+// $('input[type=file]').bootstrapFileInput();
 
 
 //DATE PICKER

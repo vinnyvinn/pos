@@ -62,7 +62,7 @@
                                         </td>
                                         <td>
                                             <input type="number" onfocus="this.select()" class="form-control input-sm"
-                                                   v-model="quantity" min="0" required/>
+                                                   v-model="quantity" min="0.01" step="0.01" required/>
                                         </td>
                                         <td class="text-right">
                                             {{unitExclPrice.toLocaleString('en-GB')}}

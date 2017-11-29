@@ -28,6 +28,11 @@ class PaymentTypesTableSeeder extends Seeder
             'slug' =>'credit',
             'is_credit' => 1
           ],
+            [
+            'name' =>'Credit Card',
+            'slug' =>'credit_card',
+            'is_credit' => 0
+          ],
         ]);
 
     }

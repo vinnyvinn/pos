@@ -14517,6 +14517,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 m_pesa_code: "",
                 m_pesa_amount: 0,
                 default: 1
+            }],
+            creditRows: [{
+                credit_card_code: "",
+                credit_card_amount: 0,
+                credit_default: 1
             }]
         };
     },
@@ -14526,18 +14531,34 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         balance: function balance() {
             var discount = parseFloat(this.discount);
             discount = isNaN(discount) ? 0 : discount;
-
             var total = parseFloat(this.total_inclusive) - discount;
 
-            var m_pesa_total = this.rows.map(function (row) {
+            var mpesa = this.rows.map(function (row) {
                 return row.m_pesa_amount;
-            }).reduce(function (a, b) {
-                return parseFloat(a) + parseFloat(b);
-            });
-            if (!parseFloat(m_pesa_total)) m_pesa_total = 0;
-            if (!parseFloat(this.credit_amount)) this.credit_amount = 0;
-            var balance = parseFloat(m_pesa_total) + parseFloat(this.cash_amount) + parseFloat(this.credit_amount) - parseFloat(total);
-            // if(parseFloat(balance) < 0) return "Amount Is Not Enough!";
+            }).reduce(function (prev, nex) {
+                nex = parseFloat(nex);
+                nex = isNaN(nex) ? 0 : nex;
+
+                return prev + nex;
+            }, 0);
+
+            var creditCard = this.creditRows.map(function (creditRow) {
+                return creditRow.credit_card_amount;
+            }).reduce(function (prev, nex) {
+                nex = parseFloat(nex);
+                nex = isNaN(nex) ? 0 : nex;
+
+                return prev + nex;
+            }, 0);
+
+            var credit = parseFloat(this.credit_amount);
+            var cash = parseFloat(this.cash_amount);
+            credit = isNaN(credit) ? 0 : credit;
+            cash = isNaN(cash) ? 0 : cash;
+
+            var paid = credit + cash + mpesa + creditCard;
+            var balance = paid - total;
+
             return balance < 0 ? 0 : balance;
         },
         validateCompletion: function validateCompletion() {
@@ -14578,7 +14599,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 });
                 return;
             }
-            this.$emit('paymentType', this.cash_amount, this.rows, this.credit_amount, this.balance, this.notes);
+            this.$emit('paymentType', this.cash_amount, this.rows, this.credit_amount, this.balance, this.notes, this.creditRows);
         },
         back: function back() {
             this.$emit('toggleCheckout');
@@ -14588,6 +14609,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         removeMpesaField: function removeMpesaField(row) {
             return this.rows.splice(row, 1);
+        },
+        addCreditField: function addCreditField() {
+            return this.creditRows.push({ credit_code: "", credit_amount: 0, credit_default: 0 });
+        },
+        removeCreditField: function removeCreditField(creditRow) {
+            return this.creditRows.splice(creditRow, 1);
         }
     },
     props: {
@@ -16831,7 +16858,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "row"
   }, [_vm._m(0, false, false), _vm._v(" "), _c('div', {
     staticClass: "col-sm-4 text-right"
-  }, [_c('h5', [_vm._v(_vm._s(_vm.total_inclusive))]), _vm._v(" "), _c('h5', [_vm._v(_vm._s(_vm.discount))]), _vm._v(" "), _c('h4', [_c('strong', [_vm._v(_vm._s(parseFloat(_vm.total_inclusive) - parseFloat(_vm.discount)))])]), _vm._v(" "), _c('h4', [_c('strong', [_vm._v(_vm._s(_vm.balance))])])])])]), _vm._v(" "), _c('div', {
+  }, [_c('h5', [_vm._v(_vm._s(_vm.total_inclusive))]), _vm._v(" "), _c('h5', [_vm._v(_vm._s(isNaN(_vm.discount) ? 0 : _vm.discount))]), _vm._v(" "), _c('h4', [_c('strong', [_vm._v(_vm._s(parseFloat(_vm.total_inclusive) - parseFloat(_vm.discount)))])]), _vm._v(" "), _c('h4', [_c('strong', [_vm._v(_vm._s(_vm.balance))])])])])]), _vm._v(" "), _c('div', {
     staticClass: "col-md-6"
   }, [_c('table', {
     staticClass: "table"
@@ -17008,19 +17035,19 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, [_c('i', {
       staticClass: "fa fa-minus"
     })]) : _vm._e()])])
-  }))]), _vm._v(" "), _c('tr', [_c('td', [_vm._v("Credit Card")]), _vm._v(" "), _c('td', _vm._l((_vm.rows), function(row) {
+  }))]), _vm._v(" "), _c('tr', [_c('td', [_vm._v("Credit Card")]), _vm._v(" "), _c('td', _vm._l((_vm.creditRows), function(creditRow) {
     return _c('div', {
       staticStyle: {
         "display": "flex"
       }
     }, [_c('div', {
       staticClass: "form-group"
-    }, [(parseInt(row.default) == 1) ? _c('label', [_vm._v("Code")]) : _vm._e(), _vm._v(" "), _c('input', {
+    }, [(parseInt(creditRow.credit_default) == 1) ? _c('label', [_vm._v("Code")]) : _vm._e(), _vm._v(" "), _c('input', {
       directives: [{
         name: "model",
         rawName: "v-model",
-        value: (row.m_pesa_code),
-        expression: "row.m_pesa_code"
+        value: (creditRow.credit_card_code),
+        expression: "creditRow.credit_card_code"
       }],
       staticClass: "form-control input-sm text-right",
       staticStyle: {
@@ -17032,22 +17059,22 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "onfocus": "this.select()"
       },
       domProps: {
-        "value": (row.m_pesa_code)
+        "value": (creditRow.credit_card_code)
       },
       on: {
         "input": function($event) {
           if ($event.target.composing) { return; }
-          _vm.$set(row, "m_pesa_code", $event.target.value)
+          _vm.$set(creditRow, "credit_card_code", $event.target.value)
         }
       }
     })]), _vm._v(" "), _c('div', {
       staticClass: "form-group"
-    }, [(parseInt(row.default) == 1) ? _c('label', [_vm._v("Amount :")]) : _vm._e(), _vm._v(" "), _c('input', {
+    }, [(parseInt(creditRow.credit_default) == 1) ? _c('label', [_vm._v("Amount :")]) : _vm._e(), _vm._v(" "), _c('input', {
       directives: [{
         name: "model",
         rawName: "v-model",
-        value: (row.m_pesa_amount),
-        expression: "row.m_pesa_amount"
+        value: (creditRow.credit_card_amount),
+        expression: "creditRow.credit_card_amount"
       }],
       staticClass: "form-control input-sm text-right",
       staticStyle: {
@@ -17060,17 +17087,17 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "min": "0"
       },
       domProps: {
-        "value": (row.m_pesa_amount)
+        "value": (creditRow.credit_card_amount)
       },
       on: {
         "input": function($event) {
           if ($event.target.composing) { return; }
-          _vm.$set(row, "m_pesa_amount", $event.target.value)
+          _vm.$set(creditRow, "credit_card_amount", $event.target.value)
         }
       }
     })]), _vm._v(" "), _c('div', {
       staticClass: "form-group"
-    }, [(parseInt(row.default) == 1) ? _c('button', {
+    }, [(parseInt(creditRow.credit_default) == 1) ? _c('button', {
       staticClass: "btn btn-success btn-xs",
       staticStyle: {
         "margin-top": "25px"
@@ -17078,12 +17105,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       on: {
         "click": function($event) {
           $event.preventDefault();
-          _vm.addMpesaField($event)
+          _vm.addCreditField($event)
         }
       }
     }, [_c('i', {
       staticClass: "fa fa-plus"
-    })]) : _vm._e(), _vm._v(" "), (parseInt(row.default) == 0) ? _c('button', {
+    })]) : _vm._e(), _vm._v(" "), (parseInt(creditRow.credit_default) == 0) ? _c('button', {
       staticClass: "btn btn-danger btn-xs",
       staticStyle: {
         "margin-top": "5px"
@@ -17091,7 +17118,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       on: {
         "click": function($event) {
           $event.preventDefault();
-          _vm.removeMpesaField(_vm.rows.indexOf(row))
+          _vm.removeCreditField(_vm.creditRows.indexOf(creditRow))
         }
       }
     }, [_c('i', {
@@ -18618,7 +18645,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "type": "number",
       "onfocus": "this.select()",
-      "min": "0",
+      "min": "0.01",
+      "step": "0.01",
       "required": ""
     },
     domProps: {
