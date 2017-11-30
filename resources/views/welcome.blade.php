@@ -46,7 +46,7 @@
                         </div>
                         <div class="text-box">
                             <p class="maindata">TOTAL <b>SALES THIS WEEK</b></p>
-                            <h2><span>{{number_format($sales)}}</span>
+                            <h2>KSH <span class="animate-number" data-value="{{ number_format($sales) }}" data-duration="3000">0</span></h2>
 
                             <div class="clearfix"></div>
                         </div>
@@ -70,7 +70,7 @@
                         </div>
                         <div class="text-box">
                             <p class="maindata">OVERALL <b>INCOME</b></p>
-                            <h2>$<span class="animate-number" data-value="70389" data-duration="3000">0</span></h2>
+                            <h2>KSH <span class="animate-number" data-value="{{ number_format($sales) - $expense }}" data-duration="3000">0</span></h2>
                             <div class="clearfix"></div>
                         </div>
                     </div>

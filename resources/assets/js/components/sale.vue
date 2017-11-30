@@ -41,6 +41,8 @@
                                         <th class="text-nowrap">UOM</th>
                                         <th class="text-nowrap" width="120px">Weight
                                         </th>
+                                        <!--<th class="text-nowrap" width="120px">Quantity-->
+                                        <!--</th>-->
                                         <th class="text-nowrap" width="150px">Unit Excl. Price</th>
                                         <th class="text-nowrap" width="150px">Unit Incl. Price</th>
                                         <th class="text-nowrap text-right">Total Exclusive</th>
@@ -61,9 +63,13 @@
                                             </select>
                                         </td>
                                         <td>
-                                            <input type="number" onfocus="this.select()" class="form-control input-sm"
-                                                   v-model="quantity" min="0.01" step="0.01" required/>
+                                            <input type="number" class="form-control input-sm"
+                                                   v-model="weight" @change="getWeight()" min="0.01" step="0.01" required/>
                                         </td>
+                                        <!--<td>-->
+                                            <!--<input type="number" onfocus="this.select()" class="form-control input-sm"-->
+                                                   <!--v-model="quantity" min="0.01" step="0.01" required/>-->
+                                        <!--</td>-->
                                         <td class="text-right">
                                             {{unitExclPrice.toLocaleString('en-GB')}}
                                         </td>
@@ -93,6 +99,7 @@
                                         <th class="text-nowrap">Stock Item</th>
                                         <th class="text-nowrap">UOM</th>
                                         <th class="text-nowrap text-right" width="120px">Weight</th>
+                                        <th class="text-nowrap text-right" width="120px">Quantity</th>
                                         <th class="text-nowrap text-right" width="150px">Unit Excl. Price</th>
                                         <th class="text-nowrap text-right" width="150px">Unit Incl. Price</th>
                                         <th class="text-nowrap text-right">Total Exclusive</th>
@@ -105,10 +112,11 @@
                                     <tr v-if="salesLines.length" v-for="sale in salesLines">
                                         <td>{{sale.code + ' ' + sale.name}}</td>
                                         <td>{{sale.uom}}</td>
+                                        <td class="text-right">{{sale.weight}}</td>
                                         <td class="text-right">{{sale.quantity}}</td>
                                         <td class="text-right">{{sale.unitExclPrice.toLocaleString('en-GB')}}</td>
                                         <td class="text-right">{{sale.unitInclPrice.toLocaleString('en-GB')}}</td>
-                                        <td class="text-right">{{sale.totalExcl.toLocaleString('en-GB')}}</td>
+                                        <td class="text-right">{{isNaN(sale.totalExcl.toLocaleString('en-GB')) ? 0 : sale.totalExcl.toLocaleString('en-GB')}}</td>
                                         <td class="text-right">{{sale.totalTax.toLocaleString('en-GB')}}</td>
                                         <td class="text-right">{{sale.totalIncl.toLocaleString('en-GB')}}</td>
                                         <td>
@@ -151,6 +159,7 @@
     import receipt from './credit-receipt.vue';
     import Multiselect from 'vue-multiselect'
     import vSelect from 'vue-select'
+    import appdetails from '../appdetails'
 
     export default {
         data() {
@@ -175,28 +184,68 @@
                 taxes: null,
                 payment_types: [],
                 discount: 0,
+                weight: 0,
 
                 //extra
                 searchitem: '',
                 products: [],
                 uomvals: [],
                 multiselctopts: [],
-                selected: ''
+                selected: '',
+
+                //from file
+                fileval:0,
+                requestcmplt:false
 
 
             }
         },
         created() {
+            console.log("created...");
             this.getStock();
-
+            this.getWeight();
         },
         watch: {
             searchitem() {
                 this.filterProducts();
             }
-
         },
         methods: {
+            getWeight() {
+                this.requestcmplt = false;
+                    if (!this.requestcmplt) {
+                        this.requestcmplt = true;
+                        setInterval(()=>{
+                            axios.get(appdetails.filepath).then((res)=>{
+                                let weightData = res.data.split(',');
+                                this.requestcmplt = true;
+                                if(weightData.length >0){
+                                    let netKGS = weightData[2];
+                                    this.weight = +netKGS.split("KG")[0]
+                                }
+
+                            }, err=>{
+                                console.log("errors", err.message)
+                            })
+                        },2000);
+                    }
+
+
+              /* setTimeout(()=>{
+                   ret
+               }, 2000);
+             */   /* setInterval(function() {
+                    let textFile = "ScaleReading.txt";
+                    let reader = new FileReader;
+                   reader.onload = function(textFile){}
+                    function(weight) {
+                        console.log("weight is..",weight);
+                        let weightData = weight.split(',');
+                        let netKGS = weightData[2];
+                        return netKGS.substring(0, netKGS.length - 2);
+                    })
+                },1000)*/
+            },
             changedProduct(obj) {
                 this.stockItem = obj.value;
             },
@@ -314,6 +363,8 @@
                     return saleLine.id == this.stockItem && saleLine.unit_conversion_id == this.conversionId
                 })[0];
                 let quantity = this.quantity;
+                let weight = this.weight;
+
                 if (existingSale) {
                     existingSale.quantity = parseFloat(existingSale.quantity) + parseFloat(this.quantity);
                     existingSale.totalExcl = parseFloat(existingSale.totalExcl) + parseFloat(this.totalExcl);
@@ -322,6 +373,7 @@
                     this.stockItem = "";
                     this.conversionId = "";
                     this.quantity = 1;
+                    this.weight = 0;
 
                     return existingSale;
                 }
@@ -336,6 +388,7 @@
                     has_conversions: this.selected_stockItem.has_conversions,
                     conversions: this.selected_stockItem.conversions,
                     quantity: quantity,
+                    weight: weight,
                     unitExclPrice: this.unitExclPrice,
                     unitInclPrice: this.unitInclPrice,
                     totalExcl: this.totalExcl,
@@ -347,6 +400,7 @@
                     id: this.stockItem,
                     unit_conversion_id: this.conversionId,
                     quantity: this.quantity,
+                    weight: this.weight,
                     has_conversions: this.selected_stockItem.has_conversions,
                     conversions: this.selected_stockItem.conversions
 
@@ -355,6 +409,7 @@
                 this.stockItem = "";
                 this.conversionId = "";
                 this.quantity = 1;
+                this.weight = 0;
 
             },
 
@@ -363,6 +418,7 @@
                     this.stockItem = sale.id;
                     this.conversionId = sale.unit_conversion_id;
                     this.quantity = sale.quantity;
+                    this.weight = sale.weight;
                     this.deleteSale(sale);
                 }
             },

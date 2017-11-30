@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use SmoDav\Models\UnitOfMeasure;
 use SmoDav\Models\StockItem;
 use SmoDav\Models\Stock;
@@ -17,12 +18,24 @@ use PDF;
 
 class SaleController extends Controller
 {
+    public function fileopen(Request $request)
+    {
+        try
+        {
+            $contents = File::get(storage_path('app/test.txt'));
+            return response($contents, 200);
+        }
+        catch (Illuminate\Filesystem\FileNotFoundException $exception)
+        {
+            die("The file doesn't exist");
+        }
+    }
 
     public function index()
     {
         return view(
             'sale.index',
-            ['sales' => Order::with(['stall', 'customer', 'paymentType'])
+            ['sales'=> Order::with(['stall', 'customer', 'paymentType'])
                 ->where('document_type', Order::INVOICE)
                 ->orderBy('id', 'desc')
                 ->get(), 'stall_id' => session()->get('stall_id')]);
@@ -30,7 +43,7 @@ class SaleController extends Controller
 
     public function create()
     {
-        $stallId =  session()->get('stall_id');  // TODO: Change this to use session
+        $stallId = session()->get('stall_id');  // TODO: Change this to use session
 
         if (request()->ajax()) {
             $stockItems = StockItem::forSale($stallId);
@@ -40,7 +53,7 @@ class SaleController extends Controller
                     'stock'         => $stockItems,
                     'uoms'          => UnitOfMeasure::active()->get(['id', 'name'])->keyBy('id'),
                     'customers'     => Customer::get(
-                                    ['name', 'account_balance', 'account_number', 'credit_limit', 'id', 'is_credit']),
+                        ['name', 'account_balance', 'account_number', 'credit_limit', 'id', 'is_credit']),
                     'payment_types' => PaymentTypes::get(['name', 'slug', 'id', 'is_credit']),
                     'taxes'         => Tax::active()->get(['id', 'code', 'rate']),
                     "products"      => StockItem::all()
@@ -69,7 +82,7 @@ class SaleController extends Controller
                 //return "hvhv";
                 //dd($request->session()->get('stall_id'));
 
-               $sale = Order::create(
+                $sale = Order::create(
                     [
                         'user_id'         => \Auth::user()->id,
                         'account_id'      => $request->customer_id,
@@ -102,8 +115,8 @@ class SaleController extends Controller
                     if (! $conversion) {
                         $stock_quantity = ($item_in_stock->first()) ? $item_in_stock->first()->quantity_on_hand : null;
                         $new_stock_quantity = ($item_in_stock->first()) ?
-                                                $item_in_stock->first()->quantity_on_hand - $value['quantity'] :
-                                                null;
+                            $item_in_stock->first()->quantity_on_hand - $value['quantity'] :
+                            null;
                         if ($new_stock_quantity < 0) {
                             $new_stock_quantity = 0;
                         }
@@ -145,7 +158,7 @@ class SaleController extends Controller
             });
 
         if (isset($customer) && isset($sale)) {
-         return response()->json(['message' => 'Sale Made Successfully!']);
+            return response()->json(['message' => 'Sale Made Successfully!']);
         }
 
     }

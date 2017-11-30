@@ -21,7 +21,9 @@ Vue.component('sale', require('./components/sale.vue'));
 Vue.component('Editpurchaseorder', require('./components/EditPurchaseOrder.vue'));
 Vue.component('purchaseorderreceive', require('./components/PurchaseOrderReceive.vue'));
 Vue.component('showpurchaseorder', require('./components/ShowPurchaseOrder.vue'));
+import VueFire from 'vuefire'
 
+Vue.use(VueFire)
 const app = new Vue({
     el: '#app',
     data: {

@@ -24,6 +24,7 @@ class CreateSalesTable extends Migration
             $table->string('code');
             $table->string('description')->nullable() ;
             $table->double('quantity');
+            $table->double('weight');
             $table->double('tax_rate');
             $table->double('unit_tax')->default(0);
             $table->double('discount')->default(0);

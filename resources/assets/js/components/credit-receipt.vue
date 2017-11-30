@@ -22,7 +22,8 @@
       </tr>
       <tr v-for="saleline in saleLines">
           <td style="padding-left:-10px; text-align: left">{{ saleline.name }}</td>
-          <td class="text-right">{{ saleline.quantity }}</td>
+          <td class="text-right">{{ saleline.weight }}</td>
+          <!--<td class="text-right">{{ saleline.quantity }}</td>-->
           <td>{{ saleline.uom }}</td>
           <td class="text-right">{{ (saleline.unitExclPrice.toFixed(2)).toLocaleString('en-GB') }}</td>
           <td class="text-right">{{ (saleline.totalTax.toFixed(2)).toLocaleString('en-GB') }}</td>
@@ -37,7 +38,7 @@
         <td colspan="5" style="padding-right: 20px; text-align: right; border-bottom-style: dotted;">
           <h6>{{ (total_inclusive.toFixed(2)).toLocaleString('en-GB') }}</h6>
           <h6>{{ discount }}</h6>
-          <h4>{{ (total_inclusive.toFixed(2)).toLocaleString('en-GB') }}</h4>
+          <h4>{{ (total_inclusive.toFixed(2)).toLocaleString('en-GB') - parseFloat(discount) }}</h4>
         </td>
       </tr>
       <tr>

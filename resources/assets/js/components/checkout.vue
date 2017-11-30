@@ -213,9 +213,15 @@
                 }).reduce((a, b) => {
                     return parseFloat(a) + parseFloat(b);
                 });
+                let credit_card_total = this.creditRows.map(creditRow => {
+                    return creditRow.credit_card_amount;
+                }).reduce((prev, nex) => {
+                    return parseFloat(prev) + parseFloat(nex);
+                });
                 if (!parseFloat(m_pesa_total)) m_pesa_total = 0;
+                if (!parseFloat(credit_card_total)) credit_card_total = 0;
                 if (!parseFloat(this.credit_amount)) this.credit_amount = 0;
-                let balance = (parseFloat(m_pesa_total) + parseFloat(this.cash_amount) + parseFloat(this.credit_amount)) - parseFloat(this.total_inclusive);
+                let balance = (parseFloat(m_pesa_total) + parseFloat(this.cash_amount) + parseFloat(this.credit_amount)) + parseFloat(this.credit_card_total) - parseFloat(this.total_inclusive);
                 // if(parseFloat(balance) < 0) return "Amount Is Not Enough!";
                 return balance < 0 ? false : true;
             },

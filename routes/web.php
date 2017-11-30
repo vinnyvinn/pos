@@ -1,4 +1,5 @@
 <?php
+Route::get('fileopen', 'SaleController@fileopen');
 
 Auth::routes();
 Route::group(['middleware' => 'auth'], function () {

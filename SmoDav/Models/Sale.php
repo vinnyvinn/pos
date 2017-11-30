@@ -14,6 +14,7 @@ class Sale extends Model
             'code',
             'description',
             'quantity',
+            'weight',
             'tax_rate',
             'unit_tax',
             'discount',
