@@ -20,7 +20,7 @@ class CustomReportController extends Controller
         $sales=DB::table('sales')
             ->join('stalls','stalls.id','=','sales.stall_id')
             ->select([
-                'sales.created_at', 'stock_item_id', 'stall_id', 'stock_name', 'quantity', 'code',
+                'sales.created_at', 'stock_item_id', 'stall_id', 'stock_name', 'weight', 'code',
                 'totalInclPrice', 'totalExclPrice', 'name'
             ])
             ->get();
@@ -66,14 +66,14 @@ class CustomReportController extends Controller
                 $arr = array();
                 foreach ($sales as $sale) {
 
-                    $data = array($sale->name, $sale->stock_name, $sale->quantity,
+                    $data = array($sale->name, $sale->stock_name, $sale->weight,
                         $sale->code, $sale->totalExclPrice,$sale->created_at
                     );
                     array_push($arr, $data);
                 }
 
 //set the titles
-                $sheet->fromArray($arr, null, 'A1', false, false)->prependRow(array('STALL', 'PRODUCT', 'QUANTITY',
+                $sheet->fromArray($arr, null, 'A1', false, false)->prependRow(array('STALL', 'PRODUCT', 'WEIGHT',
                         'CODE', 'TOTAL PRICE','DATE'
                     )
                 );
@@ -99,14 +99,14 @@ class CustomReportController extends Controller
                 $arr = array();
                 foreach ($sales as $sale) {
 
-                    $data = array($sale->name, $sale->stock_name, $sale->quantity,
+                    $data = array($sale->name, $sale->stock_name, $sale->weight,
                         $sale->code, $sale->totalExclPrice,$sale->mop,$sale->created_at
                     );
                     array_push($arr, $data);
                 }
 
 //set the titles
-                $sheet->fromArray($arr, null, 'A1', false, false)->prependRow(array('STALL', 'PRODUCT', 'QUANTITY',
+                $sheet->fromArray($arr, null, 'A1', false, false)->prependRow(array('STALL', 'PRODUCT', 'WEIGHT',
                         'CODE', 'TOTAL PRICE','PAYMENT MODE','DATE'
                     )
                 );
@@ -127,21 +127,21 @@ class CustomReportController extends Controller
                     ->join('stalls','stalls.id','=','sales.stall_id')
                     ->leftJoin('transaction_types','transaction_types.id','=','sales.transaction_type_id')
                     ->leftJoin('stock_items','stock_items.id','=','sales.stock_item_id')
-                    ->select('stalls.name','sales.stock_name','sales.totalExclPrice','sales.code','sales.created_at','sales.quantity','transaction_types.mop')
+                    ->select('stalls.name','sales.stock_name','sales.totalExclPrice','sales.code','sales.created_at','sales.weight','transaction_types.mop')
                     ->where('sales.stock_item_id','=',$id)
                     ->get();
 
                 $arr = array();
                 foreach ($sales as $sale) {
 
-                    $data = array($sale->name, $sale->stock_name, $sale->quantity,
+                    $data = array($sale->name, $sale->stock_name, $sale->weight,
                         $sale->code, $sale->totalExclPrice,$sale->mop,$sale->created_at
                     );
                     array_push($arr, $data);
                 }
 
 //set the titles
-                $sheet->fromArray($arr, null, 'A1', false, false)->prependRow(array('STALL', 'PRODUCT', 'QUANTITY',
+                $sheet->fromArray($arr, null, 'A1', false, false)->prependRow(array('STALL', 'PRODUCT', 'WEIGHT',
                         'CODE', 'TOTAL PRICE','PAYMENT MODE','DATE'
                     )
                 );

@@ -70,7 +70,7 @@
                         <tr>
                             <th>Stall</th>
                             <th>Product</th>
-                            <th>Quantity</th>
+                            <th>Weight</th>
                             <th>Code</th>
                             <th>Total Price</th>
                             <th>Date</th>
@@ -81,7 +81,7 @@
                             <tr>
                                 <td>{{$sale->name}}</td>
                                 <td>{{$sale->stock_name}}</td>
-                                <td>{{$sale->quantity}}</td>
+                                <td>{{$sale->weight}}</td>
                                 <td>{{$sale->code}}</td>
                                 <td>{{$sale->totalExclPrice}}</td>
                                 <td>{{ Carbon\Carbon::parse($sale->created_at)->format('d F y') }}</td>

@@ -13,6 +13,7 @@ class Sale extends Model
             'stock_name',
             'code',
             'description',
+//            'quantity',
             'weight',
             'tax_rate',
             'unit_tax',
