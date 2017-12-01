@@ -10,7 +10,7 @@
         Check in to your stall
     @endcomponent
     <div class="row">
-        <div class="col-sm-12">
+        <div class="col-sm-8 col-sm-offset-2">
             <div class="widget">
                 <div class="widget-header">
                     <h2><strong>Check In</strong></h2>
@@ -28,8 +28,11 @@
                             </select>
                         </div>
                         <div class="form-group">
+                            <label for="">Opening Amount</label>
+                            <input type="number" class="form-control" name="amount" id="amount" required>
+                        </div>
+                        <div class="form-group">
                             <input type="submit" class="btn btn-success" value="Check In">
-                            <a href="{{ route('stall.index') }}" class="btn btn-danger">Back</a>
                         </div>
                     </form>
                 </div>

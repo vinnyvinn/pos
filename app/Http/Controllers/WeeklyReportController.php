@@ -24,6 +24,10 @@ class WeeklyReportController extends Controller
         $sales=DB::table('sales')
             ->join('stalls','stalls.id','=','sales.stall_id')
             ->where('sales.created_at','>=',$date)
+            ->select([
+                'sales.created_at', 'stock_item_id', 'stall_id', 'stock_name', 'quantity', 'code',
+                'totalInclPrice', 'totalExclPrice', 'name'
+            ])
             ->get();
 
                 $pay=DB::table('sales')

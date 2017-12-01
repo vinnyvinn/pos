@@ -23,7 +23,7 @@ class CreateSalesTable extends Migration
             $table->string('stock_name');
             $table->string('code');
             $table->string('description')->nullable() ;
-            $table->double('quantity');
+//            $table->double('quantity');
             $table->double('weight');
             $table->double('tax_rate');
             $table->double('unit_tax')->default(0);

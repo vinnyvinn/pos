@@ -15411,7 +15411,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             })[0];
         },
         total_price: function total_price() {
-            return parseFloat(this.quantity) * parseFloat(this.selected_stockItem.unit_cost) + parseFloat(this.quantity) * parseFloat(this.selected_stockItem.selling_tax.rate);
+            return parseFloat(this.weight) * parseFloat(this.selected_stockItem.unit_cost) + parseFloat(this.weight) * parseFloat(this.selected_stockItem.selling_tax.rate);
         },
         selected_stockItem: function selected_stockItem() {
             var _this9 = this;
@@ -18727,6 +18727,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "form-control input-sm",
     attrs: {
       "type": "number",
+      "onfocus": "this.select()",
       "min": "0.01",
       "step": "0.01",
       "required": ""
@@ -18769,8 +18770,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     return (_vm.salesLines.length) ? _c('tr', [_c('td', [_vm._v(_vm._s(sale.code + ' ' + sale.name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(sale.uom))]), _vm._v(" "), _c('td', {
       staticClass: "text-right"
     }, [_vm._v(_vm._s(sale.weight))]), _vm._v(" "), _c('td', {
-      staticClass: "text-right"
-    }, [_vm._v(_vm._s(sale.quantity))]), _vm._v(" "), _c('td', {
       staticClass: "text-right"
     }, [_vm._v(_vm._s(sale.unitExclPrice.toLocaleString('en-GB')))]), _vm._v(" "), _c('td', {
       staticClass: "text-right"
@@ -18888,11 +18887,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "width": "120px"
     }
   }, [_vm._v("Weight")]), _vm._v(" "), _c('th', {
-    staticClass: "text-nowrap text-right",
-    attrs: {
-      "width": "120px"
-    }
-  }, [_vm._v("Quantity")]), _vm._v(" "), _c('th', {
     staticClass: "text-nowrap text-right",
     attrs: {
       "width": "150px"

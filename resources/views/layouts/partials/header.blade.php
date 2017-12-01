@@ -56,7 +56,9 @@
                                 {{--<li><a href="#">Change Password</a></li>--}}
                                 {{--<li><a href="#">System Setting</a></li>--}}
                                 {{--<li class="divider"></li>--}}
-                                {{--<li><a href="#"><i class="icon-help-2"></i> Help</a></li>--}}
+                                @if(session()->has('stall_id'))
+                                    <li><a href="{{ route('openStall') }}"><i class="icon-logout-1"></i> Close Stall</a></li>
+                                @endif
                                 <li>
                                     <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                         <i class="icon-logout-1"></i> Logout

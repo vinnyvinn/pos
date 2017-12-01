@@ -22,12 +22,18 @@ class DailyReportController extends Controller
         $date = Carbon::now()->startOfDay();
         $sales=DB::table('sales')
             ->join('stalls','stalls.id','=','sales.stall_id')
-            ->where('sales.created_at','>=',$date)->get();
+            ->where('sales.created_at','>=',$date)
+            ->select([
+                'sales.created_at', 'stock_item_id', 'stall_id', 'stock_name', 'quantity', 'code',
+                'totalInclPrice', 'totalExclPrice', 'name'
+            ])
+            ->get();
 
         $pay=DB::table('sales')
             ->join('transaction_types','transaction_types.id','=','sales.transaction_type_id')
             ->groupBy('sales.transaction_type_id')
             ->get();
+//        dd($sales);
         $selectedRole = Sale::first()->transaction_type_id;
 
         $product=DB::table('sales')
@@ -100,7 +106,7 @@ class DailyReportController extends Controller
                     ->where('sales.transaction_type_id','=',$id)
                     ->where('sales.created_at','>=',$date)
                     ->get();
-
+                dd($date);
                 $arr = array();
                 foreach ($sales as $sale) {
 
@@ -186,7 +192,7 @@ class DailyReportController extends Controller
             ->join('stalls','stalls.id','=','sales.stall_id')
             ->where('sales.transaction_type_id', '=', $p_id)
             ->where('sales.created_at','>=',$date)->get();
-        //dd($mode);
+//        dd($mode);
 
         return view('reports.search_daily_product', compact('mode','p_id'));
     }

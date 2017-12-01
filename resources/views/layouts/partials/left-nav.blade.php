@@ -181,7 +181,7 @@
                     </li>
                 @endif
                 @if(hasPermission(SmoDav\Models\UserGroup::PERM_PETTY_CASH_FULL_ACCESS))
-                    <li>
+                    <li class="has_sub">
                         <a href="javascript:void(0);"><i class="fa fa-dollar"></i>
                             <span>Expense</span>
                             <span class="pull-right"><i class="fa fa-angle-down"></i></span>

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use SmoDav\Models\Stall;
 use Log;
 use DB;
+use SmoDav\Models\Transaction;
 
 class CheckInController extends Controller
 {
@@ -27,8 +28,15 @@ class CheckInController extends Controller
 
     public function store(Request $request)
     {
-        // dd($request->all());
+//         dd($request->all());
         $request->session()->put('stall_id', $request->get('stall_id'));
+
+        $transaction = $request->all();
+
+        $transaction['type'] = 'Cashbox';
+
+        Transaction::create($transaction);
+
 
         return redirect('/sale/create');
     }

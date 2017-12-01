@@ -17,13 +17,14 @@
                 </div>
             <div class="widget-content padding">
                 <form action="{{ route('openStall.store') }}" method="post">
+                    {{ csrf_field() }}
                     <div class="form-group">
                         <label for="">Closing Amount</label>
-                        <input type="number" class="form-control" name="" id="">
+                        <input type="number" class="form-control" name="amount" id="amount" required>
                     </div>
                     <div class="form-group">
-                        <input type="submit" value="Open Stall" class="btn btn-success">
-                        <a href="{{ route('checkIn') }}" class="btn btn-danger">Back</a>
+                        <input type="submit" value="Close Stall" class="btn btn-success">
+                        <a href="{{ URL::previous() }}" class="btn btn-danger">Back</a>
                     </div>
                 </form>
             </div>

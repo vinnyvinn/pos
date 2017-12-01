@@ -63,7 +63,7 @@
                                             </select>
                                         </td>
                                         <td>
-                                            <input type="number" class="form-control input-sm"
+                                            <input type="number" onfocus="this.select()" class="form-control input-sm"
                                                    v-model="weight" @change="getWeight()" min="0.01" step="0.01" required/>
                                         </td>
                                         <!--<td>-->
@@ -99,7 +99,7 @@
                                         <th class="text-nowrap">Stock Item</th>
                                         <th class="text-nowrap">UOM</th>
                                         <th class="text-nowrap text-right" width="120px">Weight</th>
-                                        <th class="text-nowrap text-right" width="120px">Quantity</th>
+                                        <!--<th class="text-nowrap text-right" width="120px">Quantity</th>-->
                                         <th class="text-nowrap text-right" width="150px">Unit Excl. Price</th>
                                         <th class="text-nowrap text-right" width="150px">Unit Incl. Price</th>
                                         <th class="text-nowrap text-right">Total Exclusive</th>
@@ -113,7 +113,7 @@
                                         <td>{{sale.code + ' ' + sale.name}}</td>
                                         <td>{{sale.uom}}</td>
                                         <td class="text-right">{{sale.weight}}</td>
-                                        <td class="text-right">{{sale.quantity}}</td>
+                                        <!--<td class="text-right">{{sale.quantity}}</td>-->
                                         <td class="text-right">{{sale.unitExclPrice.toLocaleString('en-GB')}}</td>
                                         <td class="text-right">{{sale.unitInclPrice.toLocaleString('en-GB')}}</td>
                                         <td class="text-right">{{isNaN(sale.totalExcl.toLocaleString('en-GB')) ? 0 : sale.totalExcl.toLocaleString('en-GB')}}</td>
@@ -588,8 +588,8 @@
                 })[0];
             },
             total_price() {
-                return (parseFloat(this.quantity) * parseFloat(this.selected_stockItem.unit_cost))
-                    + (parseFloat(this.quantity) * parseFloat(this.selected_stockItem.selling_tax.rate));
+                return (parseFloat(this.weight) * parseFloat(this.selected_stockItem.unit_cost))
+                    + (parseFloat(this.weight) * parseFloat(this.selected_stockItem.selling_tax.rate));
             },
 
             selected_stockItem() {

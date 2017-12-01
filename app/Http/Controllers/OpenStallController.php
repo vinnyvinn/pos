@@ -3,40 +3,28 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use SmoDav\Models\Stall;
-use SmoDav\Models\Stock;
-use SmoDav\Models\StockItem;
+use SmoDav\Models\Transaction;
 
-class StockController extends Controller
+class OpenStallController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $stocks=\DB::table('stalls')
-            ->join('stocks','stocks.stall_id','=','stalls.id')
-            ->join('stock_items','stock_items.id','stocks.item_id')
-            ->select('stocks.quantity_on_hand','stalls.name as stall_name','stock_items.name')
-            ->get();
-
-        return view('stock.index',compact('stocks'));
+        //
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return \Illuminate\Http\Response
      */
     public function create()
     {
-//        dd(Stock::with('stall')->get());
-        $stalls=Stall::all();
-        $stock_items=StockItem::all();
-
-        return view('stock.create',compact('stalls','stock_items'));
+        return view('openStall');
     }
 
     /**
@@ -47,19 +35,13 @@ class StockController extends Controller
      */
     public function store(Request $request)
     {
-        //dd($request->all());
-        $stock = Stock::where('stall_id', $request->get('stall_id'))
-            ->where('item_id', $request->get('item_id'))
-            ->firstOrFail();
-        if(!$stock)
-        {
-          Stock::create();
-        }
-//        dd($stock);
-          $stock->increment('quantity_on_hand', $request->get('quantity_on_hand'));
-        flash('Successfully created stock');
+        $transaction = $request->all();
 
-        return redirect()->route('stock.index');
+        $transaction['type'] = 'Cashbox';
+
+        Transaction::create($transaction);
+
+        return redirect()->route('checkIn');
     }
 
     /**

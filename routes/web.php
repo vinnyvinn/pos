@@ -5,9 +5,9 @@ Auth::routes();
 Route::group(['middleware' => 'auth'], function () {
     Route::get('checkIn', 'CheckInController@index')->name('checkIn');
     Route::post('checkIn', 'CheckInController@store')->name('checkIn.store');
-    Route::get('openStall', 'CheckInController@openStall')->name('openStall');
-});
-Route::group(['middleware' => ['auth', 'checkedIn']], function () {
+    Route::get('openStall', 'OpenStallController@create')->name('openStall');
+    Route::post('openStall', 'OpenStallController@store')->name('openStall.store');
+
     Route::get('/', 'HomeController@dashboard');
     Route::get('/home', 'HomeController@index');
     Route::resource('tax', 'TaxController');
@@ -16,14 +16,11 @@ Route::group(['middleware' => ['auth', 'checkedIn']], function () {
     Route::resource('price-list-name', 'PriceListNameController');
     Route::resource('stockItem', 'StockItemController');
     Route::resource('customer', 'CustomerController');
-    Route::resource('stock', 'StockController');
     Route::resource('supplier', 'SupplierController');
     Route::resource('stall', 'StallController');
     Route::resource('setting', 'SettingController', ['except' => 'create', 'store']);
-    Route::resource('purchaseOrder', 'PurchaseOrderController');
     Route::resource('users', 'UserController');
     Route::resource('user-group', 'UserGroupController');
-    Route::resource('sale', 'SaleController');
     Route::get('goodsReceived/{id}/receive', 'GoodsReceivedController@receive')->name('goodsReceived.receive');
     Route::get('sale/receipt/{id}', 'SaleController@receipt')->name('receipt');
     Route::get('credit', 'SaleController@credit');
@@ -62,4 +59,10 @@ Route::group(['middleware' => ['auth', 'checkedIn']], function () {
 
     Route::resource('pettyCashType', 'pettyCashTypeController');
     Route::resource('pettyCash', 'PettyCashController');
+});
+
+Route::group(['middleware' => ['auth', 'checkedIn']], function () {
+    Route::resource('stock', 'StockController');
+    Route::resource('purchaseOrder', 'PurchaseOrderController');
+    Route::resource('sale', 'SaleController');
 });

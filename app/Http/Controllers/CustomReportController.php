@@ -17,8 +17,12 @@ class CustomReportController extends Controller
     public function index()
     {
         //custom
-            $sales=DB::table('sales')
+        $sales=DB::table('sales')
             ->join('stalls','stalls.id','=','sales.stall_id')
+            ->select([
+                'sales.created_at', 'stock_item_id', 'stall_id', 'stock_name', 'quantity', 'code',
+                'totalInclPrice', 'totalExclPrice', 'name'
+            ])
             ->get();
 
             $pay=DB::table('sales')

@@ -59,6 +59,8 @@ Manage Sales
                       </table>
               </div>
             </div>
+        </div>
+    </div>
 @endsection
 @section('footer')
     <script src="{{ asset('assets/libs/jquery-datatables/js/jquery.dataTables.min.js') }}"></script>

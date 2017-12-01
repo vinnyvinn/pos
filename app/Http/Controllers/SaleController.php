@@ -65,7 +65,6 @@ class SaleController extends Controller
 
     public function store(Request $request)
     {
-
         // return response()->json($request->all());
         // TODO: Change this to use session
         $customer = Customer::findOrfail($request->customer_id);
@@ -99,9 +98,8 @@ class SaleController extends Controller
                         'notes'           => $request->notes
                     ]);
 //                $sale_id = $sale->id;
-
                 foreach ($request->salesLines as $index => $value) {
-                    if (! $value['quantity']) {
+                    if (! $value['weight']) {
                         return response()->json(['error' => 'please Input Valid quantity!']);
                     }
 
@@ -115,7 +113,7 @@ class SaleController extends Controller
                     if (! $conversion) {
                         $stock_quantity = ($item_in_stock->first()) ? $item_in_stock->first()->quantity_on_hand : null;
                         $new_stock_quantity = ($item_in_stock->first()) ?
-                            $item_in_stock->first()->quantity_on_hand - $value['quantity'] :
+                            $item_in_stock->first()->quantity_on_hand - $value['weight'] :
                             null;
                         if ($new_stock_quantity < 0) {
                             $new_stock_quantity = 0;
@@ -123,11 +121,11 @@ class SaleController extends Controller
                         $item_in_stock->update(['quantity_on_hand' => $new_stock_quantity]);
                     } else {
                         $stock_quantity = $item_in_stock->first()->quantity_on_hand;
-                        $units_sold = ($value['quantity'] * ($conversion->converted_ratio / $conversion->stocking_ratio));
+                        $units_sold = ($value['weight'] * ($conversion->converted_ratio / $conversion->stocking_ratio));
                         $new_stock_quantity = $item_in_stock->first()->quantity_on_hand - $units_sold;
-                        if ($new_stock_quantity < 0) {
-                            $new_stock_quantity = 0;
-                        }
+//                        if ($new_stock_quantity < 0) {
+//                            $new_stock_quantity = 0;
+//                        }
                         $item_in_stock->update(['quantity_on_hand' => $new_stock_quantity]);
 
                     }
@@ -139,7 +137,7 @@ class SaleController extends Controller
                         'stock_item_id'      => $value['id'],
                         'stock_name'         => $value['name'],
                         'code'               => $value['code'],
-                        'quantity'           => $value['quantity'],
+                        'weight'           => $value['weight'],
                         'tax_rate'           => $value['tax_rate'],
                         'unit_tax'           => $value['unitInclPrice'] - $value['unitExclPrice'],
                         'unitExclPrice'      => $value['unitExclPrice'],
