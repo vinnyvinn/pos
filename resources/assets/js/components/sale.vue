@@ -636,11 +636,11 @@
                 return (Math.round(rate * price)) / 100;
             },
             totalExcl() {
-                return parseFloat(this.unitExclPrice) * parseInt(this.quantity);
+                return parseFloat(this.unitExclPrice) * parseFloat(this.weight);
             },
 
             totalIncl() {
-                return parseFloat(this.unitInclPrice) * parseInt(this.quantity);
+                return parseFloat(this.unitInclPrice) * parseFloat(this.weight);
             },
 
             totalTax() {

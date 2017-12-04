@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Log;
 use Carbon\Carbon;
 use SmoDav\Models\PettyCash;
+use SmoDav\Models\Transaction;
 
 class HomeController extends Controller
 {
