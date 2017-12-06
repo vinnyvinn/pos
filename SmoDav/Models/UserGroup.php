@@ -2,6 +2,7 @@
 
 namespace SmoDav\Models;
 
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 use phpDocumentor\Reflection\Types\Self_;
 
@@ -43,4 +44,9 @@ class UserGroup extends Model
                 recacheRoles();
             });
     }
+
+    public function user()
+    {
+        return $this->hasMany(User::class);
+     }
 }

@@ -24,7 +24,7 @@ class UserGroupRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required | unique:user_groups',
+            'name' => 'required',
             'permissions' => 'required'
         ];
     }

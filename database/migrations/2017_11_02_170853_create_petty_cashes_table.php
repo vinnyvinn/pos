@@ -19,7 +19,7 @@ class CreatePettyCashesTable extends Migration
             $table->integer('user_id')->unsigned();
             $table->double('amount');
             $table->string('reference');
-            $table->double('remarks');
+            $table->string('remarks');
             $table->timestamps();
 
             $table->foreign('petty_cash_type_id')->references('id')->on('petty_cash_types');
