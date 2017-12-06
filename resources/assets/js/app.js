@@ -23,7 +23,7 @@ Vue.component('purchaseorderreceive', require('./components/PurchaseOrderReceive
 Vue.component('showpurchaseorder', require('./components/ShowPurchaseOrder.vue'));
 import VueFire from 'vuefire'
 
-Vue.use(VueFire)
+Vue.use(VueFire);
 const app = new Vue({
     el: '#app',
     data: {
