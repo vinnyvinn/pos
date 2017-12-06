@@ -33,13 +33,13 @@ class MonthtlyReportController extends Controller
             ->join('transaction_types','transaction_types.id','=','sales.transaction_type_id')
             ->groupBy('sales.transaction_type_id')
             ->get();
-        $selectedRole = Sale::first()->transaction_type_id;
+        $selectedRole = null;
 
         $product=DB::table('sales')
             ->join('stock_items','stock_items.id','=','sales.stock_item_id')
             ->groupBy('sales.stock_item_id')
             ->get();
-        $selectedProduct = Sale::first()->stock_item_id;
+        $selectedProduct = null;
 
         return view('reports.monthly',compact('sales','pay','selectedRole','selectedProduct','product'));   //
     }

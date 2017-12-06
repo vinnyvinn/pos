@@ -36,7 +36,7 @@
             <label for="user_group_id">User Group</label>
             <select name="user_group_id" id="user_group_id" class="form-control">
                 @foreach($groups as $group)
-                <option value="{{ $group->id }}"{{ $group->id == $group->id ? ' selected' : '' }}>{{ $group->name }}</option>
+                    <option value="{{ $group->id }}"{{ $group->user_group_id == $group->id ? ' selected' : '' }}>{{ $group->name }}</option>
                 @endforeach
             </select>
             {{--<input class="form-control" type="text" name="user_group_id" id="password"{{ isset($user) ? '' : ' required' }}>--}}

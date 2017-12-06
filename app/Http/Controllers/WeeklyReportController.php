@@ -34,7 +34,7 @@ class WeeklyReportController extends Controller
                     ->join('transaction_types','transaction_types.id','=','sales.transaction_type_id')
                     ->groupBy('sales.transaction_type_id')
                       ->get();
-                $selectedRole = Sale::first()->transaction_type_id;
+                $selectedRole = null;
 
                 $search=\Request::get('name');
                 $product=DB::table('sales')
@@ -43,7 +43,7 @@ class WeeklyReportController extends Controller
                     ->groupBy('sales.stock_item_id')
                     ->get();
                 //return response()->json($product);
-                $selectedProduct = Sale::first()->stock_item_id;
+                $selectedProduct = null;
         $tt= array_pluck($product,'name','id');
 
 

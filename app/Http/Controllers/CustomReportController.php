@@ -29,13 +29,13 @@ class CustomReportController extends Controller
                 ->join('transaction_types','transaction_types.id','=','sales.transaction_type_id')
                 ->groupBy('sales.transaction_type_id')
                 ->get();
-        $selectedRole = Sale::first()->transaction_type_id;
+        $selectedRole = null;
             //dd($selectedRole);
         $product=DB::table('sales')
             ->join('stock_items','stock_items.id','=','sales.stock_item_id')
             ->groupBy('sales.stock_item_id')
             ->get();
-            $selectedProduct = Sale::first()->stock_item_id;
+            $selectedProduct = null;
         //dd($selectedProduct);
         return view('reports.custom',compact('sales','pay','selectedRole','product','selectedProduct'));   // //
     }
