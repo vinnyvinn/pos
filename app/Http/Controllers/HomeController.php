@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Log;
 use Carbon\Carbon;
 use SmoDav\Models\PettyCash;
+use SmoDav\Models\Transaction;
 
 class HomeController extends Controller
 {
@@ -47,8 +48,8 @@ class HomeController extends Controller
          ->groupBy('sales.stock_item_id')
          ->get()->toArray();
         $number = count($m_selling);
-        $max    = $m_selling[0]->name;
-        $min    = $m_selling[$number-1]->name;
+//        $max    = $m_selling[0]->name;
+//        $min    = $m_selling[$number-1]->name;
 
         return view('welcome', compact('days', 'sales', 'customers', 'max', 'min', 'expenses'));
     }

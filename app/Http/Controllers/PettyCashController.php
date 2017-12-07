@@ -80,6 +80,7 @@ class PettyCashController extends Controller
      */
     public function update(Request $request, $id)
     {
+        dd($request->all());
         $data = $request->all();
         $pettyCash = PettyCash::with('user', 'pettyCashType')->findOrFail($id);
         $pettyCash->update($data);

@@ -75,7 +75,6 @@ class UserGroupController extends Controller
     {
         $userGroup = UserGroup::findOrFail($id);
         $userperm = json_decode($userGroup->permissions);
-//        dd($userperm);
 
         return view('users.user-groups.edit')->with('userGroup', $userGroup)
             ->with('userperm', $userperm);
@@ -90,6 +89,10 @@ class UserGroupController extends Controller
      */
     public function update(UserGroupRequest $request, $id)
     {
+//        if (!$request->get('permissions')) {
+//            flash('Please Select at least 1 permission for your user group');
+//            return redirect()->back();
+//        }
         $permissions = $this->getPermissions($request);
 
         UserGroup::findOrFail($id)->update(['permissions' => $permissions, 'name' => $request->name]);
@@ -101,12 +104,22 @@ class UserGroupController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int      $id
+     * @param UserGroup $userGroup
+     *
      * @return \Illuminate\Http\Response
+     * @internal param User $user
+     *
      */
-    public function destroy($id)
+    public function destroy(UserGroup $userGroup)
     {
-        UserGroup::findOrFail($id)->delete();
+//        $userGroup = UserGroup::findOrFail($id);
+        if ($userGroup->user()->count()) {
+            flash('The user group contains active users');
+
+            return redirect()->back();
+        }
+        $userGroup->delete();
         flash('Successfully deleted the user group');
 
         return redirect()->route('user-group.index');

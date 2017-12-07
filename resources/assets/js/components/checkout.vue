@@ -13,10 +13,10 @@
                     <h4><strong>Change</strong></h4>
                 </div>
                 <div class="col-sm-4 text-right">
-                    <h5>{{ total_inclusive }}</h5>
+                    <h5>{{ parseFloat(total_inclusive).toFixed(2) }}</h5>
                     <h5>{{ isNaN(discount) ? 0 : discount }}</h5>
-                    <h4><strong>{{ parseFloat(total_inclusive) - parseFloat(discount) }}</strong></h4>
-                    <h4><strong>{{ balance }}</strong></h4>
+                    <h4><strong>{{ parseFloat(parseFloat(total_inclusive) - parseFloat(discount)).toFixed(2) }}</strong></h4>
+                    <h4><strong>{{ parseFloat(balance).toFixed(2) }}</strong></h4>
                 </div>
             </div>
         </div>

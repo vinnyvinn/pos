@@ -41,8 +41,8 @@
                                         <th class="text-nowrap">UOM</th>
                                         <th class="text-nowrap" width="120px">Weight
                                         </th>
-                                        <!--<th class="text-nowrap" width="120px">Quantity-->
-                                        <!--</th>-->
+                                        <th v-if="!quantity_toggle" class="text-nowrap" width="120px">Quantity
+                                        </th>
                                         <th class="text-nowrap" width="150px">Unit Excl. Price</th>
                                         <th class="text-nowrap" width="150px">Unit Incl. Price</th>
                                         <th class="text-nowrap text-right">Total Exclusive</th>
@@ -66,10 +66,10 @@
                                             <input type="number" onfocus="this.select()" class="form-control input-sm"
                                                    v-model="weight" @change="getWeight()" min="0.01" step="0.01" required/>
                                         </td>
-                                        <!--<td>-->
-                                            <!--<input type="number" onfocus="this.select()" class="form-control input-sm"-->
-                                                   <!--v-model="quantity" min="0.01" step="0.01" required/>-->
-                                        <!--</td>-->
+                                        <td>
+                                            <input v-if="!quantity_toggle" type="number" onfocus="this.select()" class="form-control input-sm"
+                                                   v-model="quantity" min="0.01" step="0.01" required/>
+                                        </td>
                                         <td class="text-right">
                                             {{unitExclPrice.toLocaleString('en-GB')}}
                                         </td>
@@ -99,7 +99,7 @@
                                         <th class="text-nowrap">Stock Item</th>
                                         <th class="text-nowrap">UOM</th>
                                         <th class="text-nowrap text-right" width="120px">Weight</th>
-                                        <!--<th class="text-nowrap text-right" width="120px">Quantity</th>-->
+                                        <th class="text-nowrap text-right" width="120px">Quantity</th>
                                         <th class="text-nowrap text-right" width="150px">Unit Excl. Price</th>
                                         <th class="text-nowrap text-right" width="150px">Unit Incl. Price</th>
                                         <th class="text-nowrap text-right">Total Exclusive</th>
@@ -113,7 +113,7 @@
                                         <td>{{sale.code + ' ' + sale.name}}</td>
                                         <td>{{sale.uom}}</td>
                                         <td class="text-right">{{sale.weight}}</td>
-                                        <!--<td class="text-right">{{sale.quantity}}</td>-->
+                                        <td class="text-right">{{sale.quantity}}</td>
                                         <td class="text-right">{{sale.unitExclPrice.toLocaleString('en-GB')}}</td>
                                         <td class="text-right">{{sale.unitInclPrice.toLocaleString('en-GB')}}</td>
                                         <td class="text-right">{{isNaN(sale.totalExcl.toLocaleString('en-GB')) ? 0 : sale.totalExcl.toLocaleString('en-GB')}}</td>
@@ -171,11 +171,12 @@
                 customers: [],
                 salesLines: [],
                 stockItem: "",
-                quantity: 1,
+                quantity: 0,
                 uoms: [],
                 conversionId: null,
                 quantity_check: [],
                 checkout_toggle: false,
+                quantity_toggle: false,
                 cash: "",
                 notes: "",
                 credit: "",
@@ -196,7 +197,6 @@
                 //from file
                 fileval:0,
                 requestcmplt:false
-
 
             }
         },
@@ -529,8 +529,8 @@
                 this.checkout_toggle = !this.checkout_toggle;
                 this.cash = 0;
                 this.credit = 0;
-                this.notes = "",
-                    this.mpesa = [];
+                this.notes = "";
+                this.mpesa = [];
                 this.balance = 0;
                 this.quantity_check = [];
                 this.quantity = 1;
@@ -636,11 +636,11 @@
                 return (Math.round(rate * price)) / 100;
             },
             totalExcl() {
-                return parseFloat(this.unitExclPrice) * parseInt(this.quantity);
+                return parseFloat(this.unitExclPrice) * parseFloat(this.weight);
             },
 
             totalIncl() {
-                return parseFloat(this.unitInclPrice) * parseInt(this.quantity);
+                return parseFloat(this.unitInclPrice) * parseFloat(this.weight);
             },
 
             totalTax() {

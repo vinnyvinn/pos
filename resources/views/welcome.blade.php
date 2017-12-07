@@ -1,3 +1,5 @@
+
+
 @extends('layouts.app')
 
 @section('header')
@@ -29,33 +31,37 @@
                     </div>
                     <div class="widget-footer">
                         {{--<div class="row">--}}
-                            {{--<div class="col-sm-12">--}}
-                                {{--<i class="fa fa-caret-up rel-change"></i> <b>39%</b> increase in traffic--}}
-                            {{--</div>--}}
+                        {{--<div class="col-sm-12">--}}
+                        {{--<i class="fa fa-caret-up rel-change"></i> <b>39%</b> increase in traffic--}}
+                        {{--</div>--}}
                         {{--</div>--}}
                         <div class="clearfix"></div>
                     </div>
                 </div>
             </div>
-
             <div class="col-lg-3 col-md-6">
+                {{--<div class="btn-group">--}}
+                    {{--<a href="" class="btn btn-default btn-xs">Daily</a>--}}
+                    {{--<a href="" class="btn btn-default btn-xs">Weekly</a>--}}
+                    {{--<a href="" class="btn btn-default btn-xs">Monthly</a>--}}
+                {{--</div>--}}
                 <div class="widget darkblue-2 animated fadeInDown">
                     <div class="widget-content padding">
                         <div class="widget-icon">
                             <i class="icon-bag"></i>
                         </div>
                         <div class="text-box">
+                            {{--<i class="fa fa-angle-down"></i>--}}
                             <p class="maindata">TOTAL <b>SALES THIS WEEK</b></p>
-                            <h2>KSH <span class="animate-number" data-value="{{ number_format($sales) }}" data-duration="3000">0</span></h2>
-
-                            <div class="clearfix"></div>
+                            <h2>KSH<span class="animate-number" data-value="{{number_format($sales)}}" data-duration="3000" >0</span></h2>
+                                <div class="clearfix"></div>
                         </div>
                     </div>
                     <div class="widget-footer">
                         {{--<div class="row">--}}
-                            {{--<div class="col-sm-12">--}}
-                                {{--<i class="fa fa-caret-down rel-change"></i> <b>11%</b> decrease in sales--}}
-                            {{--</div>--}}
+                        {{--<div class="col-sm-12">--}}
+                        {{--<i class="fa fa-caret-down rel-change"></i> <b>11%</b> decrease in sales--}}
+                        {{--</div>--}}
                         {{--</div>--}}
                         <div class="clearfix"></div>
                     </div>
@@ -70,15 +76,15 @@
                         </div>
                         <div class="text-box">
                             <p class="maindata">OVERALL <b>INCOME</b></p>
-                            <h2>KSH <span class="animate-number" data-value="{{ number_format($sales) - $expenses }}" data-duration="3000">0</span></h2>
+                            <h2>KSH<span class="animate-number" data-value="{{ number_format($sales) - $expenses }}" data-duration="3000">0</span></h2>
                             <div class="clearfix"></div>
                         </div>
                     </div>
                     <div class="widget-footer">
                         {{--<div class="row">--}}
-                            {{--<div class="col-sm-12">--}}
-                                {{--<i class="fa fa-caret-down rel-change"></i> <b>7%</b> decrease in income--}}
-                            {{--</div>--}}
+                        {{--<div class="col-sm-12">--}}
+                        {{--<i class="fa fa-caret-down rel-change"></i> <b>7%</b> decrease in income--}}
+                        {{--</div>--}}
                         {{--</div>--}}
                         <div class="clearfix"></div>
                     </div>
@@ -99,9 +105,9 @@
                     </div>
                     <div class="widget-footer">
                         {{--<div class="row">--}}
-                            {{--<div class="col-sm-12">--}}
-                                {{--<i class="fa fa-caret-up rel-change"></i> <b>6%</b> increase in users--}}
-                            {{--</div>--}}
+                        {{--<div class="col-sm-12">--}}
+                        {{--<i class="fa fa-caret-up rel-change"></i> <b>6%</b> increase in users--}}
+                        {{--</div>--}}
                         {{--</div>--}}
                         <div class="clearfix"></div>
                     </div>
@@ -173,7 +179,7 @@
 
 
             </div>
-            {{--<div class="col-lg-4 portlets">--}}
+            <div class="col-lg-4 portlets">
                 {{--<div class="widget darkblue-3">--}}
                     {{--<div class="widget-header transparent">--}}
                         {{--<h2><strong>Server</strong> Status</h2>--}}
@@ -235,11 +241,11 @@
                     {{--</div>--}}
                 {{--</div>--}}
 
-            {{--</div>--}}
+            </div>
         </div>
 
         <div class="row">
-            <div class="col-lg-12 portlets">
+            <div class="col-lg-8 portlets">
                 <div class="widget">
                     <div class="widget-header">
                         <h2><i class="icon-chart-pie-1"></i> <strong>Sales</strong> Report</h2>
@@ -316,7 +322,238 @@
                     </div>
                 </div>
             </div>
+            <div class="col-lg-4 portlets">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div id="todo-app" class="widget">
+                            <div class="widget-header centered">
+                                <div class="left-btn"><a class="btn btn-sm btn-default add-todo"><i class="fa fa-plus"></i></a></div>
+                                <h2>Todo List</h2>
+                                <div class="additional-btn">
+                                    <a href="#" class="hidden reload"><i class="icon-ccw-1"></i></a>
+                                    <a href="#" class="widget-popout hidden tt" title="Pop Out/In"><i class="icon-publish"></i></a>
+                                    <a href="#" class="widget-maximize hidden"><i class="icon-resize-full-1"></i></a>
+                                    <a href="#" class="widget-toggle"><i class="icon-down-open-2"></i></a>
+                                    <a href="#" class="widget-close"><i class="icon-cancel-3"></i></a>
+                                </div>
+                            </div>
+                            <div class="widget-content padding-sm">
+                                <ul class="todo-list">
+                                    <li>
+                                        <span class="check-icon"><input type="checkbox" /></span>
+                                        <span class="todo-item">Generate monthly sales report for John</span>
+                                        <span class="todo-options pull-right">
+													<a href="javascript:;" class="todo-delete"><i class="icon-cancel-3"></i></a>
+												</span>
+                                        <span class="todo-tags pull-right">
+													<div class="label label-success">New</div>
+												</span>
+                                    </li>
+                                    <li class="high">
+                                        <span class="check-icon"><input type="checkbox" /></span>
+                                        <span class="todo-item">Mail those reports to John</span>
+                                        <span class="todo-options pull-right">
+													<a href="javascript:;" class="todo-delete"><i class="icon-cancel-3"></i></a>
+												</span>
+                                    </li>
+                                    <li>
+                                        <span class="check-icon"><input type="checkbox" /></span>
+                                        <span class="todo-item">Don't forget to send those reports to John</span>
+                                        <span class="todo-options pull-right">
+													<a href="javascript:;" class="todo-delete"><i class="icon-cancel-3"></i></a>
+												</span>
+                                    </li>
+                                    <li class="medium">
+                                        <span class="check-icon"><input type="checkbox" /></span>
+                                        <span class="todo-item">If you forgot, go back to office to pick them up</span>
+                                        <span class="todo-options pull-right">
+													<a href="javascript:;" class="todo-delete"><i class="icon-cancel-3"></i></a>
+												</span>
+                                        <span class="todo-tags pull-right">
+													<div class="label label-info">Today</div>
+												</span>
+                                    </li>
+                                    <li class="low">
+                                        <span class="check-icon"><input type="checkbox" /></span>
+                                        <span class="todo-item">Deliver reports by hand to John</span>
+                                        <span class="todo-options pull-right">
+													<a href="javascript:;" class="todo-delete"><i class="icon-cancel-3"></i></a>
+												</span>
+                                    </li>
+                                    <li>
+                                        <span class="check-icon"><input type="checkbox" /></span>
+                                        <span class="todo-item">Say John that you are sorry</span>
+                                        <span class="todo-options pull-right">
+													<a href="javascript:;" class="todo-delete"><i class="icon-cancel-3"></i></a>
+												</span>
+                                    </li>
+                                    <li>
+                                        <span class="check-icon"><input type="checkbox" /></span>
+                                        <span class="todo-item">Beg for your job...</span>
+                                        <span class="todo-options pull-right">
+													<a href="javascript:;" class="todo-delete"><i class="icon-cancel-3"></i></a>
+												</span>
+                                        <span class="todo-tags pull-right">
+													<div class="label label-danger">Important</div>
+												</span>
+                                    </li>
+                                    <li>
+                                        <span class="check-icon"><input type="checkbox" /></span>
+                                        <span class="todo-item">Look for a new job</span>
+                                        <span class="todo-options pull-right">
+													<a href="javascript:;" class="todo-delete"><i class="icon-cancel-3"></i></a>
+												</span>
+                                        <span class="todo-tags pull-right">
+													<div class="label label-warning"><i class="icon-search"></i></div>
+												</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div id="notes-app" class="widget">
+                            <div class="notes-line"></div>
+                            <div class="widget-header centered transparent">
+                                <div class="left-btn btn-group"><a class="btn btn-sm btn-primary add-note"><i class="fa fa-plus"></i></a><a class="btn btn-sm btn-primary back-note-list"><i class="icon-align-justify"></i></a></div>
+                                <h2>Notes</h2>
+                                <div class="additional-btn">
+                                    <a href="#" class="hidden reload"><i class="icon-ccw-1"></i></a>
+                                    <a href="#" class="widget-popout hidden tt" title="Pop Out/In"><i class="icon-publish"></i></a>
+                                    <a href="#" class="widget-maximize hidden"><i class="icon-resize-full-1"></i></a>
+                                    <a href="#" class="widget-toggle"><i class="icon-down-open-2"></i></a>
+                                    <a href="#" class="widget-close"><i class="icon-cancel-3"></i></a>
+                                </div>
+                            </div>
+                            <div class="widget-content padding-sm">
+                                <div id="notes-list">
+                                    <div class="scroller">
+                                        <ul class="list-unstyled">
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div id="note-data">
+                                    <form>
+                                        <textarea class="form-control" id="note-text" placeholder="Your note..."></textarea>
+                                    </form>
+                                </div>
+                                <div class="status-indicator">Saved</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+        {{--<div class="row">--}}
+            {{--<div class="col-lg-4 col-md-6 portlets">--}}
+                {{--<div id="weather-widget" class="widget">--}}
+                    {{--<div class="widget-header transparent">--}}
+                        {{--<h2><strong>Weather</strong> Widget</h2>--}}
+                        {{--<div class="additional-btn">--}}
+                            {{--<a href="#" class="hidden reload"><i class="icon-ccw-1"></i></a>--}}
+                            {{--<a class="hidden" id="dropdownMenu1" data-toggle="dropdown">--}}
+                                {{--<i class="fa fa-cogs"></i>--}}
+                            {{--</a>--}}
+                            {{--<ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dropdownMenu1">--}}
+                                {{--<li><a href="#">Action</a></li>--}}
+                                {{--<li><a href="#">Another action</a></li>--}}
+                                {{--<li><a href="#">Something else here</a></li>--}}
+                                {{--<li class="divider"></li>--}}
+                                {{--<li><a href="#">Separated link</a></li>--}}
+                            {{--</ul>--}}
+                            {{--<a href="#" class="widget-popout hidden tt" title="Pop Out/In"><i class="icon-publish"></i></a>--}}
+                            {{--<a href="#" class="widget-maximize hidden"><i class="icon-resize-full-1"></i></a>--}}
+                            {{--<a href="#" class="widget-toggle"><i class="icon-down-open-2"></i></a>--}}
+                            {{--<a href="#" class="widget-close"><i class="icon-cancel-3"></i></a>--}}
+                        {{--</div>--}}
+                    {{--</div>--}}
+                    {{--<div id="weather" class="widget-content">--}}
+
+                    {{--</div><i class="wi-day-rain-mix"></i>--}}
+                    {{--<button class="js-geolocation btn btn-sm btn-default" style="display: none;">Use Your Location</button>--}}
+                {{--</div>--}}
+            {{--</div>--}}
+
+            {{--<div class="col-lg-4 col-md-6 portlets">--}}
+                {{--<div id="calendar-widget2" class="widget blue-1">--}}
+                    {{--<div class="widget-header transparent">--}}
+                        {{--<h2><strong>Calendar</strong> Widget</h2>--}}
+                        {{--<div class="additional-btn">--}}
+                            {{--<a href="#" class="hidden reload"><i class="icon-ccw-1"></i></a>--}}
+                            {{--<a href="#" class="widget-popout hidden tt" title="Pop Out/In"><i class="icon-publish"></i></a>--}}
+                            {{--<a href="#" class="widget-toggle"><i class="icon-down-open-2"></i></a>--}}
+                            {{--<a href="#" class="widget-close"><i class="icon-cancel-3"></i></a>--}}
+                        {{--</div>--}}
+                    {{--</div>--}}
+                    {{--<div id="calendar-box2" class="widget-content col-sm-12">--}}
+
+                    {{--</div>--}}
+                {{--</div>--}}
+            {{--</div>--}}
+            {{--<div class="col-lg-4 col-md-6 portlets">--}}
+                {{--<div id="" class="widget darkblue-2">--}}
+                    {{--<div class="widget-header">--}}
+                        {{--<div class="additional-btn left-toolbar">--}}
+                            {{--<div class="btn-group">--}}
+                                {{--<a class="additional-icon" id="dropdownMenu2" data-toggle="dropdown">--}}
+                                    {{--Calculator <i class="fa fa-angle-down"></i>--}}
+                                {{--</a>--}}
+                                {{--<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu2">--}}
+                                    {{--<li><a href="#">Save</a></li>--}}
+                                    {{--<li><a href="#">Export</a></li>--}}
+                                    {{--<li class="divider"></li>--}}
+                                    {{--<li><a href="#">Quit</a></li>--}}
+                                {{--</ul>--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
+                        {{--<div class="additional-btn">--}}
+                            {{--<a href="#" class="hidden reload"><i class="icon-ccw-1"></i></a>--}}
+
+                            {{--<a href="#" class="widget-popout hidden tt" title="Pop Out/In"><i class="icon-publish"></i></a>--}}
+                            {{--<a href="#" class="widget-close"><i class="icon-cancel-3"></i></a>--}}
+                        {{--</div>--}}
+                    {{--</div>--}}
+                    {{--<div id="calculator" class="widget-content">--}}
+                        {{--<div class="calc-top col-xs-12">--}}
+                            {{--<div class="row">--}}
+                                {{--<div class="col-xs-3"><span class="calc-clean">C</span></div>--}}
+                                {{--<div class="col-xs-9"><div class="calc-screen"></div></div>--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
+
+                        {{--<div class="calc-keys col-xs-12">--}}
+                            {{--<div class="row">--}}
+                                {{--<div class="col-xs-3"><span>7</span></div>--}}
+                                {{--<div class="col-xs-3"><span>8</span></div>--}}
+                                {{--<div class="col-xs-3"><span>9</span></div>--}}
+                                {{--<div class="col-xs-3"><span class="calc-operator">+</span></div>--}}
+                            {{--</div>--}}
+                            {{--<div class="row">--}}
+                                {{--<div class="col-xs-3"><span>4</span></div>--}}
+                                {{--<div class="col-xs-3"><span>5</span></div>--}}
+                                {{--<div class="col-xs-3"><span>6</span></div>--}}
+                                {{--<div class="col-xs-3"><span class="calc-operator">-</span></div>--}}
+                            {{--</div>--}}
+                            {{--<div class="row">--}}
+                                {{--<div class="col-xs-3"><span>1</span></div>--}}
+                                {{--<div class="col-xs-3"><span>2</span></div>--}}
+                                {{--<div class="col-xs-3"><span>3</span></div>--}}
+                                {{--<div class="col-xs-3"><span class="calc-operator">÷</span></div>--}}
+                            {{--</div>--}}
+                            {{--<div class="row">--}}
+                                {{--<div class="col-xs-3"><span>0</span></div>--}}
+                                {{--<div class="col-xs-3"><span>.</span></div>--}}
+                                {{--<div class="col-xs-3"><span class="calc-eval">=</span></div>--}}
+                                {{--<div class="col-xs-3"><span class="calc-operator">x</span></div>--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
+                        {{--<div class="clearfix"></div>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
+            {{--</div>--}}
+        {{--</div>--}}
 
         <div class="row">
             <div class="col-lg-8 col-md-6 portlets">
@@ -377,14 +614,14 @@
 
                     <div class="widget-footer">
                     </div>
-                 </div>
-           </div>
-            <b>Most Selling Product:</b> {{$max}}<br>
-            <b>Least Selling Product:</b> {{$min}}<br>
+                </div>
+            </div>
+            {{--<b>Most Selling Product:</b> {{$max}}<br>--}}
+            {{--<b>Least Selling Product:</b> {{$min}}<br>--}}
         </div>
 
         <!-- Footer Start -->
-        <footer style="position:relative; width:100%; bottom: 0">
+        <footer>
             Tikone Solutions Limited &copy; {{ Carbon\Carbon::now()->format('Y') }}
             <div class="footer-links pull-right">
                 <a href="#">About</a><a href="#">Support</a><a href="#">Terms of Service</a><a href="#">Legal</a><a href="#">Help</a><a href="#">Contact Us</a>

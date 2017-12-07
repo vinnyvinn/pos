@@ -17,7 +17,7 @@ class UserGroupTableSeeder extends Seeder
 
         UserGroup::create([
             'name' => 'default User',
-            'permissions' => '[]',
+            'permissions' => '[]'
         ]);
     }
 }

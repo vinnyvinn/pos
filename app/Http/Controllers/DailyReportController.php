@@ -34,13 +34,13 @@ class DailyReportController extends Controller
             ->groupBy('sales.transaction_type_id')
             ->get();
 //        dd($sales);
-        $selectedRole = Sale::first()->transaction_type_id;
+        $selectedRole = null;
 
         $product=DB::table('sales')
             ->join('stock_items','stock_items.id','=','sales.stock_item_id')
             ->groupBy('sales.stock_item_id')
             ->get();
-        $selectedProduct = Sale::first()->stock_item_id;
+        $selectedProduct = null;
 
      return view('reports.daily',compact('sales','pay','selectedRole','selectedProduct','product'));   //
     }

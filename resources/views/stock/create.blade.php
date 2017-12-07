@@ -42,8 +42,8 @@
                     </div>
                         <input type="hidden" name="quantity_reserved" id="quantity_reserved">
                     <div class="form-group">
-                        <label for="quantity_on_hand">Quantity on Received</label>
-                            <input class="form-control" type="number" name="quantity_on_hand" id="quantity_on_hand" required>
+                        <label for="quantity_on_hand">Quantity Received</label>
+                            <input class="form-control" type="number" step="0.001" name="quantity_on_hand" id="quantity_on_hand" required>
                     </div>
 
                         <div class="form-group">
