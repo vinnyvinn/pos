@@ -30,7 +30,7 @@
                         </div>
                         <div class="form-group">
                             <label for="item_id">Item </label>
-                            <select name="item_id" id="item_id" class="form-control">
+                            <select name="item_id" id="item_id" class="form-control item">
                                 <label for="item_id">Stall</label>
                                 @foreach($stock_items as $items)
                                     <option value="{{ $items->id }}"{{ old('item_id') == $items->id ? ' selected' : '' }}>
@@ -40,11 +40,18 @@
                             </select>
 
                     </div>
-                        <input type="hidden" name="quantity_reserved" id="quantity_reserved">
+                        {{--<input type="hidden" name="quantity_reserved" id="quantity_reserved">--}}
                     <div class="form-group">
                         <label for="quantity_on_hand">Quantity Received</label>
                             <input class="form-control" type="number" step="0.001" name="quantity_on_hand" id="quantity_on_hand" required>
                     </div>
+                        <div class="form-group">
+                            <label for="sell_by">Sell By</label>
+                            <select name="sell_by" id="sell_by" class="form-control">
+                                <option value="piece">Piece</option>
+                                <option value="weight">Weight</option>
+                            </select>
+                        </div>
 
                         <div class="form-group">
                             <input type="submit" class="btn btn-success" value="Create">
@@ -56,3 +63,8 @@
         </div>
     </div>
   @endsection
+@section('footer')
+    <script>
+//        $('#item_id').select2();
+    </script>
+    @endsection

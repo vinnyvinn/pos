@@ -171,7 +171,7 @@
                 customers: [],
                 salesLines: [],
                 stockItem: "",
-                quantity: 0,
+                quantity: 1,
                 uoms: [],
                 conversionId: null,
                 quantity_check: [],
@@ -213,28 +213,28 @@
         methods: {
             getWeight() {
                 this.requestcmplt = false;
-                    if (!this.requestcmplt) {
-                        this.requestcmplt = true;
-                        setInterval(()=>{
-                            axios.get(appdetails.filepath).then((res)=>{
-                                let weightData = res.data.split(',');
-                                this.requestcmplt = true;
-                                if(weightData.length >0){
-                                    let netKGS = weightData[2];
-                                    this.weight = +netKGS.split("KG")[0]
-                                }
+                if (!this.requestcmplt) {
+                    this.requestcmplt = true;
+                    setInterval(()=>{
+                        axios.get(appdetails.filepath).then((res)=>{
+                            let weightData = res.data.split(',');
+                            this.requestcmplt = true;
+                            if(weightData.length >0){
+                                let netKGS = weightData[2];
+                                this.weight = +netKGS.split("KG")[0]
+                            }
 
-                            }, err=>{
-                                console.log("errors", err.message)
-                            })
-                        },2000);
-                    }
+                        }, err=>{
+                            console.log("errors", err.message)
+                        })
+                    },2000);
+                }
 
 
-              /* setTimeout(()=>{
-                   ret
-               }, 2000);
-             */   /* setInterval(function() {
+                /* setTimeout(()=>{
+                     ret
+                 }, 2000);
+               */   /* setInterval(function() {
                     let textFile = "ScaleReading.txt";
                     let reader = new FileReader;
                    reader.onload = function(textFile){}
@@ -294,7 +294,7 @@
                                 this.multiselctopts.push({label:(val.name + " - "+ val.barcode), value: val.id})
                             })
                         }
-                      ;
+                        ;
                     }
                 ).catch((err) => {
                     console.log(err);
@@ -500,7 +500,7 @@
                         setTimeout(
                             ()=>{
                                 console.log("testing....");
-                                 window.print();
+                                window.print();
                                 this.restorePrint();
                                 this.finishPrint();
                             },1500

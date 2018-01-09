@@ -183,12 +183,11 @@ class StockItemController extends Controller
         $tax = Tax::first();
 
         $excel = array_map(function ($item) use ($existing, $tax) {
+            dd($item);
             $values = array_values($item);
-
             if (in_array($values[5], $existing)) {
                 return null;
             }
-
             return [
                 'code' => $values[0],
                 'name' => $values[1],
@@ -210,7 +209,6 @@ class StockItemController extends Controller
         $excel = array_filter($excel, function ($item) {
             return ! is_null($item);
         });
-
         foreach ($excel as $item) {
             $stockItem = StockItem::create($item);
             $exclusive = (float) $item['selling_price'] / 1.16;

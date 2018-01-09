@@ -82,8 +82,8 @@
                             <td>{{$sale->stock_name}}</td>
                             <td>{{$sale->weight}}</td>
                             <td>{{$sale->code}}</td>
-                            <td>{{$sale->totalExclPrice}}</td>
-                            <td>{{ Carbon\Carbon::parse($sale->created_at)->format('d F y') }}</td>
+                            <td>{{number_format($sale->totalExclPrice, 2)}}</td>
+                            <td>{{ Carbon\Carbon::parse($sale->created_at)->format('d F Y') }}</td>
                         </tr>
                     @endforeach
                     </tbody>

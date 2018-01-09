@@ -19,6 +19,7 @@ class CreateStocksTable extends Migration
             $table->integer('item_id')->unsigned();
             $table->double('quantity_on_hand')->default(0);
             $table->double('quantity_reserved');
+//            $table->string('sell_by')->default('Piece');
             $table->timestamps();
 
             $table->foreign('stall_id')->references('id')->on('stalls')->onDelete('cascade');

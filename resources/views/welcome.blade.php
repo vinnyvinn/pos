@@ -50,11 +50,18 @@
                         <div class="widget-icon">
                             <i class="icon-bag"></i>
                         </div>
-                        <div class="text-box">
+                        {{--<div class="text-box">--}}
                             {{--<i class="fa fa-angle-down"></i>--}}
-                            <p class="maindata">TOTAL <b>SALES THIS WEEK</b></p>
-                            <h2>KSH<span class="animate-number" data-value="{{number_format($sales)}}" data-duration="3000" >0</span></h2>
-                                <div class="clearfix"></div>
+                            {{--<p class="maindata">TOTAL <b>SALES THIS WEEK</b></p>--}}
+                            {{--<h2>KSH<span class="animate-number" data-value="{{number_format($sales)}}" data-duration="3000">0</span></h2>--}}
+                                {{--<div class="clearfix"></div>--}}
+                        {{--</div>--}}
+
+                        <div class="text-box">
+                            <p class="maindata">OVERALL <b>INCOME</b></p>
+                            {{--                            {{ dd(parseFloat($sales)) }}--}}
+                            <h2>KSH<span class="animate-number" data-value="{{ number_format($sales) }}" data-duration="400">0</span></h2>
+                            <div class="clearfix"></div>
                         </div>
                     </div>
                     <div class="widget-footer">
@@ -76,7 +83,8 @@
                         </div>
                         <div class="text-box">
                             <p class="maindata">OVERALL <b>INCOME</b></p>
-                            <h2>KSH<span class="animate-number" data-value="{{ number_format($sales) - $expenses }}" data-duration="3000">0</span></h2>
+{{--                            {{ dd(parseFloat($sales)) }}--}}
+                            <h2>KSH<span class="animate-number" data-value="{{ number_format($sales - $expenses, 2) }}" data-duration="3000">0</span></h2>
                             <div class="clearfix"></div>
                         </div>
                     </div>

@@ -31,16 +31,16 @@
                             <th>Stall</th>
                             <th>Item </th>
                             <th>Quantity Received</th>
+                            {{--<th>Sell By</th>--}}
                         </tr>
                         </thead>
                         <tbody>
                         @foreach($stocks as $stock)
                             <tr>
-
                                 <td>{{ $stock->stall_name }}</td>
                                 <td>{{ $stock->name }}</td>
-
-                                  <td>{{ $stock->quantity_on_hand }}</td>
+                                <td>{{ $stock->quantity_on_hand }}</td>
+{{--                                <td>{{ $stock->sell_by }}</td>--}}
                             </tr>
                         @endforeach
                         </tbody>

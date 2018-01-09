@@ -36,23 +36,27 @@ class StockItem extends Model
             return $model;
         });
     }
-
     private static function createStock($item)
     {
-        $items = Stall::all(['id'])
-            ->map(function ($stall) use ($item) {
-                return [
-                    'stall_id' => $stall->id,
-                    'item_id' => $item->id,
-                    'quantity_on_hand' => 0,
-                    'quantity_reserved' => 0,
-                    'created_at' => Carbon::now(),
-                    'updated_at' => Carbon::now(),
-                ];
-            })
-            ->toArray();
-
-        Stock::insert($items);
+//        $products = array(
+//            '0' => 'Weight',
+//            '1' => 'Pieces',
+//        );
+//        for ($i = 0; $i < count($products); $i++) {
+            $items = Stall::all(['id'])
+                ->map(
+                    function ($stall) use ($item) {
+                        return [
+                            'stall_id'          => $stall->id,
+                            'item_id'           => $item->id,
+                            'quantity_on_hand'  => 0,
+                            'quantity_reserved' => 0,
+                            'created_at'        => Carbon::now(),
+                            'updated_at'        => Carbon::now(),
+                        ];
+                    })
+                ->toArray();
+            Stock::insert($items);
     }
 
     public function buyingTax()

@@ -14794,6 +14794,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -15005,7 +15009,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             customers: [],
             salesLines: [],
             stockItem: "",
-            quantity: 0,
+            quantity: 1,
             uoms: [],
             conversionId: null,
             quantity_check: [],
@@ -15070,15 +15074,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                  ret
              }, 2000);
             */ /* setInterval(function() {
-                 let textFile = "ScaleReading.txt";
-                 let reader = new FileReader;
-                reader.onload = function(textFile){}
-                 function(weight) {
-                     console.log("weight is..",weight);
-                     let weightData = weight.split(',');
-                     let netKGS = weightData[2];
-                     return netKGS.substring(0, netKGS.length - 2);
-                 })
+               let textFile = "ScaleReading.txt";
+               let reader = new FileReader;
+               reader.onload = function(textFile){}
+               function(weight) {
+                   console.log("weight is..",weight);
+                   let weightData = weight.split(',');
+                   let netKGS = weightData[2];
+                   return netKGS.substring(0, netKGS.length - 2);
+               })
                },1000)*/
         },
         changedProduct: function changedProduct(obj) {

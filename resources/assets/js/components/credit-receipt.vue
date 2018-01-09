@@ -47,6 +47,10 @@
               <div  class="text-center" v-if="parseFloat(totalAmountMpesa) > parseFloat(0)" v-for="pesa in mpesa">
                 <strong>{{ pesa.m_pesa_code }}</strong><br/>
               </div>
+            <!--<h6 v-if="parseFloat(totalAmountCredit) > parseFloat(0)">Credit card: </h6>-->
+              <!--<div  class="text-center" v-if="parseFloat(totalAmountCredit) > parseFloat(0)" v-for="credit in crediCard">-->
+                <!--<strong>{{ credit.credit_code }}</strong><br/>-->
+              <!--</div>-->
           <h6>CASH</h6>
           <h6 v-if="parseInt(customer.is_credit) ==parseInt(1)">CREDIT : {{ customer.name }}</h6>
           <h6>CHANGE</h6>
@@ -114,7 +118,12 @@ export default {
     return this.mpesa.map(mpesa=>{
       return mpesa.m_pesa_amount;
     }).reduce((sum,value) => parseFloat(sum) + parseFloat(value));
-    }
+    },
+//    totalAmountCredit(){
+//        return this.credit.map(credit=>{
+//            return credit.credit_amount;
+//        }).reduce((sum,value) => parseFloat(sum) + parseFloat(value));
+//    }
   }
 }
 </script>
