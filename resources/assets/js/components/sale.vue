@@ -636,11 +636,21 @@
                 return (Math.round(rate * price)) / 100;
             },
             totalExcl() {
-                return parseFloat(this.unitExclPrice) * parseFloat(this.weight);
+                if(this.weight === 0) {
+                    return parseFloat(this.unitExclPrice) * parseFloat(this.quantity);
+                }
+                else {
+                    return parseFloat(this.unitExclPrice) * parseFloat(this.weight);
+                }
             },
 
             totalIncl() {
-                return parseFloat(this.unitInclPrice) * parseFloat(this.weight);
+                if(this.weight === 0) {
+                   return parseFloat(this.unitInclPrice) * parseFloat(this.quantity);
+                }
+                else {
+                    return parseFloat(this.unitInclPrice) * parseFloat(this.weight);
+                }
             },
 
             totalTax() {
