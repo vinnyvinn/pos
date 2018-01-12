@@ -21,17 +21,18 @@ class DailyReportController extends Controller
         //one day (today)
         $date = Carbon::now()->startOfDay();
         $sales=DB::table('sales')
-            ->join('stalls','stalls.id','=','sales.stall_id')
-            ->where('sales.created_at','>=',$date)
+            ->join('stalls', 'stalls.id', '=', 'sales.stall_id')
+            ->leftJoin('transactions', 'sales.sale_id', '=', 'transactions.transactionable_id')
+            ->where('sales.created_at', '>=', $date)
             ->select([
-                'sales.created_at', 'stock_item_id', 'stall_id', 'stock_name', 'weight', 'code',
+                'sales.created_at', 'stock_item_id', 'stall_id', 'stock_name', 'weight', 'quantity', 'code',
                 'totalInclPrice', 'totalExclPrice', 'name'
             ])
             ->get();
 
         $pay=DB::table('sales')
-            ->join('transaction_types','transaction_types.id','=','sales.transaction_type_id')
-            ->groupBy('sales.transaction_type_id')
+            ->join('transactions','transactions.transactionable_id','=','sales.sale_id')
+            ->groupBy('sales.sale_id')
             ->get();
 //        dd($sales);
         $selectedRole = null;
@@ -65,21 +66,21 @@ class DailyReportController extends Controller
                 //one day (today)
                 $date = Carbon::now()->startOfDay();
                 $sales=DB::table('sales')
-                    ->join('stalls','stalls.id','=','sales.stall_id')
-                    ->where('sales.created_at','>=',$date)->get();
+                    ->join('stalls', 'stalls.id', '=', 'sales.stall_id')
+                    ->leftJoin('transactions', 'sales.sale_id', '=', 'transactions.transactionable_id')
+                    ->where('sales.created_at', '>=', $date)->get();
 
                 $arr = array();
                 foreach ($sales as $sale) {
 
                     $data = array($sale->name, $sale->stock_name, $sale->weight,
-                        $sale->code, $sale->totalExclPrice,$sale->created_at
+                        $sale->code, $sale->totalExclPrice, $sale->type, $sale->created_at
                     );
                     array_push($arr, $data);
                 }
-
 //set the titles
                 $sheet->fromArray($arr, null, 'A1', false, false)->prependRow(array('STALL', 'PRODUCT', 'WEIGHT',
-                        'CODE', 'TOTAL PRICE','DATE'
+                        'CODE', 'TOTAL PRICE','DATE', 'TYPE'
                     )
                 );
             });
@@ -101,12 +102,12 @@ class DailyReportController extends Controller
                 //custom
                 $date = Carbon::now()->startOfDay();
                 $sales=DB::table('sales')
-                    ->join('stalls','stalls.id','=','sales.stall_id')
-                    ->leftJoin('transaction_types','transaction_types.id','=','sales.transaction_type_id')
-                    ->where('sales.transaction_type_id','=',$id)
-                    ->where('sales.created_at','>=',$date)
+                    ->join('stalls', 'stalls.id', '=', 'sales.stall_id')
+                    ->leftJoin('transactions', 'transactions.transactionable_id', '=', 'sales.sale_id')
+                    ->where('sales.transactions', '=', $id)
+                    ->where('sales.created_at', '>=', $date)
                     ->get();
-                dd($date);
+//                dd($date);
                 $arr = array();
                 foreach ($sales as $sale) {
 

@@ -58,7 +58,7 @@
                         {{--</div>--}}
 
                         <div class="text-box">
-                            <p class="maindata">OVERALL <b>INCOME</b></p>
+                            <p class="maindata">TOTAL <b>SALES THIS WEEK</b></p>
                             {{--                            {{ dd(parseFloat($sales)) }}--}}
                             <h2>KSH<span class="animate-number" data-value="{{ number_format($sales) }}" data-duration="400">0</span></h2>
                             <div class="clearfix"></div>

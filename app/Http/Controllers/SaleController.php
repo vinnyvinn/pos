@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use SmoDav\Models\Transaction;
 use SmoDav\Models\UnitOfMeasure;
 use SmoDav\Models\StockItem;
 use SmoDav\Models\Stock;
@@ -43,7 +44,7 @@ class SaleController extends Controller
 
     public function create()
     {
-        $stallId = session()->get('stall_id');  // TODO: Change this to use session
+        $stallId = session()->get('stall_id');
 
         if (request()->ajax()) {
             $stockItems = StockItem::forSale($stallId);
@@ -65,95 +66,91 @@ class SaleController extends Controller
 
     public function store(Request $request)
     {
-        // return response()->json($request->all());
         // TODO: Change this to use session
         $customer = Customer::findOrfail($request->customer_id);
         $sale_id = null;
-        $sale = \DB::transaction(
-            function () use ($request, $customer) {
-                if ($customer->is_credit == 1) {
-                    $balance = $request->credit;
-                    $balance += $customer->account_balance;
-                    $customer->update(['account_balance' => $balance]);
-                }
+        $sale = \DB::transaction(function () use ($request, $customer) {
+            if ($customer->is_credit == 1) {
+                $balance = $request->credit;
+                $balance += $customer->account_balance;
+                $customer->update(['account_balance' => $balance]);
+            }
 
 
-                //return "hvhv";
-                //dd($request->session()->get('stall_id'));
+            //return "hvhv";
+            //dd($request->session()->get('stall_id'));
 
-                $sale = Order::create(
-                    [
-                        'user_id'         => \Auth::user()->id,
-                        'account_id'      => $request->customer_id,
-                        'stall_id'        => session()->get('stall_id'),
-                        'description'     => $request->description,
-                        'document_type'   => Order::INVOICE,
-                        'total_exclusive' => $request->total_exclusive,
-                        'total_inclusive' => $request->total_inclusive,
-                        'total_tax'       => $request->total_tax,
-                        'mpesa'           => json_encode($request->mpesa),
-                        'cash'            => $request->cash,
-                        'credit'          => $request->credit,
-                        'balance'         => $request->balance,
-                        'notes'           => $request->notes
-                    ]);
+            $sale = Order::create(
+                [
+                    'user_id'         => \Auth::user()->id,
+                    'account_id'      => $request->customer_id,
+                    'stall_id'        => session()->get('stall_id'),
+                    'description'     => $request->description,
+                    'document_type'   => Order::INVOICE,
+                    'total_exclusive' => $request->total_exclusive,
+                    'total_inclusive' => $request->total_inclusive,
+                    'total_tax'       => $request->total_tax,
+                    'mpesa'           => json_encode($request->mpesa),
+                    'cash'            => $request->cash,
+                    'credit'          => $request->credit,
+                    'balance'         => $request->balance,
+                    'notes'           => $request->notes
+                ]);
 //                $sale_id = $sale->id;
-                foreach ($request->salesLines as $index => $value) {
-                    if (! $value['weight']) {
-                        return response()->json(['error' => 'please Input Valid quantity!']);
+            $sales = [];
+
+            foreach ($request->salesLines as $index => $value) {
+                $item_in_stock = Stock::where('item_id', $value['id'])->where('stall_id', 1);
+                $conversion = UnitConversion::where('stock_item_id', $value['id'])
+                    ->where('converted_unit_id', $value['unit_conversion_id'])
+                    ->get(['stocking_unit_id', 'stocking_ratio', 'converted_ratio'])->first();
+
+                if (! $conversion) {
+                    $stock_quantity = ($item_in_stock->first()) ? $item_in_stock->first()->quantity_on_hand : null;
+                    //TODO: Accomodate quantity
+                    $new_stock_quantity = ($item_in_stock->first()) ?
+                        $item_in_stock->first()->quantity_on_hand - $value['weight'] :
+                        null;
+                    if ($new_stock_quantity < 0) {
+                        $new_stock_quantity = 0;
                     }
-
-                    $sales[] = [];
-
-                    $item_in_stock = Stock::where('item_id', $value['id'])->where('stall_id', 1);
-                    $conversion = UnitConversion::where('stock_item_id', $value['id'])
-                        ->where('converted_unit_id', $value['unit_conversion_id'])
-                        ->get(['stocking_unit_id', 'stocking_ratio', 'converted_ratio'])->first();
-
-                    if (! $conversion) {
-                        $stock_quantity = ($item_in_stock->first()) ? $item_in_stock->first()->quantity_on_hand : null;
-                        $new_stock_quantity = ($item_in_stock->first()) ?
-                            $item_in_stock->first()->quantity_on_hand - $value['weight'] :
-                            null;
-                        if ($new_stock_quantity < 0) {
-                            $new_stock_quantity = 0;
-                        }
-                        $item_in_stock->update(['quantity_on_hand' => $new_stock_quantity]);
-                    } else {
-                        $stock_quantity = $item_in_stock->first()->quantity_on_hand;
-                        $units_sold = ($value['weight'] * ($conversion->converted_ratio / $conversion->stocking_ratio));
-                        $new_stock_quantity = $item_in_stock->first()->quantity_on_hand - $units_sold;
+                    $item_in_stock->update(['quantity_on_hand' => $new_stock_quantity]);
+                } else {
+                    $stock_quantity = $item_in_stock->first()->quantity_on_hand;
+                    $units_sold = ($value['weight'] * ($conversion->converted_ratio / $conversion->stocking_ratio));
+                    $new_stock_quantity = $item_in_stock->first()->quantity_on_hand - $units_sold;
 //                        if ($new_stock_quantity < 0) {
 //                            $new_stock_quantity = 0;
 //                        }
-                        $item_in_stock->update(['quantity_on_hand' => $new_stock_quantity]);
+                    $item_in_stock->update(['quantity_on_hand' => $new_stock_quantity]);
 
-                    }
-
-
-                    $sales[$index] = [
-                        'sale_id'            => $sale->id,
-                        'unit_conversion_id' => $value['unit_conversion_id'],
-                        'stock_item_id'      => $value['id'],
-                        'stock_name'         => $value['name'],
-                        'code'               => $value['code'],
-                        'weight'           => $value['weight'],
-                        'tax_rate'           => $value['tax_rate'],
-                        'unit_tax'           => $value['unitInclPrice'] - $value['unitExclPrice'],
-                        'unitExclPrice'      => $value['unitExclPrice'],
-                        'unitInclPrice'      => $value['unitInclPrice'],
-                        'totalInclPrice'     => $value['totalIncl'],
-                        'totalExclPrice'     => $value['totalExcl'],
-                        'total_tax'          => $value['totalTax'],
-                        'stall_id'           => session()->get('stall_id'),
-                        'created_at'         => Carbon::now()
-                    ];
                 }
 
-                Sale::insert($sales);
+                $sales[] = [
+                    'sale_id'            => $sale->id,
+                    'unit_conversion_id' => $value['unit_conversion_id'],
+                    'stock_item_id'      => $value['id'],
+                    'stock_name'         => $value['name'],
+                    'code'               => $value['code'],
+                    'weight'           => $value['weight'],
+                    'tax_rate'           => $value['tax_rate'],
+                    'unit_tax'           => $value['unitInclPrice'] - $value['unitExclPrice'],
+                    'unitExclPrice'      => $value['unitExclPrice'],
+                    'unitInclPrice'      => $value['unitInclPrice'],
+                    'totalInclPrice'     => $value['totalIncl'],
+                    'totalExclPrice'     => $value['totalExcl'],
+                    'total_tax'          => $value['totalTax'],
+                    'stall_id'           => session()->get('stall_id'),
+                    'created_at'         => Carbon::now()
+                ];
+            }
 
-                return $sale;
-            });
+            Sale::insert($sales);
+
+            $this->createTransactions($request, $sale);
+
+            return $sale;
+        });
 
         if (isset($customer) && isset($sale)) {
             return response()->json(['message' => 'Sale Made Successfully!']);
@@ -212,5 +209,78 @@ class SaleController extends Controller
     public function test()
     {
         return view('');
+    }
+
+    protected function createTransactions(Request $request, $originalSale)
+    {
+        $payments = $request->get('payments');
+
+        if (isset($payments['cash']) && (float) $payments['cash'] > 0) {
+            $this->createCashTransaction((float) $payments['cash'], $request->get('balance'), $originalSale);
+        }
+
+        if (isset($payments['credit']) && (float) $payments['credit'] > 0) {
+            $this->createCreditTransaction((float) $payments['credit'], $originalSale);
+        }
+
+        if (isset($payments['creditCards']) && count($payments['creditCards']) > 0) {
+            $this->createCreditCardTransactions($payments['creditCards'], $originalSale);
+        }
+
+        if (isset($payments['mpesa']) && count($payments['mpesa']) > 0) {
+            $this->createMpesaTransactions($payments['mpesa'], $originalSale);
+        }
+    }
+
+    private function createCashTransaction($cashAmount, $balance, $originalSale)
+    {
+        Transaction::create([
+            'type' => 'Cashbox',
+            'amount' => (float) $cashAmount - (float) $balance,
+            'transactionable_id' => $originalSale->id,
+            'transactionable_type' => Order::class
+        ]);
+    }
+
+    private function createCreditTransaction($amount, $originalSale)
+    {
+        Transaction::create([
+            'type' => 'Credit',
+            'amount' => (float) $amount,
+            'transactionable_id' => $originalSale->id,
+            'transactionable_type' => Order::class
+        ]);
+    }
+
+    private function createCreditCardTransactions($creditCards, $originalSale)
+    {
+        foreach ($creditCards as $card) {
+            if ((float) $card['credit_card_amount'] < 1) {
+                continue;
+            }
+
+            Transaction::create([
+                'type' => 'Credit Card',
+                'amount' => (float) $card['credit_card_amount'],
+                'transactionable_id' => $originalSale->id,
+                'transactionable_type' => Order::class
+            ]);
+        }
+    }
+
+    private function createMpesaTransactions($mpesa, $originalSale)
+    {
+        foreach ($mpesa as $item) {
+            if ((float) $item['m_pesa_amount'] < 1) {
+                continue;
+            }
+
+            Transaction::create([
+                'type' => 'Mpesa',
+                'amount' => (float) $item['m_pesa_amount'],
+                'transactionable_id' => $originalSale->id,
+                'transactionable_type' => Order::class
+            ]);
+        }
     }
 }

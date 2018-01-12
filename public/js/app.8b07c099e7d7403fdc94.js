@@ -14623,7 +14623,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             return this.rows.splice(row, 1);
         },
         addCreditField: function addCreditField() {
-            return this.creditRows.push({ credit_code: "", credit_amount: 0, credit_default: 0 });
+            return this.creditRows.push({
+                credit_card_code: "", credit_card_amount: 0, credit_default: 0
+            });
         },
         removeCreditField: function removeCreditField(creditRow) {
             return this.creditRows.splice(creditRow, 1);
@@ -14798,6 +14800,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -14808,7 +14820,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   },
 
 
-  props: ['taxes', 'total_inclusive', 'balance', 'credit', 'cash', 'customer', 'saleLines', 'mpesa', 'discount'],
+  props: ['taxes', 'total_inclusive', 'balance', 'credit', 'cash', 'customer', 'saleLines', 'mpesa', 'discount', 'creditCards'],
 
   computed: {
     totalAmountMpesa: function totalAmountMpesa() {
@@ -14817,6 +14829,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       }).reduce(function (sum, value) {
         return parseFloat(sum) + parseFloat(value);
       });
+    },
+    totalAmountCredit: function totalAmountCredit() {
+      return this.creditCards.map(function (creditCard) {
+        return parseFloat(creditCard.credit_card_amount);
+      }).reduce(function (sum, value) {
+        return parseFloat(sum) + parseFloat(value);
+      }, 0);
     }
   }
 });
@@ -15034,7 +15053,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             //from file
             fileval: 0,
-            requestcmplt: false
+            requestcmplt: false,
+            creditCards: []
 
         };
     },
@@ -15121,9 +15141,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     item.selling_tax = item.selling_tax ? item.selling_tax.rate : null;
                     return item;
                 });
-                console.log("stock is", response.data);
                 _this2.stock = stock;
-                console.log(response);
                 _this2.products = response.data.products;
                 _this2.multiselctopts = [];
 
@@ -15272,7 +15290,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             return sale_to_be_edited.quantity = parseFloat(sale_to_be_edited.quantity) - parseFloat(sale.quantity);
         },
-        validateForm: function validateForm(cash, mpesa, credit, balance, notes) {
+        validateForm: function validateForm(cash, mpesa, credit, balance, notes, creditCards) {
             if (!this.customer_id) {
                 Messenger().post({
                     message: "Select a Customer!",
@@ -15295,6 +15313,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.mpesa = mpesa;
             this.cash = cash;
             this.balance = balance;
+            this.creditCards = creditCards;
             this.receipt = true;
             this.completeSale();
         },
@@ -15325,7 +15344,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 credit: this.credit,
                 notes: this.notes,
                 mpesa: this.mpesa,
-                balance: this.balance
+                balance: this.balance,
+                payments: {
+                    cash: this.cash,
+                    credit: this.credit,
+                    mpesa: this.mpesa,
+                    creditCards: this.creditCards
+                }
             }).then(function (response) {
                 if (response.data.message) {
                     _this6.preparePrint();
@@ -16955,7 +16980,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "row"
   }, [_vm._m(0, false, false), _vm._v(" "), _c('div', {
     staticClass: "col-sm-4 text-right"
-  }, [_c('h5', [_vm._v(_vm._s(parseFloat(_vm.total_inclusive).toFixed(2)))]), _vm._v(" "), _c('h5', [_vm._v(_vm._s(isNaN(_vm.discount) ? 0 : _vm.discount))]), _vm._v(" "), _c('h4', [_c('strong', [_vm._v(_vm._s(parseFloat(parseFloat(_vm.total_inclusive) - parseFloat(_vm.discount)).toFixed(2)))])]), _vm._v(" "), _c('h4', [_c('strong', [_vm._v(_vm._s(parseFloat(_vm.balance).toFixed(2)))])])])])]), _vm._v(" "), _c('div', {
+  }, [_c('h5', [_vm._v(_vm._s(parseFloat(_vm.total_inclusive).toFixed(2)))]), _vm._v(" "), _c('h5', [_vm._v(_vm._s(isNaN(_vm.discount) ? 0 : _vm.discount))]), _vm._v(" "), _c('h4', [_c('strong', [_vm._v(_vm._s(parseFloat(parseFloat(_vm.total_inclusive)).toFixed(2)))])]), _vm._v(" "), _c('h4', [_c('strong', [_vm._v(_vm._s(parseFloat(_vm.balance).toFixed(2)))])])])])]), _vm._v(" "), _c('div', {
     staticClass: "col-md-6"
   }, [_c('table', {
     staticClass: "table"
@@ -18444,15 +18469,49 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "colspan": "3"
     }
-  }, [_c('h5', [_vm._v(_vm._s(_vm.today.toLocaleDateString() + " " + _vm.today.toLocaleTimeString('en-GB')))])])]), _vm._v(" "), _vm._m(1, false, false), _vm._v(" "), _vm._l((_vm.saleLines), function(saleline) {
+  }, [_c('h5', [_vm._v(_vm._s(_vm.today.toLocaleDateString() + " " + _vm.today.toLocaleTimeString('en-GB')))])])]), _vm._v(" "), (_vm.weight > parseFloat(0)) ? _c('tr', [_c('th', {
+    staticStyle: {
+      "padding-left": "-10px",
+      "text-align": "left"
+    }
+  }, [_vm._v(" Item ")]), _c('th', {
+    staticClass: "text-right"
+  }, [_vm._v(" Weight ")]), _c('th', [_vm._v(" UOM ")]), _c('th', {
+    staticClass: "text-right"
+  }, [_vm._v("Price")]), _c('th', {
+    staticClass: "text-right"
+  }, [_vm._v("VAT")]), _c('th', {
+    staticStyle: {
+      "padding-right": "20px",
+      "text-align": "right"
+    }
+  }, [_vm._v("Amount Icl")])]) : _c('tr', [_c('th', {
+    staticStyle: {
+      "padding-left": "-10px",
+      "text-align": "left"
+    }
+  }, [_vm._v(" Item ")]), _c('th', {
+    staticClass: "text-right"
+  }, [_vm._v(" Quantity ")]), _c('th', [_vm._v(" UOM ")]), _c('th', {
+    staticClass: "text-right"
+  }, [_vm._v("Price")]), _c('th', {
+    staticClass: "text-right"
+  }, [_vm._v("VAT")]), _c('th', {
+    staticStyle: {
+      "padding-right": "20px",
+      "text-align": "right"
+    }
+  }, [_vm._v("Amount Icl")])]), _vm._v(" "), _vm._l((_vm.saleLines), function(saleline) {
     return _c('tr', [_c('td', {
       staticStyle: {
         "padding-left": "-10px",
         "text-align": "left"
       }
-    }, [_vm._v(_vm._s(saleline.name))]), _vm._v(" "), _c('td', {
+    }, [_vm._v(_vm._s(saleline.name))]), _vm._v(" "), (_vm.weight > parseFloat(0)) ? _c('td', {
       staticClass: "text-right"
-    }, [_vm._v(_vm._s(saleline.weight))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(saleline.uom))]), _vm._v(" "), _c('td', {
+    }, [_vm._v(_vm._s(saleline.weight))]) : _c('td', {
+      staticClass: "text-right"
+    }, [_vm._v(_vm._s(saleline.quantity))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(saleline.uom))]), _vm._v(" "), _c('td', {
       staticClass: "text-right"
     }, [_vm._v(_vm._s((saleline.unitExclPrice.toFixed(2)).toLocaleString('en-GB')))]), _vm._v(" "), _c('td', {
       staticClass: "text-right"
@@ -18462,7 +18521,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "text-align": "right"
       }
     }, [_vm._v(_vm._s((saleline.totalIncl.toFixed(2)).toLocaleString('en-GB')))])])
-  }), _vm._v(" "), _c('tr', [_vm._m(2, false, false), _vm._v(" "), _c('td', {
+  }), _vm._v(" "), _c('tr', [_vm._m(1, false, false), _vm._v(" "), _c('td', {
     staticStyle: {
       "padding-right": "20px",
       "text-align": "right",
@@ -18481,6 +18540,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     return (parseFloat(_vm.totalAmountMpesa) > parseFloat(0)) ? _c('div', {
       staticClass: "text-center"
     }, [_c('strong', [_vm._v(_vm._s(pesa.m_pesa_code))]), _c('br')]) : _vm._e()
+  }), _vm._v(" "), (parseFloat(_vm.totalAmountCredit) > parseFloat(0)) ? _c('h6', [_vm._v("Credit card: ")]) : _vm._e(), _vm._v(" "), _vm._l((_vm.creditCards), function(credit) {
+    return (parseFloat(_vm.totalAmountCredit) > parseFloat(0)) ? _c('div', {
+      staticClass: "text-center"
+    }, [_c('strong', [_vm._v(_vm._s(credit.credit_card_code))]), _c('br')]) : _vm._e()
   }), _vm._v(" "), _c('h6', [_vm._v("CASH")]), _vm._v(" "), (parseInt(_vm.customer.is_credit) == parseInt(1)) ? _c('h6', [_vm._v("CREDIT : " + _vm._s(_vm.customer.name))]) : _vm._e(), _vm._v(" "), _c('h6', [_vm._v("CHANGE")])], 2), _vm._v(" "), _c('td', {
     staticStyle: {
       "padding-right": "20px",
@@ -18496,6 +18559,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, _vm._l((_vm.mpesa), function(pesa) {
     return (parseFloat(_vm.totalAmountMpesa) > parseFloat(0)) ? _c('div', [_c('strong', [_vm._v(_vm._s(pesa.m_pesa_amount))]), _c('br')]) : _vm._e()
+  })) : _vm._e(), _vm._v(" "), (parseFloat(_vm.totalAmountCredit) > parseFloat(0)) ? _c('div', {
+    staticStyle: {
+      "margin-top": "30px"
+    }
+  }, _vm._l((_vm.creditCards), function(credit) {
+    return (parseFloat(_vm.totalAmountCredit) > parseFloat(0)) ? _c('div', [_c('strong', [_vm._v(_vm._s(credit.credit_card_amount))]), _c('br')]) : _vm._e()
   })) : _vm._e(), _vm._v(" "), _c('h6', [_vm._v(_vm._s((parseFloat(_vm.cash).toFixed(2)).toLocaleString('en-GB')))]), _vm._v(" "), (parseInt(_vm.customer.is_credit) == parseInt(1)) ? _c('h6', [_vm._v(_vm._s((parseInt(_vm.credit).toFixed(2)).toLocaleString('en-GB')))]) : _vm._e(), _vm._v(" "), _c('h6', [_vm._v(_vm._s((parseFloat(_vm.balance).toFixed(2)).toLocaleString('en-GB')))])])]), _vm._v(" "), _c('tr', [_c('td', {
     staticStyle: {
       "padding-left": "-10px",
@@ -18506,7 +18575,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_vm._v(" TOTAL ITEMS: " + _vm._s(_vm.saleLines.length) + " ")])])], 2)]), _vm._v(" "), _c('table', {
     staticClass: "table"
-  }, [_vm._m(3, false, false), _vm._v(" "), _c('tbody', _vm._l((_vm.taxes), function(tax) {
+  }, [_vm._m(2, false, false), _vm._v(" "), _c('tbody', _vm._l((_vm.taxes), function(tax) {
     return (_vm.taxes.length) ? _c('tr', [_c('td', [_vm._v(_vm._s(tax.code))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(tax.rate) + "%")]), _vm._v(" "), _c('td', {
       staticClass: "text-right"
     }, [_vm._v(_vm._s(parseFloat(tax.rate) > 0 ? ((((parseFloat(100) - parseFloat(tax.rate)) / parseFloat(100)) * parseFloat(_vm.total_inclusive)).toFixed(2)).toLocaleString('en-GB') : 0))]), _vm._v(" "), _c('td', {
@@ -18517,7 +18586,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }))])]), _vm._v(" "), _c('div', {
     staticStyle: {
       "position": "fixed",
-      "bottom": "0"
+      "bottom": "0",
+      "left": "250px"
     }
   }, [_vm._v("\n                Powered by Tikone Solutions Limited\n            ")])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -18530,24 +18600,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "alt": ""
     }
   }), _vm._v(" "), _c('h4', [_vm._v("Gardens Grow.")]), _vm._v(" "), _c('h5', [_vm._v("P.O. Box xxxx.")]), _vm._v(" "), _c('h5', [_vm._v("Nairobi.")])])
-},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('tr', [_c('th', {
-    staticStyle: {
-      "padding-left": "-10px",
-      "text-align": "left"
-    }
-  }, [_vm._v(" Item ")]), _c('th', {
-    staticClass: "text-right"
-  }, [_vm._v(" Weight ")]), _c('th', [_vm._v(" UOM ")]), _c('th', {
-    staticClass: "text-right"
-  }, [_vm._v("Price")]), _c('th', {
-    staticClass: "text-right"
-  }, [_vm._v("VAT")]), _c('th', {
-    staticStyle: {
-      "padding-right": "20px",
-      "text-align": "right"
-    }
-  }, [_vm._v("Amount Icl")])])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('td', {
     staticStyle: {
@@ -18912,7 +18964,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "discount": _vm.discount,
       "mpesa": _vm.mpesa,
       "customer": _vm.customer,
-      "saleLines": _vm.salesLines
+      "saleLines": _vm.salesLines,
+      "credit-cards": _vm.creditCards
     }
   })], 1) : _vm._e()])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;

@@ -73,8 +73,10 @@
                             <th>Stall</th>
                             <th>Product</th>
                             <th>Weight</th>
+                            <th>Quantity</th>
                             <th>Code</th>
                             <th>Total Price</th>
+                            <th>Payment Type</th>
                             <th>Date</th>
                         </tr>
                         </thead>
@@ -84,8 +86,10 @@
                                 <td>{{$sale->name}}</td>
                                 <td>{{$sale->stock_name}}</td>
                                 <td>{{$sale->weight}}</td>
+                                <td>{{ $sale->quantity }}</td>
                                 <td>{{$sale->code}}</td>
                                 <td>{{number_format($sale->totalInclPrice, 2)}}</td>
+                                <td></td>
                                 <td>{{ Carbon\Carbon::parse($sale->created_at)->format('d F Y') }}</td>
                             </tr>
                         @endforeach
