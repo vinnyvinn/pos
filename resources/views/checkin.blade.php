@@ -29,7 +29,7 @@
                         </div>
                         <div class="form-group">
                             <label for="">Opening Amount</label>
-                            <input type="number" class="form-control" name="amount" id="amount" required>
+                            <input type="text" class="form-control" name="amount" id="amount" required>
                         </div>
                         <div class="form-group">
                             <input type="submit" class="btn btn-success" value="Check In">

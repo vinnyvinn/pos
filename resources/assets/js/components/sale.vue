@@ -150,7 +150,7 @@
         </div>
         <div id="receipt" v-if="receipt">
             <receipt :total_inclusive=total_inclusive :taxes=taxes :balance=balance :credit=credit :cash=cash :discount=discount
-                     :mpesa=mpesa :customer=customer :saleLines=salesLines></receipt>
+                     :mpesa=mpesa :customer=customer :saleLines=salesLines :credit-cards="creditCards"></receipt>
         </div>
     </div>
 </template>
@@ -196,7 +196,8 @@
 
                 //from file
                 fileval:0,
-                requestcmplt:false
+                requestcmplt:false,
+                creditCards: [],
 
             }
         },
@@ -282,9 +283,7 @@
                             item.selling_tax = (item.selling_tax) ? item.selling_tax.rate : null;
                             return item;
                         });
-                        console.log("stock is", response.data);
                         this.stock = stock;
-                        console.log(response);
                         this.products = response.data.products;
                         this.multiselctopts = [];
 
@@ -436,7 +435,7 @@
                 return sale_to_be_edited.quantity = parseFloat(sale_to_be_edited.quantity) - parseFloat(sale.quantity);
             },
 
-            validateForm(cash, mpesa, credit, balance, notes) {
+            validateForm(cash, mpesa, credit, balance, notes, creditCards) {
                 if (!this.customer_id) {
                     Messenger().post({
                         message: "Select a Customer!",
@@ -459,6 +458,7 @@
                 this.mpesa = mpesa;
                 this.cash = cash;
                 this.balance = balance;
+                this.creditCards = creditCards;
                 this.receipt = true;
                 this.completeSale();
             },
@@ -492,6 +492,12 @@
                     notes: this.notes,
                     mpesa: this.mpesa,
                     balance: this.balance,
+                    payments: {
+                        cash: this.cash,
+                        credit: this.credit,
+                        mpesa: this.mpesa,
+                        creditCards: this.creditCards,
+                    },
                 }).then(response => {
                     if (response.data.message) {
                         this.preparePrint();
@@ -636,11 +642,21 @@
                 return (Math.round(rate * price)) / 100;
             },
             totalExcl() {
-                return parseFloat(this.unitExclPrice) * parseFloat(this.weight);
+                if(this.weight === 0) {
+                    return parseFloat(this.unitExclPrice) * parseFloat(this.quantity);
+                }
+                else {
+                    return parseFloat(this.unitExclPrice) * parseFloat(this.weight);
+                }
             },
 
             totalIncl() {
-                return parseFloat(this.unitInclPrice) * parseFloat(this.weight);
+                if(this.weight === 0) {
+                   return parseFloat(this.unitInclPrice) * parseFloat(this.quantity);
+                }
+                else {
+                    return parseFloat(this.unitInclPrice) * parseFloat(this.weight);
+                }
             },
 
             totalTax() {

@@ -183,7 +183,6 @@ class StockItemController extends Controller
         $tax = Tax::first();
 
         $excel = array_map(function ($item) use ($existing, $tax) {
-            dd($item);
             $values = array_values($item);
             if (in_array($values[5], $existing)) {
                 return null;

@@ -17,12 +17,17 @@
         <h5>{{ today.toLocaleDateString() +" "+ today.toLocaleTimeString('en-GB') }}</h5>
       </td>
       </tr>
-      <tr>
+      <tr v-if="weight > parseFloat(0)">
           <th style="padding-left:-10px; text-align: left"> Item </th><th class="text-right"> Weight </th><th> UOM </th><th class="text-right">Price</th><th class="text-right">VAT</th><th style="padding-right:20px; text-align: right">Amount Icl</th>
+      </tr>
+      <tr v-else>
+          <th style="padding-left:-10px; text-align: left"> Item </th><th class="text-right"> Quantity </th><th> UOM </th><th class="text-right">Price</th><th class="text-right">VAT</th><th style="padding-right:20px; text-align: right">Amount Icl</th>
       </tr>
       <tr v-for="saleline in saleLines">
           <td style="padding-left:-10px; text-align: left">{{ saleline.name }}</td>
-          <td class="text-right">{{ saleline.weight }}</td>
+          <!--TODO:Fix toggling between weight and quantity -->
+          <td v-if="weight > parseFloat(0)" class="text-right">{{ saleline.weight }}</td>
+          <td v-else class="text-right">{{ saleline.quantity }}</td>
           <!--<td class="text-right">{{ saleline.quantity }}</td>-->
           <td>{{ saleline.uom }}</td>
           <td class="text-right">{{ (saleline.unitExclPrice.toFixed(2)).toLocaleString('en-GB') }}</td>
@@ -47,10 +52,10 @@
               <div  class="text-center" v-if="parseFloat(totalAmountMpesa) > parseFloat(0)" v-for="pesa in mpesa">
                 <strong>{{ pesa.m_pesa_code }}</strong><br/>
               </div>
-            <!--<h6 v-if="parseFloat(totalAmountCredit) > parseFloat(0)">Credit card: </h6>-->
-              <!--<div  class="text-center" v-if="parseFloat(totalAmountCredit) > parseFloat(0)" v-for="credit in crediCard">-->
-                <!--<strong>{{ credit.credit_code }}</strong><br/>-->
-              <!--</div>-->
+            <h6 v-if="parseFloat(totalAmountCredit) > parseFloat(0)">Credit card: </h6>
+              <div  class="text-center" v-if="parseFloat(totalAmountCredit) > parseFloat(0)" v-for="credit in creditCards">
+                <strong>{{ credit.credit_card_code }}</strong><br/>
+              </div>
           <h6>CASH</h6>
           <h6 v-if="parseInt(customer.is_credit) ==parseInt(1)">CREDIT : {{ customer.name }}</h6>
           <h6>CHANGE</h6>
@@ -59,6 +64,11 @@
           <div v-if="parseFloat(totalAmountMpesa) > parseFloat(0)" style="margin-top:30px">
           <div v-if="parseFloat(totalAmountMpesa) > parseFloat(0)" v-for="pesa in mpesa">
             <strong>{{ pesa.m_pesa_amount }}</strong><br/>
+          </div>
+        </div>
+            <div v-if="parseFloat(totalAmountCredit) > parseFloat(0)" style="margin-top:30px">
+          <div v-if="parseFloat(totalAmountCredit) > parseFloat(0)" v-for="credit in creditCards">
+            <strong>{{ credit.credit_card_amount }}</strong><br/>
           </div>
         </div>
           <h6>{{ (parseFloat(cash).toFixed(2)).toLocaleString('en-GB') }}</h6>
@@ -90,7 +100,7 @@
       </tbody>
   </table>
 </div>
-            <div style="position: fixed; bottom: 0;">
+            <div style="position: fixed; bottom: 0; left: 250px" >
                 Powered by Tikone Solutions Limited
             </div>
 </div>
@@ -111,19 +121,21 @@ export default {
     }
   },
 
-  props: [ 'taxes', 'total_inclusive', 'balance', 'credit', 'cash', 'customer', 'saleLines', 'mpesa', 'discount' ],
+  props: [
+      'taxes', 'total_inclusive', 'balance', 'credit', 'cash',
+      'customer', 'saleLines', 'mpesa', 'discount', 'creditCards'
+  ],
 
   computed: {
     totalAmountMpesa(){
-    return this.mpesa.map(mpesa=>{
-      return mpesa.m_pesa_amount;
-    }).reduce((sum,value) => parseFloat(sum) + parseFloat(value));
+        return this.mpesa.map(mpesa=>{
+          return mpesa.m_pesa_amount;
+        }).reduce((sum,value) => parseFloat(sum) + parseFloat(value));
     },
-//    totalAmountCredit(){
-//        return this.credit.map(credit=>{
-//            return credit.credit_amount;
-//        }).reduce((sum,value) => parseFloat(sum) + parseFloat(value));
-//    }
+    totalAmountCredit(){
+        return this.creditCards.map(creditCard => parseFloat(creditCard.credit_card_amount))
+            .reduce((sum, value) => parseFloat(sum) + parseFloat(value), 0);
+    }
   }
 }
 </script>

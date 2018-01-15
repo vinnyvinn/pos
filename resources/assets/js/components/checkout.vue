@@ -15,7 +15,7 @@
                 <div class="col-sm-4 text-right">
                     <h5>{{ parseFloat(total_inclusive).toFixed(2) }}</h5>
                     <h5>{{ isNaN(discount) ? 0 : discount }}</h5>
-                    <h4><strong>{{ parseFloat(parseFloat(total_inclusive) - parseFloat(discount)).toFixed(2) }}</strong></h4>
+                    <h4><strong>{{ parseFloat(parseFloat(total_inclusive)).toFixed(2) }}</strong></h4>
                     <h4><strong>{{ parseFloat(balance).toFixed(2) }}</strong></h4>
                 </div>
             </div>
@@ -188,14 +188,13 @@
                     return prev + nex;
                 }, 0);
 
-                let creditCard = this.creditRows.map(creditRow => {
-                    return creditRow.credit_card_amount;
-                }).reduce((prev, nex) => {
-                    nex = parseFloat(nex);
-                    nex = isNaN(nex) ? 0 : nex;
+                let creditCard = this.creditRows.map(creditRow => creditRow.credit_card_amount)
+                    .reduce((prev, nex) => {
+                        nex = parseFloat(nex);
+                        nex = isNaN(nex) ? 0 : nex;
 
-                    return prev + nex;
-                }, 0);
+                        return prev + nex;
+                    }, 0);
 
                 let credit = parseFloat(this.credit_amount);
                 let cash = parseFloat(this.cash_amount);
@@ -266,7 +265,9 @@
             },
 
             addCreditField() {
-                return this.creditRows.push({credit_code: "", credit_amount: 0, credit_default: 0});
+                return this.creditRows.push({
+                    credit_card_code: "", credit_card_amount: 0, credit_default: 0
+                });
             },
 
             removeCreditField(creditRow) {
