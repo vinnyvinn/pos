@@ -46,14 +46,6 @@
                             <input class="form-control" type="number" step="0.001" name="quantity_on_hand" id="quantity_on_hand" required>
                     </div>
                         <div class="form-group">
-                            <label for="sell_by">Sell By</label>
-                            <select name="sell_by" id="sell_by" class="form-control">
-                                <option value="piece">Piece</option>
-                                <option value="weight">Weight</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
                             <input type="submit" class="btn btn-success" value="Create">
                             <a href="{{ route('stock.index') }}" class="btn btn-danger">Cancel</a>
                         </div>
