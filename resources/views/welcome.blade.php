@@ -79,7 +79,6 @@
                 <div class="widget orange-4 animated fadeInDown">
                     <div class="widget-content padding">
                         <div class="widget-icon">
-                            <i class="fa fa-dollar"></i>
                         </div>
                         <div class="text-box">
                             <p class="maindata">OVERALL <b>INCOME</b></p>

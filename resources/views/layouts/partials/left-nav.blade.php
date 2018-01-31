@@ -143,7 +143,7 @@
                 @if(hasPermission(SmoDav\Models\UserGroup::PERM_SALE_FULL_ACCESS))
                     <li class="has_sub">
                         <a href="javascript:void(0);">
-                            KES
+                            <span style="margin-right: 10px;">KES</span>
                             <span>Sale</span>
                             <span class="pull-right"><i class="fa fa-angle-down"></i></span>
                         </a>
@@ -160,7 +160,8 @@
                 @if(hasPermission(SmoDav\Models\UserGroup::PERM_REPORT_FULL_ACCESS))
                     <li class="has_sub">
                         <a href="javascript:void(0);">
-                            KES
+                            <span style="margin-right: 10px;">KES</span>
+                           
                             <span>Reports</span>
                             <span class="pull-right"><i class="fa fa-angle-down"></i></span>
                         </a>
@@ -182,7 +183,8 @@
                 @endif
                 @if(hasPermission(SmoDav\Models\UserGroup::PERM_PETTY_CASH_FULL_ACCESS))
                     <li class="has_sub">
-                        <a href="javascript:void(0);">KES
+                        <a href="javascript:void(0);">
+                            <span style="margin-right: 10px;">KES</span>
                             <span>Expense</span>
                             <span class="pull-right"><i class="fa fa-angle-down"></i></span>
                         </a>
