@@ -7,3 +7,7 @@
 @import "./style";
 
 @import "~vue-multiselect/dist/vue-multiselect.min.css";
+
+#sidebar-menu > ul > li > a {
+  color: #a0a0a0;
+}
