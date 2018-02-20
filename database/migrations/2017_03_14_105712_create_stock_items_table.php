@@ -59,8 +59,6 @@ class CreateStockItemsTable extends Migration
                 ->on('unit_of_measures')
                 ->onDelete('set null')
                 ->onUpdate('cascade');
-
-            $table->boolean('synched')->default(false);
         });
     }
 
