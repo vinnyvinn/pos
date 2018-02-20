@@ -3,29 +3,22 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Response;
-use SmoDav\Models\Setting;
 
-class SettingController extends Controller
+class SynchController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        // return Response::json([
-        //     'settings' => Setting::current()
-        // ]);
-
-        return view('settings');
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     * @return \Illuminate\Http\Response
      */
     public function create()
     {
@@ -37,29 +30,21 @@ class SettingController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        Setting::first()->update($request->all());
-
-        Setting::reCache();
-
-        return Response::json([
-            'status' => 'success'
-        ]);
-
-        return view();
+        //
     }
 
     /**
      * Display the specified resource.
      *
-     * @param \App\Setting $setting
+     * @param int $id
      *
      * @return \Illuminate\Http\Response
      */
-    public function show(Setting $setting)
+    public function show($id)
     {
         //
     }
@@ -67,11 +52,11 @@ class SettingController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\Setting $setting
+     * @param int $id
      *
      * @return \Illuminate\Http\Response
      */
-    public function edit(Setting $setting)
+    public function edit($id)
     {
         //
     }
@@ -80,11 +65,11 @@ class SettingController extends Controller
      * Update the specified resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @param \App\Setting             $setting
+     * @param int                      $id
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Setting $setting)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -92,11 +77,11 @@ class SettingController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Setting $setting
+     * @param int $id
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Setting $setting)
+    public function destroy($id)
     {
         //
     }

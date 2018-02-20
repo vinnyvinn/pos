@@ -8,8 +8,6 @@ class CreateStocksTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -24,13 +22,13 @@ class CreateStocksTable extends Migration
 
             $table->foreign('stall_id')->references('id')->on('stalls')->onDelete('cascade');
             $table->foreign('item_id')->references('id')->on('stock_items')->onDelete('cascade');
+
+            $table->boolean('synched')->default(false);
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {

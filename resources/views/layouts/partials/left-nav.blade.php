@@ -26,6 +26,7 @@
                             <li><a href='{{ route('tax.index') }}'><span>Tax Types</span></a></li>
                             <li><a href='{{ route('unitOfMeasure.index') }}'><span>Unit of Measures</span></a></li>
                             <li><a href='{{ route('price-list-name.index') }}'><span>Price Lists</span></a></li>
+                            <li><a href='{{ route('setting.index') }}'><span>Settings</span></a></li>
                         </ul>
                     </li>
                 @endif
@@ -143,7 +144,7 @@
                 @if(hasPermission(SmoDav\Models\UserGroup::PERM_SALE_FULL_ACCESS))
                     <li class="has_sub">
                         <a href="javascript:void(0);">
-                            KES
+                           <i class="fa fa-money-bill alt"></i>
                             <span>Sale</span>
                             <span class="pull-right"><i class="fa fa-angle-down"></i></span>
                         </a>

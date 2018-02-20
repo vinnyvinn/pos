@@ -20,6 +20,7 @@ class CreatePaymentTypesTable extends Migration
             $table->string('is_credit')->default(0);
             $table->text('description')->nullable();
             $table->timestamps();
+            $table->boolean('synched')->default(false);
         });
     }
 
