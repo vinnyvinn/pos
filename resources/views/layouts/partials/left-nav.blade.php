@@ -26,6 +26,7 @@
                             <li><a href='{{ route('tax.index') }}'><span>Tax Types</span></a></li>
                             <li><a href='{{ route('unitOfMeasure.index') }}'><span>Unit of Measures</span></a></li>
                             <li><a href='{{ route('price-list-name.index') }}'><span>Price Lists</span></a></li>
+                            <li><a href='{{ route('setting.index') }}'><span>Settings</span></a></li>
                         </ul>
                     </li>
                 @endif

@@ -21,13 +21,11 @@ class SaleController extends Controller
 {
     public function fileopen(Request $request)
     {
-        try
-        {
+        try {
             $contents = File::get(storage_path('app/test.txt'));
+
             return response($contents, 200);
-        }
-        catch (Illuminate\Filesystem\FileNotFoundException $exception)
-        {
+        } catch (Illuminate\Filesystem\FileNotFoundException $exception) {
             die("The file doesn't exist");
         }
     }
@@ -57,7 +55,7 @@ class SaleController extends Controller
                         ['name', 'account_balance', 'account_number', 'credit_limit', 'id', 'is_credit']),
                     'payment_types' => PaymentTypes::get(['name', 'slug', 'id', 'is_credit']),
                     'taxes'         => Tax::active()->get(['id', 'code', 'rate']),
-                    "products"      => StockItem::all()
+                    'products'      => StockItem::all()
                 ]);
         }
 
@@ -75,7 +73,6 @@ class SaleController extends Controller
                 $balance += $customer->account_balance;
                 $customer->update(['account_balance' => $balance]);
             }
-
 
             //return "hvhv";
             //dd($request->session()->get('stall_id'));
@@ -123,7 +120,6 @@ class SaleController extends Controller
 //                            $new_stock_quantity = 0;
 //                        }
                     $item_in_stock->update(['quantity_on_hand' => $new_stock_quantity]);
-
                 }
 
                 $sales[] = [
@@ -132,7 +128,7 @@ class SaleController extends Controller
                     'stock_item_id'      => $value['id'],
                     'stock_name'         => $value['name'],
                     'code'               => $value['code'],
-                    'weight'           => $value['weight'],
+                    'quantity'             => $value['quantity'],
                     'tax_rate'           => $value['tax_rate'],
                     'unit_tax'           => $value['unitInclPrice'] - $value['unitExclPrice'],
                     'unitExclPrice'      => $value['unitExclPrice'],
@@ -155,12 +151,10 @@ class SaleController extends Controller
         if (isset($customer) && isset($sale)) {
             return response()->json(['message' => 'Sale Made Successfully!']);
         }
-
     }
 
     public function show($id)
     {
-
     }
 
     public function edit($id)
@@ -173,15 +167,13 @@ class SaleController extends Controller
         //
     }
 
-
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param int $id
      *
      * @return \Illuminate\Http\Response
      */
-
     public function destroy($id)
     {
         //

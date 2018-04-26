@@ -8,8 +8,6 @@ class CreateSalesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -22,7 +20,7 @@ class CreateSalesTable extends Migration
             $table->integer('unit_conversion_id')->unsigned()->nullable();
             $table->string('stock_name');
             $table->string('code');
-            $table->string('description')->nullable() ;
+            $table->string('description')->nullable();
             $table->double('quantity');
             $table->double('weight');
             $table->double('tax_rate');
@@ -34,13 +32,12 @@ class CreateSalesTable extends Migration
             $table->string('totalExclPrice');
             $table->string('total_tax');
             $table->timestamps();
+            $table->boolean('synched')->default(false);
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {

@@ -1,19 +1,17 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use DB;
-use Illuminate\Http\Request;
 use Log;
 use Carbon\Carbon;
 use SmoDav\Models\PettyCash;
-use SmoDav\Models\Transaction;
+use SmoDav\Models\Sale;
 
 class HomeController extends Controller
 {
     /**
      * Create a new controller instance.
-     *
-     * @return void
      */
     public function __construct()
     {
@@ -27,11 +25,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-       // Log::info("got here");
-
+        // Log::info("got here");
 
         return redirect('/');
-
     }
 
     public function dashboard()
@@ -42,14 +38,21 @@ class HomeController extends Controller
         $sales=DB::table('sales')->where('created_at', '>=', $wks->toDateTimeString())->sum('totalExclPrice');
         $customers=DB::table('customers')->count();
         $expenses = PettyCash::all('amount')->sum('amount');
-        $m_selling=DB::table('sales')
-         ->join('stock_items', 'stock_items.id', '=', 'sales.stock_item_id')
-         ->select(DB::raw('count(sales.stock_item_id) as counts,stock_item_id,stock_items.name'))
-         ->groupBy('sales.stock_item_id')
-         ->get()->toArray();
-        $number = count($m_selling);
-//        $max    = $m_selling[0]->name;
-//        $min    = $m_selling[$number-1]->name;
+        $most_selling = Sale::join('stock_items', 'stock_items.id', '=', 'sales.stock_item_id')
+         ->select(DB::raw('name,sum(quantity) as total_quantity'))
+        ->groupBy('stock_item_id')
+        ->orderBy('total_quantity', 'desc')
+         ->first();
+        $least_selling = Sale::join('stock_items', 'stock_items.id', '=', 'sales.stock_item_id')
+         ->select(DB::raw('name,sum(quantity) as total_quantity'))
+        ->groupBy('stock_item_id')
+        ->orderBy('total_quantity', 'asc')
+         ->first();
+
+        // dd($max, $min);
+        // $number = count($m_selling);
+        $max = $most_selling->name;
+        $min    = $least_selling->name;
 
         return view('welcome', compact('days', 'sales', 'customers', 'max', 'min', 'expenses'));
     }

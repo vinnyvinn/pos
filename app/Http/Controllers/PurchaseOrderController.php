@@ -29,31 +29,34 @@ class PurchaseOrderController extends Controller
             case 'unprocessed':
                 $orders = Order::purchase()->unprocessed()->with(['supplier', 'stall'])->get();
                 $title = 'Unprocessed';
+
                 break;
             case 'partial':
                 $orders = Order::purchase()->partial()->with(['supplier', 'stall'])->get();
                 $title = 'Partially Processed';
+
                 break;
             case 'archived':
                 $orders = Order::purchase()->archived()->with(['supplier', 'stall'])->get();
                 $title = 'Archived';
+
                 break;
             case 'received':
                 $orders = Order::received()->with(['supplier', 'stall'])->get();
                 $title = 'Received';
+
                 break;
             default:
                 $orders = Order::purchase()->with(['supplier', 'stall'])->get();
                 $title = 'All';
+
                 break;
         }
-
 
         return view('purchase-order.index')
             ->with('orders', $orders)
             ->with('title', $title);
     }
-
 
     public function create()
     {
@@ -71,12 +74,10 @@ class PurchaseOrderController extends Controller
                     'suppliers' => Supplier::active()->get(['id', 'name', 'account_number']),
                     'stalls'    => Stall::all()
                 ]);
-            dd();
         }
 
         return view('purchase-order.create');
     }
-
 
     public function store(Request $request)
     {
@@ -86,7 +87,6 @@ class PurchaseOrderController extends Controller
         $data['user_id'] = Auth::id();
         $data['document_type'] = Order::PURCHASE_ORDER;
         $data['document_status'] = Order::STATUS_UNPROCESSED;
-
 
         $data['total_exclusive'] = 0;
         $data['total_inclusive'] = 0;
@@ -141,7 +141,7 @@ class PurchaseOrderController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int $id
+     * @param int $id
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -158,7 +158,7 @@ class PurchaseOrderController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int $id
+     * @param int $id
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\JsonResponse|\Illuminate\View\View
      */
@@ -190,8 +190,8 @@ class PurchaseOrderController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  int                      $id
+     * @param \Illuminate\Http\Request $request
+     * @param int                      $id
      *
      * @return \Illuminate\Http\Response
      */
@@ -256,13 +256,12 @@ class PurchaseOrderController extends Controller
         flash('Successfully edited the purchase order');
 
         return redirect()->route('purchaseOrder.index');
-
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param int $id
      *
      * @return \Illuminate\Http\Response
      */

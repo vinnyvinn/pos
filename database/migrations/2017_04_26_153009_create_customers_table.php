@@ -8,8 +8,6 @@ class CreateCustomersTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -27,13 +25,13 @@ class CreateCustomersTable extends Migration
             $table->boolean('is_system')->default(false);
             $table->timestamps();
             $table->softDeletes();
+
+            $table->boolean('synched')->default(false);
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {

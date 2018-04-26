@@ -1,5 +1,3 @@
-
-
 @extends('layouts.app')
 
 @section('header')
@@ -623,8 +621,8 @@
                     </div>
                 </div>
             </div>
-            {{--<b>Most Selling Product:</b> {{$max}}<br>--}}
-            {{--<b>Least Selling Product:</b> {{$min}}<br>--}}
+                <b>Most Selling Product:</b> {{ $max}}<br>
+                <b>Least Selling Product:</b> {{$min}}<br>
         </div>
 
         <!-- Footer Start -->

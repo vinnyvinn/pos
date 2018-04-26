@@ -26,39 +26,43 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('credit', 'SaleController@credit');
     Route::resource('goodsReceived', 'GoodsReceivedController');
 
-    Route::resource('daily','DailyReportController');
-    Route::get('dailySummary','DailyReportController@dailySummary');
-    Route::get('dailySummaryType/{id}','DailyReportController@dailySummaryType');
-    Route::get('dailySummaryProduct/{id}','DailyReportController@dailySummaryProduct');
-    Route::post('storeDailyProduct','DailyReportController@storeDailyProduct');
-    Route::resource('weekly','WeeklyReportController');
-    Route::get('weeklySummary','WeeklyReportController@weeklySummary');
-    Route::get('LoadWeekly','WeeklyReportController@LoadWeekly');
-    Route::post('storeWeeklyProduct','WeeklyReportController@storeWeeklyProduct');
-    Route::get('weeklySummaryType/{id}','WeeklyReportController@weeklySummaryType');
-    Route::get('weeklySummaryProduct/{id}','WeeklyReportController@weeklySummaryProduct');
-    Route::resource('monthly','MonthtlyReportController');
-    Route::get('monthlySummary','MonthtlyReportController@monthlySummary');
-    Route::post('storeMonthlyProduct','MonthtlyReportController@storeMonthlyProduct');
-    Route::get('monthlySummaryType/{id}','MonthtlyReportController@monthlySummaryType');
-    Route::get('monthlySummaryProduct/{id}','MonthtlyReportController@monthlySummaryProduct');
-    Route::resource('custom','CustomReportController');
-    Route::get('customSummary','CustomReportController@customSummary');
-    Route::get('customSummaryType/{id}','CustomReportController@customSummaryType');
-    Route::get('customSummaryProduct/{id}','CustomReportController@customSummaryProduct');
-    Route::resource('notify','SalesNotificationController');
-    Route::get('dailyInventory','SalesNotificationController@dailyInventory');
-    Route::get('dailySales','SalesNotificationController@dailySales');
-    Route::get('lowStock','SalesNotificationController@lowStock');
-    Route::get('sendEmail','SalesNotificationController@sendEmail');
-    Route::resource('transactionType','TransactionTypesController');
-    Route::post('storeProduct','TransactionTypesController@storeProduct');
-    Route::get('LoadJs','TransactionTypesController@LoadJs');
+    Route::resource('daily', 'DailyReportController');
+    Route::get('dailySummary', 'DailyReportController@dailySummary');
+    Route::get('dailySummaryType/{id}', 'DailyReportController@dailySummaryType');
+    Route::get('dailySummaryProduct/{id}', 'DailyReportController@dailySummaryProduct');
+    Route::post('storeDailyProduct', 'DailyReportController@storeDailyProduct');
+    Route::resource('weekly', 'WeeklyReportController');
+    Route::get('weeklySummary', 'WeeklyReportController@weeklySummary');
+    Route::get('LoadWeekly', 'WeeklyReportController@LoadWeekly');
+    Route::post('storeWeeklyProduct', 'WeeklyReportController@storeWeeklyProduct');
+    Route::get('weeklySummaryType/{id}', 'WeeklyReportController@weeklySummaryType');
+    Route::get('weeklySummaryProduct/{id}', 'WeeklyReportController@weeklySummaryProduct');
+    Route::resource('monthly', 'MonthtlyReportController');
+    Route::get('monthlySummary', 'MonthtlyReportController@monthlySummary');
+    Route::post('storeMonthlyProduct', 'MonthtlyReportController@storeMonthlyProduct');
+    Route::get('monthlySummaryType/{id}', 'MonthtlyReportController@monthlySummaryType');
+    Route::get('monthlySummaryProduct/{id}', 'MonthtlyReportController@monthlySummaryProduct');
+    Route::resource('custom', 'CustomReportController');
+    Route::get('customSummary', 'CustomReportController@customSummary');
+    Route::get('customSummaryType/{id}', 'CustomReportController@customSummaryType');
+    Route::get('customSummaryProduct/{id}', 'CustomReportController@customSummaryProduct');
+    Route::resource('notify', 'SalesNotificationController');
+    Route::get('dailyInventory', 'SalesNotificationController@dailyInventory');
+    Route::get('dailySales', 'SalesNotificationController@dailySales');
+    Route::get('lowStock', 'SalesNotificationController@lowStock');
+    Route::get('sendEmail', 'SalesNotificationController@sendEmail');
+    Route::resource('transactionType', 'TransactionTypesController');
+    Route::post('storeProduct', 'TransactionTypesController@storeProduct');
+    Route::get('LoadJs', 'TransactionTypesController@LoadJs');
 
     Route::post('import', 'StockItemController@importExcel')->name('import');
 
     Route::resource('pettyCashType', 'pettyCashTypeController');
     Route::resource('pettyCash', 'PettyCashController');
+
+    Route::post('synch', 'SynchController@index')->name('synch');
+
+    Route::get('api/user', 'UsersController@customerLogin')->name('api/user');
 });
 
 Route::group(['middleware' => ['auth', 'checkedIn']], function () {

@@ -8,11 +8,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Order extends Model
 {
     protected $fillable = [
-        'account_id','user_id','stall_id',
-        'customer_id','document_type','document_status',
-        'document_number','order_number',
+        'account_id', 'user_id', 'stall_id',
+        'customer_id', 'document_type', 'document_status',
+        'document_number', 'order_number',
         'external_order_number', 'description', 'due_date',
-         'order_date','total_exclusive' ,'total_inclusive',
+         'order_date', 'total_exclusive' , 'total_inclusive',
         'total_tax', 'mpesa', 'cash',
         'notes', 'balance', 'credit'
     ];
@@ -39,12 +39,15 @@ class Order extends Model
             default:
             case self::PURCHASE_ORDER:
                 $prefix = 'PO';
+
                 break;
             case self::INVOICE:
                 $prefix = 'INV';
+
                 break;
             case self::GOODS_RECEIVED_VOUCHER:
                 $prefix = 'GRV';
+
                 break;
         }
 

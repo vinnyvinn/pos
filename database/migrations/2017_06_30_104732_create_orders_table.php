@@ -8,8 +8,6 @@ class CreateOrdersTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -36,6 +34,7 @@ class CreateOrdersTable extends Migration
             $table->string('mpesa')->nullable();
             $table->string('balance')->nullable();
             $table->text('notes')->nullable();
+            $table->boolean('synched')->default(false);
             $table->timestamps();
             $table->softDeletes();
 
@@ -47,8 +46,6 @@ class CreateOrdersTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {
