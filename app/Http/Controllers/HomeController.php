@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use DB;
 use Log;
-use Carbon\Carbon;
 use SmoDav\Models\PettyCash;
 use SmoDav\Models\Sale;
 
@@ -51,8 +51,8 @@ class HomeController extends Controller
 
         // dd($max, $min);
         // $number = count($m_selling);
-        $max = $most_selling->name;
-        $min    = $least_selling->name;
+        // $max = $most_selling->name;
+        // $min    = $least_selling->name;
 
         return view('welcome', compact('days', 'sales', 'customers', 'max', 'min', 'expenses'));
     }
