@@ -21,7 +21,22 @@ Vue.component('sale', require('./components/sale.vue'));
 Vue.component('Editpurchaseorder', require('./components/EditPurchaseOrder.vue'));
 Vue.component('purchaseorderreceive', require('./components/PurchaseOrderReceive.vue'));
 Vue.component('showpurchaseorder', require('./components/ShowPurchaseOrder.vue'));
-import VueFire from 'vuefire'
+Vue.component(
+    'passport-clients',
+    require('./components/passport/Clients.vue')
+);
+
+Vue.component(
+    'passport-authorized-clients',
+    require('./components/passport/AuthorizedClients.vue')
+);
+
+Vue.component(
+    'passport-personal-access-tokens',
+    require('./components/passport/PersonalAccessTokens.vue')
+); 
+
+import VueFire from 'vuefire';
 
 Vue.use(VueFire);
 const app = new Vue({

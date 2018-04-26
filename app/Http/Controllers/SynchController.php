@@ -13,6 +13,10 @@ class SynchController extends Controller
      */
     public function index()
     {
+        Sales::all();
+        Customers::all();
+        Orders::all();
+        Stocks::all();
     }
 
     /**

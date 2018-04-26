@@ -622,10 +622,8 @@
                     </div>
                 </div>
             </div>
-            @if(!$max == 0 || !$min == 0)
-                <b>Most Selling Product:</b> {{$max}}<br>
+                <b>Most Selling Product:</b> {{ $max}}<br>
                 <b>Least Selling Product:</b> {{$min}}<br>
-            @endif
         </div>
 
         <!-- Footer Start -->

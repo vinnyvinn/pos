@@ -38,12 +38,12 @@ class HomeController extends Controller
         $sales=DB::table('sales')->where('created_at', '>=', $wks->toDateTimeString())->sum('totalExclPrice');
         $customers=DB::table('customers')->count();
         $expenses = PettyCash::all('amount')->sum('amount');
-        $most_selling =Sale::join('stock_items', 'stock_items.id', '=', 'sales.stock_item_id')
+        $most_selling = Sale::join('stock_items', 'stock_items.id', '=', 'sales.stock_item_id')
          ->select(DB::raw('name,sum(quantity) as total_quantity'))
         ->groupBy('stock_item_id')
         ->orderBy('total_quantity', 'desc')
          ->first();
-        $least_selling =Sale::join('stock_items', 'stock_items.id', '=', 'sales.stock_item_id')
+        $least_selling = Sale::join('stock_items', 'stock_items.id', '=', 'sales.stock_item_id')
          ->select(DB::raw('name,sum(quantity) as total_quantity'))
         ->groupBy('stock_item_id')
         ->orderBy('total_quantity', 'asc')
@@ -51,8 +51,8 @@ class HomeController extends Controller
 
         // dd($max, $min);
         // $number = count($m_selling);
-        // $max = $m_selling[0]->name;
-        // $min    = $m_selling[$number-1]->name;
+        $max = $most_selling->name;
+        $min    = $least_selling->name;
 
         return view('welcome', compact('days', 'sales', 'customers', 'max', 'min', 'expenses'));
     }
