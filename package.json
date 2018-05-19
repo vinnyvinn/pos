@@ -15,7 +15,9 @@
     "jquery": "^3.1.1",
     "laravel-mix": "^0.8.3",
     "lodash": "^4.17.4",
-    "vue": "^2.5.2"
+    "node-sass": "^4.9.0",
+    "rebuild-node-sass": "^1.1.0",
+    "vue": "^2.5.16"
   },
   "dependencies": {
     "eslint-plugin-html": "^3.0.0",
