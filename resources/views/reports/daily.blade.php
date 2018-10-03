@@ -70,27 +70,21 @@
                     <table class="table table-responsive" id="dailyReport_table">
                         <thead>
                         <tr>
-                            <th>Stall</th>
-                            <th>Product</th>
-                            <th>Weight</th>
+                            <th>Item</th>
+                            <th>Unit price</th>
                             <th>Quantity</th>
-                            <th>Code</th>
-                            <th>Total Price</th>
-                            <th>Payment Type</th>
+                            <th>SubTotal</th>
                             <th>Date</th>
-                        </tr>
+                             </tr>
                         </thead>
                         <tbody>
-                        @foreach ($sales as $key => $sale)
+                        @foreach ($menus as $menu)
                             <tr>
-                                <td>{{$sale->name}}</td>
-                                <td>{{$sale->stock_name}}</td>
-                                <td>{{$sale->weight}}</td>
-                                <td>{{ $sale->quantity }}</td>
-                                <td>{{$sale->code}}</td>
-                                <td>{{number_format($sale->totalInclPrice, 2)}}</td>
-                                <td></td>
-                                <td>{{ Carbon\Carbon::parse($sale->created_at)->format('d F Y') }}</td>
+                                <td>{{$menu['item_name']}}</td>
+                                <td>{{$menu['unit_price']}}</td>
+                                <td>{{$menu['quantity']}}</td>
+                                <td>{{ $menu['sub_total'] }}</td>
+                                <td>{{ Carbon\Carbon::parse($menu['created_at'])->format('d F Y') }}</td>
                             </tr>
                         @endforeach
                         </tbody>
@@ -103,7 +97,7 @@
 @section('footer')
     <script src="{{ asset('assets/libs/jquery-datatables/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('assets/libs/jquery-datatables/js/dataTables.bootstrap.js') }}"></script>
-    <script src="{{ asset('assets/libs/jquery-datatables/extensions/TableTools/js/dataTables.tableTools.min.js') }}"></script>
+
     <script>
         $('#dailyReport_table').dataTable();
 

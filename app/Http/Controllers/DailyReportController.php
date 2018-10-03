@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Response;
 use Maatwebsite\Excel\Facades\Excel;
 use Carbon\Carbon;
 use SmoDav\Models\Sale;
+use App\MenuDetail;
+use App\ProductSubcategory;
 
 class DailyReportController extends Controller
 {
@@ -18,32 +20,13 @@ class DailyReportController extends Controller
      */
     public function index()
     {
-        //one day (today)
+
+       //one day (today)
+        $pro_data=[];
         $date = Carbon::now()->startOfDay();
-        $sales=DB::table('sales')
-            ->join('stalls', 'stalls.id', '=', 'sales.stall_id')
-            ->leftJoin('transactions', 'sales.sale_id', '=', 'transactions.transactionable_id')
-            ->where('sales.created_at', '>=', $date)
-            ->select([
-                'sales.created_at', 'stock_item_id', 'stall_id', 'stock_name', 'weight', 'quantity', 'code',
-                'totalInclPrice', 'totalExclPrice', 'name'
-            ])
-            ->get();
+        $menus = MenuDetail::where('created_at','>=',$date)->get();
 
-        $pay=DB::table('sales')
-            ->join('transactions','transactions.transactionable_id','=','sales.sale_id')
-            ->groupBy('sales.sale_id')
-            ->get();
-//        dd($sales);
-        $selectedRole = null;
-
-        $product=DB::table('sales')
-            ->join('stock_items','stock_items.id','=','sales.stock_item_id')
-            ->groupBy('sales.stock_item_id')
-            ->get();
-        $selectedProduct = null;
-
-     return view('reports.daily',compact('sales','pay','selectedRole','selectedProduct','product'));   //
+        return view('reports.daily',compact('menus',$menus));   //
     }
 
     /**
@@ -65,22 +48,19 @@ class DailyReportController extends Controller
 
                 //one day (today)
                 $date = Carbon::now()->startOfDay();
-                $sales=DB::table('sales')
-                    ->join('stalls', 'stalls.id', '=', 'sales.stall_id')
-                    ->leftJoin('transactions', 'sales.sale_id', '=', 'transactions.transactionable_id')
-                    ->where('sales.created_at', '>=', $date)->get();
+                $sales = MenuDetail::where('created_at','>=',$date)->get();
 
                 $arr = array();
                 foreach ($sales as $sale) {
 
-                    $data = array($sale->name, $sale->stock_name, $sale->weight,
-                        $sale->code, $sale->totalExclPrice, $sale->type, $sale->created_at
+                    $data = array($sale['item_name'], $sale['unit_price'], $sale['quantity'],
+                        $sale['sub_total'], $sale['created_at']
                     );
                     array_push($arr, $data);
                 }
 //set the titles
-                $sheet->fromArray($arr, null, 'A1', false, false)->prependRow(array('STALL', 'PRODUCT', 'WEIGHT',
-                        'CODE', 'TOTAL PRICE','DATE', 'TYPE'
+                $sheet->fromArray($arr, null, 'A1', false, false)->prependRow(array('Item', 'Unit Price', 'Quantity',
+                        'SubTotal','DATE'
                     )
                 );
             });

@@ -1,7 +1,8 @@
 <div class="topbar hidden-print">
     <div class="topbar-left">
         <div class="logo" id="main-logo">
-            <h3><a href="{{ url('/') }}">Quick<span>POS</span></a></h3>
+            <img src="{{asset('images/dlogo.png')}}" alt="" width="80px;height:50px">
+            {{--<h3><a href="{{ url('/') }}">Quick<span>POS</span></a></h3>--}}
         </div>
         <button class="button-menu-mobile open-left" id="button-menu-mobile">
             <i class="fa fa-bars"></i>

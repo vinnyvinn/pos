@@ -23,6 +23,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('user-group', 'UserGroupController');
     Route::get('goodsReceived/{id}/receive', 'GoodsReceivedController@receive')->name('goodsReceived.receive');
     Route::get('sale/receipt/{id}', 'SaleController@receipt')->name('receipt');
+    Route::post('manage-cart', 'SaleController@manageCart')->name('manage-cart');
+    Route::get('cart-details', 'SaleController@cartDetails')->name('cart-details');
+    Route::get('view-cart', 'SaleController@viewCart')->name('view-cart');
     Route::get('credit', 'SaleController@credit');
     Route::resource('goodsReceived', 'GoodsReceivedController');
 
@@ -63,6 +66,23 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('synch', 'SynchController@index')->name('synch');
 
     Route::get('api/user', 'UsersController@customerLogin')->name('api/user');
+
+    //cart
+    Route::get('cart','CartController@index')->name('cart');
+    Route::post('/addcart', 'CartController@postAdd');
+    Route::post('/ajaxadd', 'CartController@ajaxAdd');
+    Route::get('/cartdelete/{id}', 'CartController@delete');
+    Route::post('update-qn/{qty}/{id}','CartController@updateCartQuantity')->name('update-qn');
+    Route::get('check-out','CartController@checkOut')->name('check-out');
+    Route::get('receipt','CartController@printReceipt')->name('receipt');
+
+
+    //menus
+    Route::get('/drinks', 'SaleController@Drinks');
+    Route::get('/snacks', 'SaleController@Snacks');
+    Route::get('/dishes', 'SaleController@mainDish');
+    Route::get('/specials', 'SaleController@Specials');
+
 });
 
 Route::group(['middleware' => ['auth', 'checkedIn']], function () {
@@ -70,3 +90,5 @@ Route::group(['middleware' => ['auth', 'checkedIn']], function () {
     Route::resource('purchaseOrder', 'PurchaseOrderController');
     Route::resource('sale', 'SaleController');
 });
+
+

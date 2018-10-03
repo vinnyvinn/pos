@@ -68,23 +68,21 @@
                     <table class="table table-responsive" id="monthlyReport_table">
                         <thead>
                         <tr>
-                            <th>Stall</th>
-                            <th>Product</th>
-                            <th>Weight</th>
-                            <th>Code</th>
-                            <th>Total Price</th>
+                            <th>Item</th>
+                            <th>Unit price</th>
+                            <th>Quantity</th>
+                            <th>SubTotal</th>
                             <th>Date</th>
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach ($sales as $key => $sale)
+                        @foreach ($menus as $menu)
                             <tr>
-                                <td>{{$sale->name}}</td>
-                                <td>{{$sale->stock_name}}</td>
-                                <td>{{$sale->weight}}</td>
-                                <td>{{$sale->code}}</td>
-                                <td>{{number_format($sale->totalExclPrice, 2)}}</td>
-                                <td>{{ Carbon\Carbon::parse($sale->created_at)->format('d F Y') }}</td>
+                                <td>{{$menu['item_name']}}</td>
+                                <td>{{$menu['unit_price']}}</td>
+                                <td>{{$menu['quantity']}}</td>
+                                <td>{{ $menu['sub_total'] }}</td>
+                                <td>{{ Carbon\Carbon::parse($menu['created_at'])->format('d F Y') }}</td>
                             </tr>
                         @endforeach
                         </tbody>

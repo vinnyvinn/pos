@@ -15,6 +15,7 @@ use SmoDav\Models\UnitConversion;
 use SmoDav\Models\Customer;
 use SmoDav\Models\PaymentTypes;
 use SmoDav\Models\Tax;
+use App\ProductSubcategory;
 use PDF;
 
 class SaleController extends Controller
@@ -32,12 +33,15 @@ class SaleController extends Controller
 
     public function index()
     {
+        //dd(ProductSubcategory::all());
         return view(
             'sale.index',
             ['sales'=> Order::with(['stall', 'customer', 'paymentType'])
                 ->where('document_type', Order::INVOICE)
                 ->orderBy('id', 'desc')
                 ->get(), 'stall_id' => session()->get('stall_id')]);
+
+       // return view('sale.create_index')->with('products', ProductSubcategory::paginate(6));
     }
 
     public function create()
@@ -49,13 +53,13 @@ class SaleController extends Controller
 
             return response()->json(
                 [
-                    'stock'         => $stockItems,
-                    'uoms'          => UnitOfMeasure::active()->get(['id', 'name'])->keyBy('id'),
-                    'customers'     => Customer::get(
+                    'stock' => $stockItems,
+                    'uoms' => UnitOfMeasure::active()->get(['id', 'name'])->keyBy('id'),
+                    'customers' => Customer::get(
                         ['name', 'account_balance', 'account_number', 'credit_limit', 'id', 'is_credit']),
                     'payment_types' => PaymentTypes::get(['name', 'slug', 'id', 'is_credit']),
-                    'taxes'         => Tax::active()->get(['id', 'code', 'rate']),
-                    'products'      => StockItem::all()
+                    'taxes' => Tax::active()->get(['id', 'code', 'rate']),
+                    'products' => StockItem::all()
                 ]);
         }
 
@@ -79,19 +83,19 @@ class SaleController extends Controller
 
             $sale = Order::create(
                 [
-                    'user_id'         => \Auth::user()->id,
-                    'account_id'      => $request->customer_id,
-                    'stall_id'        => session()->get('stall_id'),
-                    'description'     => $request->description,
-                    'document_type'   => Order::INVOICE,
+                    'user_id' => \Auth::user()->id,
+                    'account_id' => $request->customer_id,
+                    'stall_id' => session()->get('stall_id'),
+                    'description' => $request->description,
+                    'document_type' => Order::INVOICE,
                     'total_exclusive' => $request->total_exclusive,
                     'total_inclusive' => $request->total_inclusive,
-                    'total_tax'       => $request->total_tax,
-                    'mpesa'           => json_encode($request->mpesa),
-                    'cash'            => $request->cash,
-                    'credit'          => $request->credit,
-                    'balance'         => $request->balance,
-                    'notes'           => $request->notes
+                    'total_tax' => $request->total_tax,
+                    'mpesa' => json_encode($request->mpesa),
+                    'cash' => $request->cash,
+                    'credit' => $request->credit,
+                    'balance' => $request->balance,
+                    'notes' => $request->notes
                 ]);
 //                $sale_id = $sale->id;
             $sales = [];
@@ -102,7 +106,7 @@ class SaleController extends Controller
                     ->where('converted_unit_id', $value['unit_conversion_id'])
                     ->get(['stocking_unit_id', 'stocking_ratio', 'converted_ratio'])->first();
 
-                if (! $conversion) {
+                if (!$conversion) {
                     $stock_quantity = ($item_in_stock->first()) ? $item_in_stock->first()->quantity_on_hand : null;
                     //TODO: Accomodate quantity
                     $new_stock_quantity = ($item_in_stock->first()) ?
@@ -123,21 +127,21 @@ class SaleController extends Controller
                 }
 
                 $sales[] = [
-                    'sale_id'            => $sale->id,
+                    'sale_id' => $sale->id,
                     'unit_conversion_id' => $value['unit_conversion_id'],
-                    'stock_item_id'      => $value['id'],
-                    'stock_name'         => $value['name'],
-                    'code'               => $value['code'],
-                    'quantity'             => $value['quantity'],
-                    'tax_rate'           => $value['tax_rate'],
-                    'unit_tax'           => $value['unitInclPrice'] - $value['unitExclPrice'],
-                    'unitExclPrice'      => $value['unitExclPrice'],
-                    'unitInclPrice'      => $value['unitInclPrice'],
-                    'totalInclPrice'     => $value['totalIncl'],
-                    'totalExclPrice'     => $value['totalExcl'],
-                    'total_tax'          => $value['totalTax'],
-                    'stall_id'           => session()->get('stall_id'),
-                    'created_at'         => Carbon::now()
+                    'stock_item_id' => $value['id'],
+                    'stock_name' => $value['name'],
+                    'code' => $value['code'],
+                    'quantity' => $value['quantity'],
+                    'tax_rate' => $value['tax_rate'],
+                    'unit_tax' => $value['unitInclPrice'] - $value['unitExclPrice'],
+                    'unitExclPrice' => $value['unitExclPrice'],
+                    'unitInclPrice' => $value['unitInclPrice'],
+                    'totalInclPrice' => $value['totalIncl'],
+                    'totalExclPrice' => $value['totalExcl'],
+                    'total_tax' => $value['totalTax'],
+                    'stall_id' => session()->get('stall_id'),
+                    'created_at' => Carbon::now()
                 ];
             }
 
@@ -183,14 +187,14 @@ class SaleController extends Controller
     {
         $pdf = PDF::loadView(
             'sale.receipt',
-            ['sale'  => Order::with(['sale.stock', 'customer'])->findOrfail($id),
-             'taxes' => Tax::active()->get(['id', 'code', 'rate'])]);
+            ['sale' => Order::with(['sale.stock', 'customer'])->findOrfail($id),
+                'taxes' => Tax::active()->get(['id', 'code', 'rate'])]);
 
         // return $pdf->stream(Carbon::now().'_receipt.pdf');
         return view(
             'sale.receipt',
-            ['sale'  => Order::with(['sale.stock', 'customer'])->findOrfail($id),
-             'taxes' => Tax::active()->get(['id', 'code', 'rate'])]);
+            ['sale' => Order::with(['sale.stock', 'customer'])->findOrfail($id),
+                'taxes' => Tax::active()->get(['id', 'code', 'rate'])]);
     }
 
     public function credit()
@@ -207,12 +211,12 @@ class SaleController extends Controller
     {
         $payments = $request->get('payments');
 
-        if (isset($payments['cash']) && (float) $payments['cash'] > 0) {
-            $this->createCashTransaction((float) $payments['cash'], $request->get('balance'), $originalSale);
+        if (isset($payments['cash']) && (float)$payments['cash'] > 0) {
+            $this->createCashTransaction((float)$payments['cash'], $request->get('balance'), $originalSale);
         }
 
-        if (isset($payments['credit']) && (float) $payments['credit'] > 0) {
-            $this->createCreditTransaction((float) $payments['credit'], $originalSale);
+        if (isset($payments['credit']) && (float)$payments['credit'] > 0) {
+            $this->createCreditTransaction((float)$payments['credit'], $originalSale);
         }
 
         if (isset($payments['creditCards']) && count($payments['creditCards']) > 0) {
@@ -228,7 +232,7 @@ class SaleController extends Controller
     {
         Transaction::create([
             'type' => 'Cashbox',
-            'amount' => (float) $cashAmount - (float) $balance,
+            'amount' => (float)$cashAmount - (float)$balance,
             'transactionable_id' => $originalSale->id,
             'transactionable_type' => Order::class
         ]);
@@ -238,7 +242,7 @@ class SaleController extends Controller
     {
         Transaction::create([
             'type' => 'Credit',
-            'amount' => (float) $amount,
+            'amount' => (float)$amount,
             'transactionable_id' => $originalSale->id,
             'transactionable_type' => Order::class
         ]);
@@ -247,13 +251,13 @@ class SaleController extends Controller
     private function createCreditCardTransactions($creditCards, $originalSale)
     {
         foreach ($creditCards as $card) {
-            if ((float) $card['credit_card_amount'] < 1) {
+            if ((float)$card['credit_card_amount'] < 1) {
                 continue;
             }
 
             Transaction::create([
                 'type' => 'Credit Card',
-                'amount' => (float) $card['credit_card_amount'],
+                'amount' => (float)$card['credit_card_amount'],
                 'transactionable_id' => $originalSale->id,
                 'transactionable_type' => Order::class
             ]);
@@ -263,16 +267,61 @@ class SaleController extends Controller
     private function createMpesaTransactions($mpesa, $originalSale)
     {
         foreach ($mpesa as $item) {
-            if ((float) $item['m_pesa_amount'] < 1) {
+            if ((float)$item['m_pesa_amount'] < 1) {
                 continue;
             }
 
             Transaction::create([
                 'type' => 'Mpesa',
-                'amount' => (float) $item['m_pesa_amount'],
+                'amount' => (float)$item['m_pesa_amount'],
                 'transactionable_id' => $originalSale->id,
                 'transactionable_type' => Order::class
             ]);
         }
+    }
+
+
+    public function cartDetails()
+    {
+
+        $products = ProductSubcategory::join('product_categories', 'product_subcategories.category_id', '=', 'product_categories.id')
+            ->select('product_subcategories.name', 'product_subcategories.price','product_subcategories.id')
+            ->where('category_id',1)
+            ->get();
+
+
+        return view('sale.shop_index')->with('products', $products);
+
+    }
+
+    public function viewCart()
+    {
+        return view('sale.view_cart');
+    }
+
+    public function Drinks()
+    {
+        $products = ProductSubcategory::where('category_id',1)->orderBy('name','asc')->get();
+
+   //dd();
+        return view('sale.shop_index')->with('products',$products);
+
+    }
+    public function Snacks()
+    {
+        $products = ProductSubcategory::where('category_id',2)->orderBy('name','asc')->get();
+
+        return view('sale.shop_index')->with('products',$products);
+    }
+    public function mainDish()
+    {
+        $products = ProductSubcategory::where('category_id',3)->orderBy('name','asc')->get();
+        return view('sale.shop_index')->with('products',$products);
+    }
+
+    public function Specials()
+    {
+        $products = ProductSubcategory::where('category_id',4)->orderBy('name','asc')->get();
+        return view('sale.shop_index')->with('products',$products);
     }
 }

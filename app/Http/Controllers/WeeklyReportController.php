@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Response;
 use Maatwebsite\Excel\Facades\Excel;
 use Carbon\Carbon;
 use SmoDav\Models\Sale;
+use App\MenuDetail;
 
 class WeeklyReportController extends Controller
 {
@@ -21,33 +22,10 @@ class WeeklyReportController extends Controller
             {
                 //one week / 7 days
         $date = Carbon::now()->subDays(7)->startOfDay();
-        $sales=DB::table('sales')
-            ->join('stalls','stalls.id','=','sales.stall_id')
-            ->where('sales.created_at','>=',$date)
-            ->select([
-                'sales.created_at', 'stock_item_id', 'stall_id', 'stock_name', 'weight', 'code',
-                'totalInclPrice', 'totalExclPrice', 'name'
-            ])
-            ->get();
-
-                $pay=DB::table('sales')
-                    ->join('transaction_types','transaction_types.id','=','sales.transaction_type_id')
-                    ->groupBy('sales.transaction_type_id')
-                      ->get();
-                $selectedRole = null;
-
-                $search=\Request::get('name');
-                $product=DB::table('sales')
-                    ->join('stock_items','stock_items.id','=','sales.stock_item_id')
-//                   ->where('stock_items.name','like'.'%'.$search.'%')
-                    ->groupBy('sales.stock_item_id')
-                    ->get();
-                //return response()->json($product);
-                $selectedProduct = null;
-        $tt= array_pluck($product,'name','id');
+                $menus = MenuDetail::where('created_at','>=',$date)->get();
 
 
-        return view('reports.weekly',compact('sales','pay','selectedRole','tt','product','selectedProduct'));   //
+        return view('reports.weekly',compact('menus'));   //
     }
    public function LoadWeekly()
    {
@@ -78,23 +56,20 @@ class WeeklyReportController extends Controller
 
                 //one week / 7 days
                 $date = Carbon::now()->subDays(7)->startOfDay();
-                $sales=DB::table('sales')
-                    ->join('stalls','stalls.id','=','sales.stall_id')
-                    ->where('sales.created_at','>=',$date)
-                    ->get();
+                $sales=MenuDetail::where('created_at','>=',$date)->get();
 
                 $arr = array();
                 foreach ($sales as $sale) {
 
-                    $data = array($sale->name, $sale->stock_name, $sale->weight,
-                        $sale->code, $sale->totalExclPrice,$sale->created_at
+                    $data = array($sale['item_name'], $sale['unit_price'], $sale['quantity'],
+                        $sale['sub_total'], $sale['created_at']
                     );
                     array_push($arr, $data);
                 }
 
 //set the titles
-                $sheet->fromArray($arr, null, 'A1', false, false)->prependRow(array('STALL', 'PRODUCT', 'WEIGHT',
-                        'CODE', 'TOTAL PRICE','DATE'
+                $sheet->fromArray($arr, null, 'A1', false, false)->prependRow(array('Item', 'Unit Price', 'Quantity',
+                        'SubTotal','DATE'
                     )
                 );
             });

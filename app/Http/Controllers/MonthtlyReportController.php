@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Response;
 use Maatwebsite\Excel\Facades\Excel;
 use Carbon\Carbon;
 use SmoDav\Models\Sale;
+use App\MenuDetail;
+
 class MonthtlyReportController extends Controller
 {
     /**
@@ -20,28 +22,9 @@ class MonthtlyReportController extends Controller
     {
         //one month / 30 days
         $date = Carbon::now()->subDays(30)->startOfDay();
-        $sales=DB::table('sales')
-            ->join('stalls','stalls.id','=','sales.stall_id')
-            ->where('sales.created_at','>=',$date)
-            ->select([
-                'sales.created_at', 'stock_item_id', 'stall_id', 'stock_name', 'weight', 'code',
-                'totalInclPrice', 'totalExclPrice', 'name'
-            ])
-            ->get();
+        $menus = MenuDetail::where('created_at','>=',$date)->get();
 
-        $pay=DB::table('sales')
-            ->join('transaction_types','transaction_types.id','=','sales.transaction_type_id')
-            ->groupBy('sales.transaction_type_id')
-            ->get();
-        $selectedRole = null;
-
-        $product=DB::table('sales')
-            ->join('stock_items','stock_items.id','=','sales.stock_item_id')
-            ->groupBy('sales.stock_item_id')
-            ->get();
-        $selectedProduct = null;
-
-        return view('reports.monthly',compact('sales','pay','selectedRole','selectedProduct','product'));   //
+        return view('reports.monthly',compact('menus'));   //
     }
 
     /**
@@ -62,23 +45,19 @@ class MonthtlyReportController extends Controller
 
                 //one month / 30 days
                 $date = Carbon::now()->subDays(30)->startOfDay();
-                $sales=DB::table('sales')
-                    ->join('stalls','stalls.id','=','sales.stall_id')
-                    ->where('sales.created_at','>=',$date)
-                    ->get();
+                $sales = MenuDetail::where('created_at','>=',$date)->get();
 
                 $arr = array();
                 foreach ($sales as $sale) {
 
-                    $data = array($sale->name, $sale->stock_name, $sale->weight,
-                        $sale->code, $sale->totalExclPrice,$sale->created_at
+                    $data = array($sale['item_name'], $sale['unit_price'], $sale['quantity'],
+                        $sale['sub_total'], $sale['created_at']
                     );
                     array_push($arr, $data);
                 }
-
 //set the titles
-                $sheet->fromArray($arr, null, 'A1', false, false)->prependRow(array('STALL', 'PRODUCT', 'WEIGHT',
-                        'CODE', 'TOTAL PRICE','DATE'
+                $sheet->fromArray($arr, null, 'A1', false, false)->prependRow(array('Item', 'Unit Price', 'Quantity',
+                        'SubTotal','DATE'
                     )
                 );
             });
