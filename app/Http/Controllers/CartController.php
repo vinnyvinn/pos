@@ -115,6 +115,7 @@ class CartController extends Controller
         }
 
         $cartData = request()->session()->get('cart');
+        $sum = 0;
         if (request()->session()->has('cart')) {
             foreach ($cartData as $key => $value) {
                 $product = ProductSubcategory::where('id', '=', $key)->get()->toArray();
@@ -136,22 +137,9 @@ class CartController extends Controller
 
     public function printReceipt()
     {
-        $cartData = request()->session()->get('cart');
-        $cart = [];
-        $sum = 0;
-        if (request()->session()->has('cart')) {
-            foreach ($cartData as $key => $value) {
-                $product = ProductSubcategory::where('id', '=', $key)->get()->toArray();
-                $cart_item['item'] = $product['0'];
-                $cart_item['total_price'] = $value['qty'] * $product['0']['price'];
-                $cart_item['qty'] = $value['qty'];
-                $sum = $sum + $cart_item['total_price'];
-                array_push($cart, $cart_item);
-
-
-            }
-        }
-        return view('sale.menu-receipt')->with('cart', $cart)->with('sum', $sum);
+        request()->session()->forget('cart');
+        $cart = MenuDetail::where('created_at', '>', \Carbon\Carbon::now()->subSeconds(5))->get();
+        return view('sale.menu-receipt',compact('cart'));
     }
 
 }

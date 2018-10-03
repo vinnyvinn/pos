@@ -17,6 +17,7 @@
             </p>
         </div>
     </div><!--End Invoice Mid-->
+    <?php $sum=0;?>
     <div id="bot">
         <div id="table">
             <table>
@@ -27,10 +28,11 @@
                 </tr>
                 @foreach ($cart as $cart_item)
                 <tr class="service">
-                    <td class="tableitem"><p class="itemtext">{{$cart_item['item']['name']}}</p></td>
-                    <td class="tableitem"><p class="itemtext">{{$cart_item['qty']}}</p></td>
-                    <td class="tableitem"><p class="itemtext">KSH {{ number_format($cart_item['total_price'], 2) }}</p></td>
+                    <td class="tableitem"><p class="itemtext">{{$cart_item['item_name']}}</p></td>
+                    <td class="tableitem"><p class="itemtext">{{$cart_item['quantity']}}</p></td>
+                    <td class="tableitem"><p class="itemtext">KSH {{ number_format($cart_item['sub_total'], 2) }}</p></td>
                 </tr>
+                    <?php $sum += $cart_item['sub_total'];?>
                 @endforeach
                 <tr class="tabletitle">
                     <td></td>

@@ -284,10 +284,7 @@ class SaleController extends Controller
     public function cartDetails()
     {
 
-        $products = ProductSubcategory::join('product_categories', 'product_subcategories.category_id', '=', 'product_categories.id')
-            ->select('product_subcategories.name', 'product_subcategories.price','product_subcategories.id')
-            ->where('category_id',1)
-            ->get();
+        $products = ProductSubcategory::where('category_id',1)->orderBy('name','asc')->get();
 
 
         return view('sale.shop_index')->with('products', $products);

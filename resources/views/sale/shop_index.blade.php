@@ -19,12 +19,11 @@
         </div>
         <div class="panel panel-body cart-panel">
 
-
                     <div class="row">
 
                         @foreach ($products as $product)
 
-                            <div class="col-md-3">
+                            <div class="col-md-3" style="width: 26%">
                                 <div class="image">
                                     <img src="{{ asset('images/item.png') }}"  alt="{{ $product->name }}" class="img-responsive food-pic">
                                 </div>

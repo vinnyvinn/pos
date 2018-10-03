@@ -149,11 +149,11 @@
                             <span class="pull-right"><i class="fa fa-angle-down"></i></span>
                         </a>
                         <ul>
+                            {{--<li>--}}
+                                {{--<a href="{{route('sale.index')}}">View All</a>--}}
+                            {{--</li>--}}
                             <li>
-                                <a href="{{route('sale.index')}}">View All</a>
-                            </li>
-                            <li>
-                                <a href="{{ route('sale.create') }}">Make Sale</a>
+                                <a href="{{ route('cart-details') }}">Make Sale</a>
                             </li>
                         </ul>
                     </li>
