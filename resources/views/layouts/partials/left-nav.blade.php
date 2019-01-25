@@ -16,7 +16,7 @@
                     </li>
                 @endif
                 @if(hasPermission(SmoDav\Models\UserGroup::PERM_CONFIGURATION_FULL_ACCESS))
-                    <li class='has_sub'>
+                    <li class='has_sub' style="display: none">
                         <a href='javascript:void(0);'>
                             <i class='icon-cog-2'></i>
                             <span>Configuration</span>
@@ -44,7 +44,7 @@
                     </li>
                 @endif
                 @if(hasPermission(SmoDav\Models\UserGroup::PERM_CUSTOMER_FULL_ACCESS))
-                    <li class="has_sub">
+                    <li class="has_sub" style="display: none">
                         <a href="javascript:void(0);">
                             <i class="icon-user"></i>
                             <span>Customers</span>
@@ -57,7 +57,7 @@
                     </li>
                 @endif
                 @if(hasPermission(SmoDav\Models\UserGroup::PERM_SUPPLIER_FULL_ACCESS))
-                    <li class="has_sub">
+                    <li class="has_sub" style="display: none">
                         <a href="javascript:void(0);">
                             <i class="icon-users"></i>
                             <span>Suppliers</span>
@@ -70,7 +70,7 @@
                     </li>
                 @endif
                 @if(hasPermission(SmoDav\Models\UserGroup::PERM_PRODUCT_FULL_ACCESS))
-                    <li class='has_sub'>
+                    <li class='has_sub' style="display: none">
                         <a href='javascript:void(0);'>
                             <i class='icon-bag'></i>
                             <span>Products</span>
@@ -104,7 +104,7 @@
                     </li>
                 @endif
                 @if(hasPermission(SmoDav\Models\UserGroup::PERM_PURCHASE_ORDER_FULL_ACCESS))
-                    <li class="has_sub">
+                    <li class="has_sub" style="display: none">
                         <a href="javascript:void(0);">
                             <i class="icon-anchor"></i>
                             <span>Purchase Order</span>
@@ -177,6 +177,9 @@
                             </li>
                             <li>
                                 <a href="{{ route('custom.index') }}">Custom Report</a>
+                            </li>
+                            <li>
+                                <a href="{{ route('expense-report.create') }}">Expenses Report</a>
                             </li>
                         </ul>
                     </li>

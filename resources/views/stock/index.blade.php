@@ -37,7 +37,7 @@
                         <tbody>
                         @foreach($stocks as $stock)
                             <tr>
-                                <td>{{ $stock->stall_name }}</td>
+                                <td>{{ $stock->stall->name }}</td>
                                 <td>{{ $stock->name }}</td>
                                 <td>{{ $stock->quantity_on_hand }}</td>
 {{--                                <td>{{ $stock->sell_by }}</td>--}}

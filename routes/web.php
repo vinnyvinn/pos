@@ -58,6 +58,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('storeProduct', 'TransactionTypesController@storeProduct');
     Route::get('LoadJs', 'TransactionTypesController@LoadJs');
 
+
+    //expenses Report
+    Route::resource('expense-report','ExpensesReportController');
+    Route::get('expense-summary/{from}/{to}','ExpensesReportController@expenseSummary');
+
     Route::post('import', 'StockItemController@importExcel')->name('import');
 
     Route::resource('pettyCashType', 'pettyCashTypeController');
@@ -73,6 +78,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/ajaxadd', 'CartController@ajaxAdd');
     Route::get('/cartdelete/{id}', 'CartController@delete');
     Route::post('update-qn/{qty}/{id}','CartController@updateCartQuantity')->name('update-qn');
+    Route::post('update-qn-dec/{qty}/{id}','CartController@updateCartQuantityDec');
     Route::get('check-out','CartController@checkOut')->name('check-out');
     Route::get('receipt','CartController@printReceipt')->name('receipt');
 
@@ -85,10 +91,10 @@ Route::group(['middleware' => 'auth'], function () {
 
 });
 
-Route::group(['middleware' => ['auth', 'checkedIn']], function () {
+//Route::group(['middleware' => ['auth', 'checkedIn']], function () {
     Route::resource('stock', 'StockController');
     Route::resource('purchaseOrder', 'PurchaseOrderController');
     Route::resource('sale', 'SaleController');
-});
+//});
 
 

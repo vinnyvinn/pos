@@ -103,6 +103,22 @@ class CartController extends Controller
 
         return response()->json(['msg' => $cart_id], 200);
     }
+    function updateCartQuantityDec($quantity, $cart_id)
+    {
+        $id = request()->get('product_id');
+        $session = request()->session();
+        $cartData = ($session->get('cart')) ? $session->get('cart') : array();
+        if (array_key_exists($cart_id, $cartData)) {
+            $cartData[$id]['qty']--;
+        } else {
+            $cartData[$cart_id] = array(
+                'qty' => $quantity
+            );
+        }
+        request()->session()->put('cart', $cartData);
+
+        return response()->json(['msg' => $cart_id], 200);
+    }
 
     public function checkOut()
 
@@ -115,10 +131,12 @@ class CartController extends Controller
         }
 
         $cartData = request()->session()->get('cart');
+
         $sum = 0;
         if (request()->session()->has('cart')) {
             foreach ($cartData as $key => $value) {
                 $product = ProductSubcategory::where('id', '=', $key)->get()->toArray();
+                ProductSubcategory::where('id',$key)->decrement('quantity_on_hand',$value['qty']);
 
                 MenuDetail::create([
                     'item_id' => $key,
@@ -137,6 +155,7 @@ class CartController extends Controller
 
     public function printReceipt()
     {
+
         request()->session()->forget('cart');
         $cart = MenuDetail::where('created_at', '>', \Carbon\Carbon::now()->subSeconds(5))->get();
         return view('sale.menu-receipt',compact('cart'));

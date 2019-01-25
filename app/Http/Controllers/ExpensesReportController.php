@@ -2,37 +2,31 @@
 
 namespace App\Http\Controllers;
 
-use App\ProductSubcategory;
 use Illuminate\Http\Request;
-use SmoDav\Models\Stall;
-use SmoDav\Models\Stock;
-use SmoDav\Models\StockItem;
+use SmoDav\Models\PettyCash;
+use Excel;
+use Vinn\Repository\ReportsRepo;
 
-class StockController extends Controller
+class ExpensesReportController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $stocks=ProductSubcategory::all();
-        return view('stock.index',compact('stocks'));
+        return view('reports.expenses.index');
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return \Illuminate\Http\Response
      */
     public function create()
     {
-//        dd(Stock::with('stall')->get());
-        $stalls=Stall::all();
-        $stock_items=ProductSubcategory::all();
-
-        return view('stock.create',compact('stalls','stock_items'));
+        return view('reports.expenses.create');
     }
 
     /**
@@ -43,21 +37,27 @@ class StockController extends Controller
      */
     public function store(Request $request)
     {
-       //dd($request->all());
-        $stock = ProductSubcategory::where('stall_id', $request->get('stall_id'))
-            ->where('id', $request->get('item_id'))
-            ->firstOrFail();
-        if(!$stock)
-        {
-            ProductSubcategory::create();
-        }
-//        dd($stock);
-          $stock->increment('quantity_on_hand', $request->get('quantity_on_hand'));
-        flash('Successfully created stock');
+        $from =  date("Y-m-d",strtotime($request->from));
+        $to =  date("Y-m-d",strtotime($request->to));
+        $expenses = PettyCash::whereBetween('created_at', [$from, $to])->get();
 
-        return redirect()->route('stock.index');
+        return view('reports.expenses.index',compact('from','to','expenses'));
     }
 
+
+public function expenseSummary($from,$to) {
+    $expenses = ReportsRepo::init()->getExpenses($from,$to);
+     return Excel::create('Expenses', function ($excel) use ($expenses) {
+
+        $excel->sheet('mySheet', function ($sheet) use ($expenses) {
+
+            $sheet->fromArray($expenses);
+
+        });
+
+    })->download('xls');
+
+}
     /**
      * Display the specified resource.
      *

@@ -141,11 +141,12 @@
         }
 
         function decrement_quantity(cart_id) {
-            var inputQuantityElement = $("#input-quantity-"+cart_id);
-            if($(inputQuantityElement).val() > 1)
+            console.log(cart_id);
+            var decrement_q = $("#input-quantity-"+cart_id);
+            if($(decrement_q).val() > 1)
             {
-                var newQuantity = parseInt($(inputQuantityElement).val()) - 1;
-                save_to_db(cart_id, newQuantity);
+                var newQuantity = parseInt($(decrement_q).val()) - 1;
+                update_to_db(cart_id, newQuantity);
             }
         }
 
@@ -162,6 +163,21 @@
                 }
             });
         }
+
+        function update_to_db(cart_id, new_quantity) {
+            var inputQuantityElement = $("#input-quantity-"+cart_id);
+
+            var url2 = "{{url('update-qn-dec')}}" +'/'+new_quantity +'/'+ cart_id;
+            $.ajax({
+                url : url2,
+                data : {product_id:cart_id,qty:new_quantity},
+                type : 'post',
+                success : function(response) {
+                    $(inputQuantityElement).val(new_quantity);
+                }
+            });
+        }
+
 
         $(document).ready(function () {
             $('#cash').keyup(function () {

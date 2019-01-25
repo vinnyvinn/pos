@@ -57,6 +57,9 @@
   @endsection
 @section('footer')
     <script>
-//        $('#item_id').select2();
+        $(function () {
+           // $('.item').select2();
+        })
+
     </script>
     @endsection
