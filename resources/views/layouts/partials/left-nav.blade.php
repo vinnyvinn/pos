@@ -31,7 +31,7 @@
                     </li>
                 @endif
                 @if(hasPermission(SmoDav\Models\UserGroup::PERM_STALL_ASSIGNMENT))
-                    <li class="has_sub">
+                    <li class="has_sub" style="display: none">
                         <a href='javascript:void(0);'>
                             <i class='icon-home-2'></i>
                             <span>Stalls</span>
